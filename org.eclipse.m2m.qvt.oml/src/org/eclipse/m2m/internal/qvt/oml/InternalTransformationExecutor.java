@@ -69,6 +69,7 @@ import org.eclipse.m2m.internal.qvt.oml.trace.Trace;
 import org.eclipse.m2m.qvt.oml.ExecutionContext;
 import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
+import org.eclipse.m2m.qvt.oml.mapping.pivot.test.QvtOperationalMappingArgumentsContainer;
 import org.eclipse.m2m.qvt.oml.util.IContext;
 import org.eclipse.m2m.qvt.oml.util.ISessionData;
 import org.eclipse.m2m.qvt.oml.util.Log;
@@ -107,25 +108,25 @@ public class InternalTransformationExecutor {
 
 		fURI = uri;
 	}
-	
+
 	public InternalTransformationExecutor(URI uri, EPackage.Registry registry) {
 		this(uri);
-		
+
 		if (registry == null) {
 			throw new IllegalArgumentException("null package registry"); //$NON-NLS-1$
 		}
-		
+
 		fPackageRegistry = registry;
 	}	
-			
+
 	public URI getURI() {
 		return fURI;
 	}
-	
+
 	public ResourceSet getResourceSet() {
 		return fCompilationRs;
 	}
-		
+
 	/**
 	 * Attempts to load the transformation referred by this executor and checks
 	 * if it is valid for execution.
@@ -147,7 +148,7 @@ public class InternalTransformationExecutor {
 			monitor.done();
 		}
 	}
-	
+
 	/**
 	 * Retrieves compiled unit if the referencing URI gets successfully resolved
 	 * <p>
@@ -183,29 +184,29 @@ public class InternalTransformationExecutor {
 		if (executionContext == null) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		IProgressMonitor monitor = executionContext.getProgressMonitor();
-				
+
 		try {							
 			SubMonitor progress = SubMonitor.convert(monitor, "Execute " + getURI().toString(), 2); //$NON-NLS-1$
-						
+
 			checkLegalModelParams(modelParameters);
-	
+
 			// ensure transformation unit is loaded
 			loadTransformation(progress.newChild(1));
-			
+
 			// check if we have successfully loaded the transformation unit
 			if (!isSuccess(fLoadDiagnostic)) {
 				return fLoadDiagnostic;
 			}
-	
+
 			try {
 				return doExecute(modelParameters,
 						createInternalContext(executionContext, progress.newChild(1)));
 			} catch (QvtRuntimeException e) {
 				Log logger = executionContext.getLog();
 				logger.log(EvaluationMessages.TerminatingExecution);
-	
+
 				return createExecutionFailure(e);
 			}
 		} finally {
@@ -229,12 +230,21 @@ public class InternalTransformationExecutor {
 		EvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> evaluator = factory
 				.createEvaluationVisitor(rootEnv, evaluationEnv, null);
 
+		//FIXME remove this code, Just a test-----------------
+	
+		QvtOperationalMappingArgumentsContainer mappingArgumentsContainer = QvtOperationalMappingArgumentsContainer.getInstance();
+		
+		mappingArgumentsContainer.setQvtOperationalEnvFactory(factory);
+		mappingArgumentsContainer.setQvtOperationalEvaluationEnv(evaluationEnv);
+		mappingArgumentsContainer.setQvtOperationalFileEnv(rootEnv);
+		//----------------------------------------------------
+		
 		// perform the actual execution
 		assert evaluator instanceof InternalEvaluator : "expecting InternalEvaluator implementation"; //$NON-NLS-1$
 		InternalEvaluator rawEvaluator = (InternalEvaluator) evaluator;
 
 		Object evalResult = rawEvaluator.execute(fTransformation);
-		
+
 		// unpack the internal extents into the passed model parameters
 		if (evalResult instanceof QvtEvaluationResult) {
 			int extentIndex = 0;
@@ -243,7 +253,7 @@ public class InternalTransformationExecutor {
 				if (p.getKind() == DirectionKind.IN) {
 					continue;
 				}
-				
+
 				ModelExtentContents extent = ((QvtEvaluationResult) evalResult).getModelExtents().get(extentIndex++);
 				args[i].setContents(extent.getAllRootElements());
 			}
@@ -254,7 +264,7 @@ public class InternalTransformationExecutor {
 			for (Object nextResultArg : resultArgs) {
 				ModelInstance modelInstance = (ModelInstance) nextResultArg;
 				ModelParameterExtent extent = modelInstance.getExtent();
-	
+
 				List<EObject> allRootElements = extent.getContents().getAllRootElements();
 				try {
 					args[i++].setContents(allRootElements);
@@ -264,14 +274,14 @@ public class InternalTransformationExecutor {
 				}
 			}
 		}
-		
+
 		// do some handy processing with traces
 		Trace traces = evaluationEnv.getAdapter(InternalEvaluationEnv.class).getTraces();
 		handleExecutionTraces(traces);
-		
+
 		return ExecutionDiagnostic.OK_INSTANCE;
 	}
-	
+
 	protected void handleExecutionTraces(Trace traces) {
 		// nothing interesting here
 	}
@@ -308,8 +318,8 @@ public class InternalTransformationExecutor {
 			if (fTransformation == null) {
 				fLoadDiagnostic = new ExecutionDiagnosticImpl(Diagnostic.ERROR,
 						ExecutionDiagnostic.TRANSFORMATION_LOAD_FAILED, NLS
-								.bind(Messages.NotTransformationInUnitError,
-										fURI));
+						.bind(Messages.NotTransformationInUnitError,
+								fURI));
 				return;
 			}
 
@@ -359,13 +369,20 @@ public class InternalTransformationExecutor {
 
 	private static ExecutionDiagnostic checkIsExecutable(
 			OperationalTransformation transformation) {
-		
+
+		//FIXME remove the below code, Just for saving the transformation object
+		QvtOperationalMappingArgumentsContainer mappingArgumentContainer = QvtOperationalMappingArgumentsContainer.getInstance();
+		mappingArgumentContainer.setOperationalTransformation(transformation);
+		//----------------------------------------------------------------------
+
 		if (transformation.isIsBlackbox()) {
 			return ExecutionDiagnostic.OK_INSTANCE;
 		}
-		
+
 		EList<EOperation> operations = transformation.getEOperations();
+//operations.get(0).ac
 		for (EOperation oper : operations) {
+			//op
 			if (oper instanceof ImperativeOperation
 					&& QvtOperationalEnv.MAIN.equals(oper.getName())) {
 				return ExecutionDiagnostic.OK_INSTANCE;
@@ -383,7 +400,7 @@ public class InternalTransformationExecutor {
 		if(fCompiledUnit == null) {
 			return null;
 		}
-		
+
 		List<Module> allModules = fCompiledUnit.getModules();
 		for (Module module : allModules) {
 			if (module instanceof OperationalTransformation) {
@@ -393,7 +410,7 @@ public class InternalTransformationExecutor {
 
 		return null;
 	}
-	
+
 	public void setEnvironmentFactory(QvtOperationalEnvFactory factory) {
 		fEnvFactory = factory;
 	}
@@ -401,7 +418,7 @@ public class InternalTransformationExecutor {
 	protected QvtOperationalEnvFactory getEnvironmentFactory() {
 		return fEnvFactory != null ? fEnvFactory : new QvtOperationalEnvFactory();
 	}
-	
+
 	public void cleanup() {
 		setEnvironmentFactory(null);
 		if (fCompilationRs != null) {
@@ -486,11 +503,11 @@ public class InternalTransformationExecutor {
 			Object value = executionContext.getConfigProperty(key);
 			ctx.setConfigProperty(key, value);
 		}
-		
+
 		for (ISessionData.Entry<Object> key : executionContext.getSessionDataEntries()) {
 			ctx.getSessionData().setValue(key, executionContext.getSessionData().getValue(key));
 		}
-		
+
 		org.eclipse.m2m.qvt.oml.util.Trace trace = executionContext.getSessionData().getValue(QVTEvaluationOptions.INCREMENTAL_UPDATE_TRACE);
 		if (trace != null) {
 			ctx.getTrace().setTraceContent(trace.getTraceContent());
@@ -503,20 +520,20 @@ public class InternalTransformationExecutor {
 	public String toString() {
 		return "QVTO-Executor: " + fURI; //$NON-NLS-1$
 	}
-	
+
 	protected QVTOCompiler createCompiler() {
 		if(fPackageRegistry == null) {
 			return CompilerUtils.createCompiler();
 		}
-		
+
 		return QVTOCompiler.createCompiler(fPackageRegistry);
 	}
 
-	
+
 	public static class TracesAwareExecutor extends InternalTransformationExecutor {
-		
+
 		private Trace fTraces;
-		
+
 		public TracesAwareExecutor(URI uri, EPackage.Registry registry) {
 			super(uri, registry);
 		}
@@ -524,7 +541,7 @@ public class InternalTransformationExecutor {
 		public TracesAwareExecutor(URI uri) {
 			super(uri);
 		}
-		
+
 		public Trace getTraces() {
 			return fTraces;
 		}
@@ -534,7 +551,7 @@ public class InternalTransformationExecutor {
 			super.handleExecutionTraces(traces);
 			fTraces = traces;
 		}
-		
+
 		@Override
 		public void cleanup() {
 			super.cleanup();
@@ -542,5 +559,5 @@ public class InternalTransformationExecutor {
 		}
 
 	}
-	
+
 }

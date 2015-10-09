@@ -74,6 +74,7 @@ Export-Package: org.eclipse.m2m.internal.qvt.oml;
  org.eclipse.m2m.internal.qvt.oml.trace.util;x-friends:="org.eclipse.m2m.qvt.oml.trace.edit",
  org.eclipse.m2m.qvt.oml,
  org.eclipse.m2m.qvt.oml.blackbox.java,
+ org.eclipse.m2m.qvt.oml.mapping.pivot.test,
  org.eclipse.m2m.qvt.oml.util
 Import-Package: com.ibm.icu.lang;version="4.0.0"
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.4.0,4.0.0)",
