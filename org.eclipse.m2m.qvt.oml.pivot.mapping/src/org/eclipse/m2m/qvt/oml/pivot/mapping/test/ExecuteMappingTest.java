@@ -32,17 +32,12 @@ import junit.framework.TestCase;
 import rdb.RdbPackage;
 import simpleuml.SimpleumlPackage;
 
-/**
- * 
- * @author AbdulAli
- *
- */
+
 @SuppressWarnings("rawtypes")
 public class ExecuteMappingTest<U extends Visitor> extends TestCase {
 
-	private static final String qvtoFileUri = "C:\\Users\\AbdulAli\\git\\M2MPivotBasedMappingf\\org.eclipse.m2m.qvt.oml.pivot.mapping\\Example\\Simpleuml_To_Rdb.qvto";
-	private static final String inUri = "C:\\Users\\AbdulAli\\git\\M2MPivotBasedMappingf\\org.eclipse.m2m.qvt.oml.pivot.mapping\\Example\\pim.simpleuml";
-
+	private static final String qvtoFileUri = System.getProperty("user.dir")+"/Example/Simpleuml_To_Rdb.qvto";
+	 private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
 	@Test
 	public void testMapping() {
 		collectMappingArguments();
