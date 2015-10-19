@@ -42,11 +42,9 @@ public class FileOperationsUtil {
 		resource.save(null);
 	}
 	
-	public static void writePivotQVTOperationToXML(org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation transformation, String filename) throws IOException{
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",
-				new XMIResourceFactoryImpl());
-		Resource resource = resourceSet.createResource(URI.createFileURI(filename+".xmi"));
+	public static void writePivotQVTOperationToXML(QVToFacade qvto, org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation transformation, String filename) throws IOException{
+		ResourceSet resourceSet = qvto.getResourceSet();
+		Resource resource = resourceSet.createResource(URI.createFileURI(filename+".qvtoas"));
 		// add the root object to the resource 
 		resource.getContents().add(transformation); 
 		// serialize resource you can specify also serialization 

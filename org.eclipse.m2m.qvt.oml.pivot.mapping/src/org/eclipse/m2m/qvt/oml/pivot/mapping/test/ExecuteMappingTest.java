@@ -21,6 +21,7 @@ import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.eclipse.m2m.qvt.oml.mapping.pivot.test.QvtOperationalMappingArgumentsContainer;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.FileOperationsUtil;
+import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.QVToFacade;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMappingVisitor;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMappingVisitorImpl;
 import org.eclipse.ocl.utilities.Visitor;
@@ -33,8 +34,7 @@ import rdb.RdbPackage;
 import simpleuml.SimpleumlPackage;
 
 
-@SuppressWarnings("rawtypes")
-public class ExecuteMappingTest<U extends Visitor> extends TestCase {
+public class ExecuteMappingTest extends TestCase {
 
 	private static final String qvtoFileUri = System.getProperty("user.dir")+"/Example/Simpleuml_To_Rdb.qvto";
 	 private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
@@ -42,8 +42,9 @@ public class ExecuteMappingTest<U extends Visitor> extends TestCase {
 	public void testMapping() {
 		collectMappingArguments();
 		try {
+			QVToFacade qvto = QVToFacade.newInstance();
 			// create Visitor for traditional object mapping
-			TraditionalToPivotMappingVisitor traditionalVisitor = new TraditionalToPivotMappingVisitorImpl(
+			TraditionalToPivotMappingVisitor traditionalVisitor = new TraditionalToPivotMappingVisitorImpl(qvto, 
 					QvtOperationalMappingArgumentsContainer.getInstance().getQvtOperationalFileEnv(),
 					QvtOperationalMappingArgumentsContainer.getInstance().getQvtOperationalEvaluationEnv());
 
@@ -51,7 +52,7 @@ public class ExecuteMappingTest<U extends Visitor> extends TestCase {
 					.getInstance().getOperationalTransformation().accept(traditionalVisitor);
 
 			// Convert Pivot based Transformation to XML
-			FileOperationsUtil.writePivotQVTOperationToXML(pivotOperationalTransformation, "pivotBasedTransformation");
+			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotBasedTransformation");
 
 		} catch (Exception e) {
 			e.printStackTrace();

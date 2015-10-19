@@ -18,28 +18,28 @@ import org.eclipse.qvto.examples.pivot.qvtoperational.utilities.QVTOperationalTo
 public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluationVisitorImpl
 		implements TraditionalToPivotMappingVisitor {
 
+	private QVToFacade qvto;
 	private org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation pivotOperationalTransformation;
 
-	public TraditionalToPivotMappingVisitorImpl(QvtOperationalEnv env, QvtOperationalEvaluationEnv evalEnv) {
+	public TraditionalToPivotMappingVisitorImpl(QVToFacade qvto, QvtOperationalEnv env, QvtOperationalEvaluationEnv evalEnv) {
 		super(env, evalEnv);
+		this.qvto = qvto;
 		pivotOperationalTransformation = QVTOperationalFactory.eINSTANCE.createOperationalTransformation();
 	}
 
 	@Override
 	public Object visitHelper(Helper helper) {
-		return QVTOperationalUtil.createHelper(helper, null, ImperativeOperationTypes.PIVOT_HELPER, null);
+		return qvto.createHelper(helper);
 	}
 
 	@Override
 	public Object visitMappingOperation(MappingOperation mappingOperation) {
-		return QVTOperationalUtil.createMappingOperation(mappingOperation, null,
-				ImperativeOperationTypes.TRADITIONAL_MAPPING_OPERATION, null);
+		return qvto.createMappingOperation(mappingOperation);
 	}
 
 	@Override
 	public Object visitEntryOperation(EntryOperation entryOperation) {
-		org.eclipse.qvto.examples.pivot.qvtoperational.EntryOperation pivotEntryOperation = QVTOperationalUtil
-				.createEntryOperation(entryOperation, null, ImperativeOperationTypes.PIVOT_ENTRY_OPERATIONS, null);
+		org.eclipse.qvto.examples.pivot.qvtoperational.EntryOperation pivotEntryOperation = qvto.createEntryOperation(entryOperation);
 		pivotOperationalTransformation.setEntry(pivotEntryOperation);
 		return pivotEntryOperation;
 	}

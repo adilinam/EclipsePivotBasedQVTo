@@ -12,12 +12,17 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.m2m.qvt.oml,
  org.eclipse.jdt.annotation;bundle-version="2.0.100",
  org.eclipse.ocl.pivot;bundle-version="1.0.0",
- org.junit
+ org.junit,
+ com.google.inject;bundle-version="3.0.0",
+ com.google.guava;bundle-version="15.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: junit.framework,
+ org.apache.log4j;version="1.2.15",
  org.eclipse.m2m.internal.qvt.oml.expressions,
  org.eclipse.qvto.examples.pivot.qvtoperational,
  org.eclipse.qvto.examples.pivot.qvtoperational.utilities,
  rdb,
  simpleuml
+Export-Package: org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util,
+ org.eclipse.m2m.qvt.oml.pivot.mapping.test
