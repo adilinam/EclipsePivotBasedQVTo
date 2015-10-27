@@ -122,7 +122,7 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 				.createMappingOperation(mappingOperation);
 		Logger.getLogger().log(Logger.INFO, "Mapping body of -> "+mappingOperation.getName(), mappingOperation);
 		// ====== Mapping the body for Mapping operation
-		/*for (OCLExpression<EClassifier> exp : mappingOperation.getWhen()) {
+		for (OCLExpression<EClassifier> exp : mappingOperation.getWhen()) {
 			Logger.getLogger().log(Logger.INFO, "Mapping When of => "+mappingOperation.getName()+" => "+exp, exp);
 			exp.accept(this);
 		}
@@ -131,7 +131,7 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 				Logger.getLogger().log(Logger.INFO, "Mapping Where of => "+mappingOperation.getName()+" => "+exp, exp);
 				exp.accept(this);
 			}
-		}*/
+		}
 		// ============================
 		return pivotOperation;
 	}
@@ -163,7 +163,7 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 		for (EOperation eOperation : list) {
 
 			Operation tempOperation = (Operation) ((ImperativeOperation) eOperation).accept(this);
-			((ImperativeOperation)eOperation).getBody().accept(this);
+			//((ImperativeOperation)eOperation).getBody().accept(this);
 			// Adding by reference into pivot OperationalTransformation
 			pivotOperations.add(tempOperation);
 		}
