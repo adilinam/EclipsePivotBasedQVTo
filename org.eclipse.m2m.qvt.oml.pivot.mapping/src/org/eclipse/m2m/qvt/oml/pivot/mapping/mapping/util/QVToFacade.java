@@ -66,10 +66,10 @@ public class QVToFacade extends OCLInternal {
 		super(environmentFactory);
 		metamodelManager = getMetamodelManager();
 		EPackage.Registry registry = new EPackageRegistryImpl();
-		registry.put(EXTLibraryPackage.eNS_URI, EXTLibraryPackage.eINSTANCE);
+		//registry.put(EXTLibraryPackage.eNS_URI, EXTLibraryPackage.eINSTANCE);
 		//ocl = OCL.newInstance(registry);
 		//ResourceSet resourceSet = ocl.getResourceSet();
-		org.eclipse.ocl.xtext.essentialocl.EssentialOCLStandaloneSetup.doSetup();
+		//org.eclipse.ocl.xtext.essentialocl.EssentialOCLStandaloneSetup.doSetup();
 	}
 
 	public @NonNull Helper createHelper(@NonNull EOperation traditionalHelper) {
