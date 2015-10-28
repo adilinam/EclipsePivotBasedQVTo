@@ -24,9 +24,11 @@ import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.FileOperationsUtil;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.QVToFacade;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMappingVisitor;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMappingVisitorImpl;
+import org.eclipse.ocl.pivot.PivotTables;
 import org.eclipse.ocl.utilities.Visitor;
 import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
 import org.eclipse.qvto.examples.pivot.qvtoperational.QVTOperationalPackage;
+import org.eclipse.qvto.examples.pivot.qvtoperational.utilities.QVTOperationalToStringVisitor;
 import org.junit.Test;
 
 import junit.framework.TestCase;
@@ -50,7 +52,6 @@ public class ExecuteMappingTest extends TestCase {
 
 			org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation pivotOperationalTransformation = (OperationalTransformation) QvtOperationalMappingArgumentsContainer
 					.getInstance().getOperationalTransformation().accept(traditionalVisitor);
-
 			// Convert Pivot based Transformation to XML
 			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotBasedTransformation");
 

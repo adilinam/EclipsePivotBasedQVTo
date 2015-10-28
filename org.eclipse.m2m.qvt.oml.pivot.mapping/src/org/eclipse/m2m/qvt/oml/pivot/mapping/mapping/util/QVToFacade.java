@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.examples.extlibrary.EXTLibraryPackage;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
@@ -66,10 +65,10 @@ public class QVToFacade extends OCLInternal {
 		super(environmentFactory);
 		metamodelManager = getMetamodelManager();
 		EPackage.Registry registry = new EPackageRegistryImpl();
-		registry.put(EXTLibraryPackage.eNS_URI, EXTLibraryPackage.eINSTANCE);
+		//registry.put(EXTLibraryPackage.eNS_URI, EXTLibraryPackage.eINSTANCE);
 		//ocl = OCL.newInstance(registry);
 		//ResourceSet resourceSet = ocl.getResourceSet();
-		org.eclipse.ocl.xtext.essentialocl.EssentialOCLStandaloneSetup.doSetup();
+		//org.eclipse.ocl.xtext.essentialocl.EssentialOCLStandaloneSetup.doSetup();
 	}
 
 	public @NonNull Helper createHelper(@NonNull EOperation traditionalHelper) {
@@ -130,15 +129,7 @@ public class QVToFacade extends OCLInternal {
 	// // TODO Auto-generated method stub
 	// org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody
 	// pivotOperationBody=
-	// QVTOperationalFactory.eINSTANCE.createOperationBody();
-	// //setting it as a reference
-	// EList<org.eclipse.ocl.pivot.OCLExpression> expressions=
-	// pivotOperationBody.getContent();
-	// for (OCLExpression<EClassifier> exp : operationBody.getContent()) {
-	// exp.accept(this);
-	// }
-	//
-	// return null;
+	// 
 
 	/*public ExpressionInOCL createOperationCallExp(@NonNull String callExp) {
 		org.eclipse.ocl.pivot.ExpressionInOCL expression = null;

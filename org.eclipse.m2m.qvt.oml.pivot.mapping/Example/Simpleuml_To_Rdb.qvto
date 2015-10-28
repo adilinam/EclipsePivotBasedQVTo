@@ -13,8 +13,7 @@ query package2schemas(in root: simpleuml::Package) : OrderedSet(rdb::Schema) {
 		union(root.getSubpackages()->collect(p | package2schemas(p))->asOrderedSet())->asOrderedSet()
 }
 
-mapping package2schema(in pack: simpleuml::Package) : rdb::Schema 
-	when { pack.hasPersistentClasses() }
+mapping package2schema(in pack: simpleuml::Package) : rdb::Schema when { pack.hasPersistentClasses() }
 {
 	name := pack.name;
 	elements := pack.ownedElements->select(oclIsKindOf(simpleuml::Class))->
