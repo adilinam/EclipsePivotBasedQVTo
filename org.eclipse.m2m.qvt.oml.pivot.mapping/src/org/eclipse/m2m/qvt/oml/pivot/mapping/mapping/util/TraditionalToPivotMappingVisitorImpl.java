@@ -79,10 +79,10 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 		        	source.accept(this);
 		        }
 		        EOperation referredOperation = callExp.getReferredOperation(); //FIXME Now convert this operation to pivot
-		        Operation operation = PivotFactory.eINSTANCE.createOperation();
-		        
-		        operation.setName(referredOperation.getName());
-		        
+//		        Operation operation = PivotFactory.eINSTANCE.createOperation();
+//		        
+//		        operation.setName(referredOperation.getName());
+//		        
 
 		      //  value.setReferredOperation(operation);
 		        
