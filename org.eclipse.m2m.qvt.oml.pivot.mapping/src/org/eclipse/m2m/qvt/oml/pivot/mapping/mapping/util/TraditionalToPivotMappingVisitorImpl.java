@@ -84,7 +84,7 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 		        operation.setName(referredOperation.getName());
 		        
 
-		        value.setReferredOperation(operation);
+		      //  value.setReferredOperation(operation);
 		        
 		        Logger.getLogger().log(Logger.INFO,"Referred operation: " + referredOperation, referredOperation);
 		        if (referredOperation instanceof org.eclipse.ocl.utilities.Visitable) {
