@@ -28,6 +28,7 @@ public class FileOperationsUtil {
 		EPackage.Registry.INSTANCE.put(QVTOperationalPackage.eNS_URI, QVTOperationalPackage.eINSTANCE);
 		XMIResource resource = new XMIResourceImpl(URI.createURI(fileName));
 		resource.load(null);
+		System.out.print("");
 		return resource;
 	}
 	
