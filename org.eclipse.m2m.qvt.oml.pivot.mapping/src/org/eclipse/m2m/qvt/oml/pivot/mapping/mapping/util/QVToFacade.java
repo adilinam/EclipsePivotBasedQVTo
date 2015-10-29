@@ -26,6 +26,7 @@ import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.AssignExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.OperationCallExp;
 import org.eclipse.ocl.expressions.Variable;
+import org.eclipse.ocl.pivot.Element;
 import org.eclipse.ocl.pivot.ExpressionInOCL;
 import org.eclipse.ocl.pivot.IteratorExp;
 import org.eclipse.ocl.pivot.Parameter;
@@ -115,7 +116,7 @@ public class QVToFacade extends OCLInternal {
 		MappingParameter pivotParameter = QVTOperationalFactory.eINSTANCE.createMappingParameter();
 		pivotParameter.setName(parameter.getName());
 		Logger.getLogger().log(Logger.INFO, parameter.getName(), parameter);
-		pivotParameter.setType(metamodelManager.getASOfEcore(Type.class, parameter.getEType()));
+		pivotParameter.setType(createPivotType(parameter.getEType()));
 		return pivotParameter;
 	}
 
@@ -125,7 +126,7 @@ public class QVToFacade extends OCLInternal {
 		mapParamters(traditionalMappingOperation, pivotMappingOperation);
 		pivotMappingOperation.setName(traditionalMappingOperation.getName());
 		pivotMappingOperation
-		.setType(metamodelManager.getASOfEcore(Type.class, traditionalMappingOperation.getEType()));
+		.setType(createPivotType(traditionalMappingOperation.getEType()));
 		((PivotObjectImpl) pivotMappingOperation).setESObject(traditionalMappingOperation);
 		return pivotMappingOperation;
 	}
@@ -138,7 +139,7 @@ public class QVToFacade extends OCLInternal {
 		EntryOperation pivotEntryOperation = QVTOperationalFactory.eINSTANCE.createEntryOperation();
 		mapParamters(traditionalEntryOperation, pivotEntryOperation);
 		pivotEntryOperation.setName(traditionalEntryOperation.getName());
-		pivotEntryOperation.setType(metamodelManager.getASOfEcore(Type.class, traditionalEntryOperation.getEType()));
+		pivotEntryOperation.setType(createPivotType(traditionalEntryOperation.getEType()));
 		((PivotObjectImpl) pivotEntryOperation).setESObject(traditionalEntryOperation);
 
 		return pivotEntryOperation;
@@ -154,7 +155,7 @@ public class QVToFacade extends OCLInternal {
 		Logger.getLogger().log(Logger.INFO, "Variable name => "+varName, varName);
 		
 		EClassifier variableType = v.getType();
-		pivotVariableExp.setType(metamodelManager.getASOfEcore(Type.class, v.getType()));
+		pivotVariableExp.setType(createPivotType(v.getType()));
 		Logger.getLogger().log(Logger.INFO, "Variable type => "+variableType, variableType);
 		
 		return pivotVariableExp;
@@ -175,10 +176,14 @@ public class QVToFacade extends OCLInternal {
 		return PivotFactory.eINSTANCE.createVariable();
 	}
 	
+	public <T extends Element> T createPivotType(EClassifier traditionalType){
+		return (T) metamodelManager.getASOfEcore(Type.class, traditionalType);
+	}
+	
 	public IteratorExp createIteratorExp(org.eclipse.ocl.expressions.IteratorExp<EClassifier, EParameter> callExp)
 	{
 		org.eclipse.ocl.pivot.IteratorExp pivotIteratorExp = PivotFactory.eINSTANCE.createIteratorExp();
-		pivotIteratorExp.setType(metamodelManager.getASOfEcore(Type.class, callExp.getType()));
+		pivotIteratorExp.setType(createPivotType(callExp.getType()));
 		return pivotIteratorExp;
 	}
 	
@@ -195,7 +200,7 @@ public class QVToFacade extends OCLInternal {
 	public ObjectExp createObjectExp(org.eclipse.m2m.internal.qvt.oml.expressions.ObjectExp objectExp)
 	{
 		org.eclipse.qvto.examples.pivot.qvtoperational.ObjectExp pivotObjectExp = QVTOperationalFactory.eINSTANCE.createObjectExp();
-		pivotObjectExp.setType(metamodelManager.getASOfEcore(Type.class, objectExp.getType()));
+		pivotObjectExp.setType(createPivotType(objectExp.getType()));
 		return pivotObjectExp;
 	}
 	

@@ -97,7 +97,8 @@ implements TraditionalToPivotMappingVisitor {
 			Object obj=doProcess(source);
 			if(obj instanceof org.eclipse.ocl.pivot.OCLExpression)
 			{
-				pivotIteratorExp.setOwnedSource((org.eclipse.ocl.pivot.OCLExpression) obj);	
+				org.eclipse.ocl.pivot.OCLExpression oclExpression =  (org.eclipse.ocl.pivot.OCLExpression) obj;
+				pivotIteratorExp.setOwnedSource(oclExpression);	
 			}
 		}
 		for(Variable<EClassifier, EParameter> iterator:callExp.getIterator())
