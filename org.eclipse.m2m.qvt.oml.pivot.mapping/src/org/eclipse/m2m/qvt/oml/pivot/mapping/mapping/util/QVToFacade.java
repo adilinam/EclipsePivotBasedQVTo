@@ -14,11 +14,16 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationBody;
+import org.eclipse.m2m.internal.qvt.oml.expressions.impl.ConstructorImpl;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.OperationCallExp;
 import org.eclipse.ocl.pivot.ExpressionInOCL;
+import org.eclipse.ocl.pivot.IteratorExp;
 import org.eclipse.ocl.pivot.Parameter;
+import org.eclipse.ocl.pivot.PivotFactory;
+import org.eclipse.ocl.pivot.PropertyCallExp;
 import org.eclipse.ocl.pivot.Type;
+import org.eclipse.ocl.pivot.VariableExp;
 import org.eclipse.ocl.pivot.internal.manager.MetamodelManagerInternal;
 import org.eclipse.ocl.pivot.internal.resource.ASResourceFactoryRegistry;
 import org.eclipse.ocl.pivot.internal.utilities.EnvironmentFactoryInternal;
@@ -28,12 +33,18 @@ import org.eclipse.ocl.pivot.resource.BasicProjectManager;
 import org.eclipse.ocl.pivot.resource.ProjectManager;
 import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.ocl.pivot.utilities.ParserException;
+import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeOCLFactory;
+import org.eclipse.qvto.examples.pivot.qvtoperational.Constructor;
 import org.eclipse.qvto.examples.pivot.qvtoperational.EntryOperation;
 import org.eclipse.qvto.examples.pivot.qvtoperational.Helper;
 import org.eclipse.qvto.examples.pivot.qvtoperational.ImperativeOperation;
+import org.eclipse.qvto.examples.pivot.qvtoperational.MappingBody;
 import org.eclipse.qvto.examples.pivot.qvtoperational.MappingOperation;
 import org.eclipse.qvto.examples.pivot.qvtoperational.MappingParameter;
+import org.eclipse.qvto.examples.pivot.qvtoperational.ObjectExp;
+import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
 import org.eclipse.qvto.examples.pivot.qvtoperational.QVTOperationalFactory;
+
 
 import simpleuml.SimpleumlPackage;
 
@@ -50,7 +61,7 @@ public class QVToFacade extends OCLInternal {
 		if (externalResourceSet != null) {
 			environmentFactory.adapt(externalResourceSet);
 		}
-		
+
 		return qvto;
 	}
 
@@ -99,13 +110,13 @@ public class QVToFacade extends OCLInternal {
 		return pivotParameter;
 	}
 
-	
+
 	public @NonNull MappingOperation createMappingOperation(@NonNull EOperation traditionalMappingOperation) {
 		MappingOperation pivotMappingOperation = QVTOperationalFactory.eINSTANCE.createMappingOperation();
 		mapParamters(traditionalMappingOperation, pivotMappingOperation);
 		pivotMappingOperation.setName(traditionalMappingOperation.getName());
 		pivotMappingOperation
-				.setType(metamodelManager.getASOfEcore(Type.class, traditionalMappingOperation.getEType()));
+		.setType(metamodelManager.getASOfEcore(Type.class, traditionalMappingOperation.getEType()));
 		((PivotObjectImpl) pivotMappingOperation).setESObject(traditionalMappingOperation);
 		return pivotMappingOperation;
 	}
@@ -123,6 +134,68 @@ public class QVToFacade extends OCLInternal {
 
 		return pivotEntryOperation;
 
+	}
+
+	public VariableExp createVariableExp()
+	{
+		return PivotFactory.eINSTANCE.createVariableExp();
+	}
+
+	public org.eclipse.ocl.pivot.OperationCallExp createOperationCallExp()
+	{
+		return PivotFactory.eINSTANCE.createOperationCallExp();
+	}
+	
+	public PropertyCallExp createPropertyCallExp()
+	{
+		return PivotFactory.eINSTANCE.createPropertyCallExp();
+	}
+	
+	public org.eclipse.ocl.pivot.Variable createVariable()
+	{
+		return PivotFactory.eINSTANCE.createVariable();
+	}
+	
+	public IteratorExp createIteratorExp()
+	{
+		return PivotFactory.eINSTANCE.createIteratorExp();
+	}
+	
+	public OperationalTransformation createOperationalTransformation()
+	{
+		return QVTOperationalFactory.eINSTANCE.createOperationalTransformation();
+	}
+	
+	public MappingBody createMappingBody()
+	{
+		return QVTOperationalFactory.eINSTANCE.createMappingBody();
+	}
+	
+	public ObjectExp createObjectExp()
+	{
+		return QVTOperationalFactory.eINSTANCE.createObjectExp();
+	}
+	
+	public org.eclipse.qvto.examples.pivot.imperativeocl.AssignExp createAssignExpOCL()
+	{
+		return ImperativeOCLFactory.eINSTANCE.createAssignExp();
+	}
+	
+	public org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody createOperationBody()
+	{
+		return QVTOperationalFactory.eINSTANCE.createOperationBody();
+	}
+	org.eclipse.ocl.pivot.CollectionLiteralExp createCollectionLiteralExp()
+	{
+		return PivotFactory.eINSTANCE.createCollectionLiteralExp();
+	}
+	public Constructor createConstructor(@NonNull EOperation traditionalEntryOperation) 
+	{
+		Constructor pivotConstructor= QVTOperationalFactory.eINSTANCE.createConstructor();
+		pivotConstructor.setName(traditionalEntryOperation.getName());
+		//pivotConstructor.setType(metamodelManager.getASOfEcore(Type.class, traditionalEntryOperation.getEType()));   // // FIXME Bug 479445
+		((PivotObjectImpl)pivotConstructor).setESObject(traditionalEntryOperation);
+		return pivotConstructor;
 	}
 	//
 	// public Object createVisitOperationBody(OperationBody operationBody) {
