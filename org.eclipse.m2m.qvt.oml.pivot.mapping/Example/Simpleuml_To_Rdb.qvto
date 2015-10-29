@@ -7,6 +7,10 @@ mapping main(in model: simpleuml::Model) : rdb::Model {
 	name := model.name;
 	schemas := package2schemas(model);
 }
+constructor B::B(x:A)
+{
+	B.toString();
+}
 
 query package2schemas(in root: simpleuml::Package) : OrderedSet(rdb::Schema) {
 	package2schema(root)->
