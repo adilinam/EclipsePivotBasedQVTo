@@ -26,11 +26,16 @@ import org.eclipse.ocl.expressions.OperationCallExp;
 import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.expressions.VariableExp;
 import org.eclipse.ocl.pivot.Operation;
+import org.eclipse.ocl.utilities.Visitable;
 import org.eclipse.qvto.examples.pivot.qvtoperational.MappingCallExp;
 import org.eclipse.qvto.examples.pivot.qvtoperational.QVTOperationalFactory;
 
 public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluationVisitorImpl
 		implements TraditionalToPivotMappingVisitor {
+	
+	protected Object doProcess(Visitable e) {
+            return e.accept(this);
+    }
 
 	private QVToFacade qvto;
 	private org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation pivotOperationalTransformation;
@@ -56,11 +61,11 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 		//Logger.getLogger().log(Logger.INFO,"Pivot based expression: " + pivotOCLExpression, pivotOCLExpression);
 				OCLExpression<EClassifier> source = callExp.getSource();
 		        if (source != null) {
-		        	source.accept(this); //FIXME create visitVariableExp() for this
+		        	doProcess(source); //FIXME create visitVariableExp() for this
 		        }
 		        
 		        for (OCLExpression<EClassifier> exp : callExp.getArgument()) {
-		        	source.accept(this);
+		        	doProcess(source);
 		        }
 		        EOperation referredOperation = callExp.getReferredOperation(); //FIXME Now convert this operation to pivot
 		        Logger.getLogger().log(Logger.INFO,"Referred operation: " + referredOperation, referredOperation);
@@ -121,6 +126,7 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 		org.eclipse.qvto.examples.pivot.qvtoperational.MappingOperation pivotOperation = qvto
 				.createMappingOperation(mappingOperation);
 		Logger.getLogger().log(Logger.INFO, "Mapping body of -> "+mappingOperation.getName(), mappingOperation);
+		visitImperativeOperation(mappingOperation);
 		// ====== Mapping the body for Mapping operation
 		for (OCLExpression<EClassifier> exp : mappingOperation.getWhen()) {
 			Logger.getLogger().log(Logger.INFO, "Mapping When of => "+mappingOperation.getName()+" => "+exp, exp);
@@ -135,6 +141,11 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 		// ============================
 		return pivotOperation;
 	}
+	
+	public Object visitImperativeOperation(ImperativeOperation imperativeOperation) {
+        doProcess(imperativeOperation.getBody());
+        return null;
+    }
 
 	@Override
 	public Object visitEntryOperation(EntryOperation entryOperation) {
