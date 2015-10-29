@@ -4232,7 +4232,7 @@ public class QvtOperationalVisitorCS
 	        Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, 
 	        EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> env) {
 
-	    OCLExpressionCS lValueCS = expressionCS.getLValueCS();
+ 	    OCLExpressionCS lValueCS = expressionCS.getLValueCS();
 	    if ((lValueCS instanceof OperationCallExpCS)
 	    		|| !(lValueCS instanceof VariableExpCS) && !(lValueCS instanceof FeatureCallExpCS)) {
 	        QvtOperationalUtil.reportError(env, ValidationMessages.notAnLValueError, lValueCS);

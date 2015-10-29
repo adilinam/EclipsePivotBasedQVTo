@@ -508,7 +508,7 @@ implements QvtOperationalEvaluationVisitor, InternalEvaluator, DeferredAssignmen
     }
 
     public Object visitImperativeOperation(ImperativeOperation imperativeOperation) {
-
+    	
         List<Object> args = getOperationalEvaluationEnv().getOperationArgs();
         Iterator<Object> argIt = args.iterator();
 
