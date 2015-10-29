@@ -1,10 +1,18 @@
 package org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import org.eclipse.m2m.internal.qvt.oml.expressions.Constructor;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EParameter;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.m2m.internal.qvt.oml.ast.env.InternalEvaluationEnv;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalEnv;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalEvaluationEnv;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
@@ -15,20 +23,42 @@ import org.eclipse.m2m.internal.qvt.oml.evaluator.TransformationInstance;
 import org.eclipse.m2m.internal.qvt.oml.expressions.EntryOperation;
 import org.eclipse.m2m.internal.qvt.oml.expressions.Helper;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ImperativeOperation;
+import org.eclipse.m2m.internal.qvt.oml.expressions.MappingBody;
 import org.eclipse.m2m.internal.qvt.oml.expressions.MappingOperation;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ModelParameter;
 import org.eclipse.m2m.internal.qvt.oml.expressions.Module;
+import org.eclipse.m2m.internal.qvt.oml.expressions.ObjectExp;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationBody;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
+import org.eclipse.m2m.internal.qvt.oml.expressions.VarParameter;
+import org.eclipse.m2m.internal.qvt.oml.expressions.impl.MappingOperationImpl;
+import org.eclipse.m2m.internal.qvt.oml.library.EObjectEStructuralFeaturePair;
+import org.eclipse.m2m.internal.qvt.oml.library.QvtResolveUtil;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.AssignExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.BlockExp;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.ListType;
+import org.eclipse.ocl.expressions.CollectionItem;
+import org.eclipse.ocl.expressions.CollectionKind;
+import org.eclipse.ocl.expressions.CollectionLiteralExp;
+import org.eclipse.ocl.expressions.CollectionLiteralPart;
+import org.eclipse.ocl.expressions.CollectionRange;
+import org.eclipse.ocl.expressions.IteratorExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.OperationCallExp;
+import org.eclipse.ocl.expressions.PropertyCallExp;
 import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.expressions.VariableExp;
 import org.eclipse.ocl.pivot.Operation;
 import org.eclipse.ocl.utilities.Visitable;
+import org.eclipse.ocl.pivot.PivotFactory;
+import org.eclipse.ocl.pivot.Type;
+import org.eclipse.ocl.pivot.VariableDeclaration;
+import org.eclipse.ocl.pivot.utilities.MetamodelManager;
+import org.eclipse.osgi.container.SystemModule;
+import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeOCLFactory;
 import org.eclipse.qvto.examples.pivot.qvtoperational.MappingCallExp;
 import org.eclipse.qvto.examples.pivot.qvtoperational.QVTOperationalFactory;
+import org.eclipse.swt.internal.C;
 
 public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluationVisitorImpl
 		implements TraditionalToPivotMappingVisitor {
@@ -44,53 +74,106 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 			QvtOperationalEvaluationEnv evalEnv) {
 		super(env, evalEnv);
 		this.qvto = qvto;
-		pivotOperationalTransformation = QVTOperationalFactory.eINSTANCE.createOperationalTransformation();
+		pivotOperationalTransformation = qvto.createOperationalTransformation();
 	}
 
 	@Override
 	public Object visitHelper(Helper helper) {
 		org.eclipse.qvto.examples.pivot.qvtoperational.Helper pivotHelper = qvto.createHelper(helper);
-		//((ImperativeOperation)helper).getBody().accept(this);
+		pivotHelper.setBody((org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody) doProcess(helper.getBody()));
 		return pivotHelper;
 	}
-	
+
+
+	@Override
+	public Object visitIteratorExp(IteratorExp<EClassifier, EParameter> callExp)
+	{
+		org.eclipse.ocl.pivot.IteratorExp pivotIteratorExp = qvto.createIteratorExp();
+
+		pivotIteratorExp.setName(callExp.getName());
+		OCLExpression<EClassifier> source = callExp.getSource();
+		if(source!=null)
+		{
+			Object obj=doProcess(source);
+			if(obj instanceof org.eclipse.ocl.pivot.OCLExpression)
+			{
+				pivotIteratorExp.setOwnedSource((org.eclipse.ocl.pivot.OCLExpression) obj);	
+			}
+		}
+		for(Variable<EClassifier, EParameter> iterator:callExp.getIterator())
+		{
+			pivotIteratorExp.getOwnedIterators().add((org.eclipse.ocl.pivot.Variable) doProcess(iterator));
+		}
+
+		return pivotIteratorExp;
+	}
+	@Override
+	public Object visitVariable(Variable<EClassifier, EParameter> variable) {
+		org.eclipse.ocl.pivot.Variable pivotVariable = qvto.createVariable();
+		pivotVariable.setName(variable.getName());
+		//pivotVariable.setType();
+		return pivotVariable;
+	}
+	@Override
+	public Object visitPropertyCallExp(PropertyCallExp<EClassifier, EStructuralFeature> callExp) {
+		org.eclipse.ocl.pivot.PropertyCallExp pivotPropertyCallExp = qvto.createPropertyCallExp();
+		if(callExp.getSource()!=null)
+		{
+			pivotPropertyCallExp.setOwnedSource((org.eclipse.ocl.pivot.OCLExpression) doProcess(callExp.getSource()));
+		}
+		return pivotPropertyCallExp;
+	}
+
 	@Override
 	public Object visitOperationCallExp(OperationCallExp<EClassifier, EOperation> callExp) {
-		//org.eclipse.ocl.pivot.OperationCallExp value = PivotFactory.eINSTANCE.createOperationCallExp();
-		//org.eclipse.ocl.pivot.ExpressionInOCL pivotOCLExpression =  qvto.createOperationCallExp(callExp.toString());
-		//Logger.getLogger().log(Logger.INFO,"Pivot based expression: " + pivotOCLExpression, pivotOCLExpression);
-				OCLExpression<EClassifier> source = callExp.getSource();
-		        if (source != null) {
-		        	doProcess(source); //FIXME create visitVariableExp() for this
-		        }
-		        
-		        for (OCLExpression<EClassifier> exp : callExp.getArgument()) {
-		        	doProcess(source);
-		        }
-		        EOperation referredOperation = callExp.getReferredOperation(); //FIXME Now convert this operation to pivot
-		        Logger.getLogger().log(Logger.INFO,"Referred operation: " + referredOperation, referredOperation);
-		        if (referredOperation instanceof org.eclipse.ocl.utilities.Visitable) {
-		        	// TODO -
-		        	// Should not visit referenced operation, as thesemight com from different top container (Module)
-		        	// Should strictly traverse on containment basis, no need to track processed nodes
-		            //doProcess((Visitable) referredOperation, callExp);
-		        }
-		        // FIXME: Should return pivot OperationCallExp
-		        return null;
+		org.eclipse.ocl.pivot.OperationCallExp value = qvto.createOperationCallExp();
+		OCLExpression<EClassifier> source = callExp.getSource();
+		if (source != null) {
+
+			Object obj=doProcess(source);
+			if(obj instanceof org.eclipse.ocl.pivot.OCLExpression)
+			{
+				value.setOwnedSource((org.eclipse.ocl.pivot.OCLExpression)obj );
+			}
+		}
+
+		for (OCLExpression<EClassifier> exp : callExp.getArgument()) {
+			doProcess(exp);
+		}
+		EOperation referredOperation = callExp.getReferredOperation(); //FIXME Now convert this operation to pivot
+		Logger.getLogger().log(Logger.INFO,"Referred operation: " + referredOperation, referredOperation);
+		if (referredOperation instanceof org.eclipse.ocl.utilities.Visitable) {
+			// TODO -
+			// Should not visit referenced operation, as these might come from different top container (Module)
+			// Should strictly traverse on containment basis, no need to track processed nodes
+			//doProcess((Visitable) referredOperation, callExp);
+		}
+		// FIXME: Should return pivot OperationCallExp
+		return value;
 	}
-	
+
 	@Override
-    public Object visitVariableExp(VariableExp<EClassifier, EParameter> v) {
+	public Object visitVariableExp(VariableExp<EClassifier, EParameter> v) {
+
+		org.eclipse.ocl.pivot.VariableExp variableExp= qvto.createVariableExp();
+
 		Logger.getLogger().log(Logger.INFO, "Visiting Variable Exp => "+v, v);
-		QvtOperationalEvaluationEnv evalEnv = getOperationalEvaluationEnv();		
+
+		QvtOperationalEvaluationEnv evalEnv = getOperationalEvaluationEnv();
+
 		Variable<EClassifier, EParameter> vd = v.getReferredVariable();
 		String varName = vd.getName();
+		variableExp.setName(varName);
 		Logger.getLogger().log(Logger.INFO, "Variable name => "+varName, varName);
 		Object value = evalEnv.getValueOf(varName);
+
 		Logger.getLogger().log(Logger.INFO, "Variable value => "+value, value);
 		EClassifier variableType = v.getType();
+
+
+		variableExp.setReferredVariable((org.eclipse.ocl.pivot.VariableDeclaration) doProcess(v.getReferredVariable()));
 		Logger.getLogger().log(Logger.INFO, "Variable type => "+variableType, variableType);
-		
+
 		if(QvtOperationalEnv.THIS.equals(varName)) {
 			EClassifier varType = v.getType();
 			if(varType instanceof Module) {
@@ -106,36 +189,82 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 			OperationalTransformation transformation = (OperationalTransformation) vd.eContainer();
 			TransformationInstance transformationInstance = (TransformationInstance)evalEnv.getThisOfType(transformation);
 			assert transformationInstance != null;
-			
+
 			ModelInstance model = transformationInstance.getModel((ModelParameter)vd);
 			assert model != null;			
 			return model;
 		}
-		
-		return value;
-	}
 
-	public Object visitMappingCallExp(MappingCallExp mappingCallExp) {
-		// visitOperationCallExp(mappingCallExp);
-		return null;
+		return variableExp;
+	}
+	@Override
+	public Object visitMappingBody(MappingBody mappingBody) {
+		org.eclipse.qvto.examples.pivot.qvtoperational.MappingBody pivotMappingBody = qvto.createMappingBody();
+
+		for(org.eclipse.ocl.ecore.OCLExpression exp:mappingBody.getContent())
+		{
+			Object obj=doProcess(exp);
+			if(obj!=null)
+			{
+				if(obj instanceof org.eclipse.ocl.pivot.OCLExpression)
+				{
+					pivotMappingBody.getContent().add((org.eclipse.ocl.pivot.OCLExpression) obj);
+				}
+			}
+		}
+		return pivotMappingBody;
+
+	}
+	@Override
+	public Object visitObjectExp(ObjectExp objectExp) {
+		org.eclipse.qvto.examples.pivot.qvtoperational.ObjectExp pivotObjectExp = qvto.createObjectExp();
+		doProcess(objectExp.getBody());
+		return pivotObjectExp;
+	}
+	@Override
+	public Object visitAssignExp(AssignExp assignExp) {
+		org.eclipse.qvto.examples.pivot.imperativeocl.AssignExp pivotAssignExp = qvto.createAssignExpOCL();
+
+		if(assignExp.getLeft()!=null)
+		{
+			pivotAssignExp.setLeft((org.eclipse.ocl.pivot.OCLExpression) doProcess(assignExp.getLeft()));
+		}
+		if(assignExp.getValue()!=null)
+		{
+			for(org.eclipse.ocl.ecore.OCLExpression exp:assignExp.getValue())
+			{
+				Object obj=doProcess(exp);
+				if(obj instanceof org.eclipse.ocl.pivot.OCLExpression)
+				{
+					pivotAssignExp.getValue().add((org.eclipse.ocl.pivot.OCLExpression)obj );
+				}
+			}
+
+		}
+
+		return pivotAssignExp;
 	}
 
 	@SuppressWarnings("restriction")
 	@Override
 	public Object visitMappingOperation(MappingOperation mappingOperation) {
+
 		org.eclipse.qvto.examples.pivot.qvtoperational.MappingOperation pivotOperation = qvto
 				.createMappingOperation(mappingOperation);
+
+
 		Logger.getLogger().log(Logger.INFO, "Mapping body of -> "+mappingOperation.getName(), mappingOperation);
 		visitImperativeOperation(mappingOperation);
+		pivotOperation.setBody((org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody) doProcess(mappingOperation.getBody()));
 		// ====== Mapping the body for Mapping operation
 		for (OCLExpression<EClassifier> exp : mappingOperation.getWhen()) {
 			Logger.getLogger().log(Logger.INFO, "Mapping When of => "+mappingOperation.getName()+" => "+exp, exp);
-			exp.accept(this);
+			pivotOperation.setWhen((org.eclipse.ocl.pivot.OCLExpression) doProcess(exp));
 		}
 		if (mappingOperation.getWhere() instanceof BlockExp) {
 			for (OCLExpression<EClassifier> exp : ((BlockExp) mappingOperation.getWhere()).getBody()) {
 				Logger.getLogger().log(Logger.INFO, "Mapping Where of => "+mappingOperation.getName()+" => "+exp, exp);
-				exp.accept(this);
+				doProcess(exp);
 			}
 		}
 		// ============================
@@ -157,23 +286,44 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 
 	@Override
 	public Object visitOperationBody(OperationBody operationBody) {
-		org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody pivotOperationBody = QVTOperationalFactory.eINSTANCE
-				.createOperationBody();
-		for (OCLExpression<EClassifier> exp : operationBody.getContent()) {
-			pivotOperationBody.getContent();
-			exp.accept(this);
+		org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody pivotOperationBody = qvto.createOperationBody();
+		for(org.eclipse.ocl.ecore.OCLExpression exp:operationBody.getContent())
+		{
+			Object obj=doProcess(exp);
+			if(obj!=null)
+			{
+				pivotOperationBody.getContent().add((org.eclipse.ocl.pivot.OCLExpression) obj);
+			}
 		}
-		return null;
+		return pivotOperationBody;
 	}
+	@Override
+	public Object visitCollectionLiteralExp(CollectionLiteralExp<EClassifier> cl) {
 
+		org.eclipse.ocl.pivot.CollectionLiteralExp pivotCollectionLiteralExp = qvto.createCollectionLiteralExp();
+
+		for(CollectionLiteralPart<EClassifier> parts:cl.getPart())
+		{
+			Object obj= doProcess(parts);
+			if(obj!=null)
+			{
+				pivotCollectionLiteralExp.getOwnedParts().add((org.eclipse.ocl.pivot.CollectionLiteralPart) obj);
+			}
+		}
+		if(cl.getKind().getName().equalsIgnoreCase("Set"))
+		{
+			pivotCollectionLiteralExp.setKind(org.eclipse.ocl.pivot.CollectionKind.SET);
+		}
+		return pivotCollectionLiteralExp;
+
+	}
 	@Override
 	public Object visitModule(Module module) {
 		java.util.@NonNull List<Operation> pivotOperations = pivotOperationalTransformation.getOwnedOperations();
 
 		EList<EOperation> list = module.getEOperations();
 		for (EOperation eOperation : list) {
-
-			Operation tempOperation = (Operation) ((ImperativeOperation) eOperation).accept(this);
+			Operation tempOperation =  (Operation) doProcess((ImperativeOperation) eOperation);
 			//((ImperativeOperation)eOperation).getBody().accept(this);
 			// Adding by reference into pivot OperationalTransformation
 			pivotOperations.add(tempOperation);
@@ -182,5 +332,10 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 		// QVTOperationalToStringVisitor(new StringBuilder()));
 		return pivotOperationalTransformation;
 	}
-
+	@Override
+	public Object visitConstructor(Constructor constructor)
+	{
+		org.eclipse.qvto.examples.pivot.qvtoperational.Constructor pivotConstructor= qvto.createConstructor(constructor);
+		return pivotConstructor;	
+	}
 }
