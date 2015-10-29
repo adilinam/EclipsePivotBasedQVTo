@@ -1,3 +1,7 @@
+/**
+ * @author AbdulAli
+ * @since 10 October 2015
+ */
 package org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util;
 
 import java.io.IOException;
@@ -32,11 +36,9 @@ public class FileOperationsUtil {
 		return resource;
 	}
 	
-	public static void writeTraditionalQVTOperationToXML(OperationalTransformation transformation, String filename) throws IOException{
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",
-				new XMIResourceFactoryImpl());
-		Resource resource = resourceSet.createResource(URI.createFileURI(filename+".xmi"));
+	public static void writeTraditionalQVTOperationToXML(QVToFacade qvto, OperationalTransformation transformation, String filename) throws IOException{
+		ResourceSet resourceSet = qvto.getResourceSet();
+		Resource resource = resourceSet.createResource(URI.createFileURI(filename+".qvtoas"));
 		// add the root object to the resource 
 		resource.getContents().add(transformation); 
 		// serialize resource you can specify also serialization 
@@ -51,6 +53,5 @@ public class FileOperationsUtil {
 		// serialize resource you can specify also serialization 
 		resource.save(null);
 	}
-	
-	
+
 }

@@ -1,3 +1,10 @@
+/**
+ * 
+ * @author QuestLab
+ * @author AbdulAli
+ * @author FitashHaq
+ * @since 10 October 2015
+ */
 package org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util;
 
 import java.util.List;
@@ -15,8 +22,10 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationBody;
 import org.eclipse.m2m.internal.qvt.oml.expressions.impl.ConstructorImpl;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.AssignExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.OperationCallExp;
+import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.pivot.ExpressionInOCL;
 import org.eclipse.ocl.pivot.IteratorExp;
 import org.eclipse.ocl.pivot.Parameter;
@@ -136,9 +145,19 @@ public class QVToFacade extends OCLInternal {
 
 	}
 
-	public VariableExp createVariableExp()
+	public VariableExp createVariableExp(org.eclipse.ocl.expressions.VariableExp<EClassifier, EParameter> v)
 	{
-		return PivotFactory.eINSTANCE.createVariableExp();
+		org.eclipse.ocl.pivot.VariableExp pivotVariableExp = PivotFactory.eINSTANCE.createVariableExp();
+		Variable<EClassifier, EParameter> vd = v.getReferredVariable();
+		String varName = vd.getName();
+		pivotVariableExp.setName(varName);
+		Logger.getLogger().log(Logger.INFO, "Variable name => "+varName, varName);
+		
+		EClassifier variableType = v.getType();
+		pivotVariableExp.setType(metamodelManager.getASOfEcore(Type.class, v.getType()));
+		Logger.getLogger().log(Logger.INFO, "Variable type => "+variableType, variableType);
+		
+		return pivotVariableExp;
 	}
 
 	public org.eclipse.ocl.pivot.OperationCallExp createOperationCallExp()
@@ -156,9 +175,11 @@ public class QVToFacade extends OCLInternal {
 		return PivotFactory.eINSTANCE.createVariable();
 	}
 	
-	public IteratorExp createIteratorExp()
+	public IteratorExp createIteratorExp(org.eclipse.ocl.expressions.IteratorExp<EClassifier, EParameter> callExp)
 	{
-		return PivotFactory.eINSTANCE.createIteratorExp();
+		org.eclipse.ocl.pivot.IteratorExp pivotIteratorExp = PivotFactory.eINSTANCE.createIteratorExp();
+		pivotIteratorExp.setType(metamodelManager.getASOfEcore(Type.class, callExp.getType()));
+		return pivotIteratorExp;
 	}
 	
 	public OperationalTransformation createOperationalTransformation()
@@ -171,14 +192,18 @@ public class QVToFacade extends OCLInternal {
 		return QVTOperationalFactory.eINSTANCE.createMappingBody();
 	}
 	
-	public ObjectExp createObjectExp()
+	public ObjectExp createObjectExp(org.eclipse.m2m.internal.qvt.oml.expressions.ObjectExp objectExp)
 	{
-		return QVTOperationalFactory.eINSTANCE.createObjectExp();
+		org.eclipse.qvto.examples.pivot.qvtoperational.ObjectExp pivotObjectExp = QVTOperationalFactory.eINSTANCE.createObjectExp();
+		pivotObjectExp.setType(metamodelManager.getASOfEcore(Type.class, objectExp.getType()));
+		return pivotObjectExp;
 	}
 	
-	public org.eclipse.qvto.examples.pivot.imperativeocl.AssignExp createAssignExpOCL()
+	public org.eclipse.qvto.examples.pivot.imperativeocl.AssignExp createAssignExpOCL(AssignExp assignExp)
 	{
-		return ImperativeOCLFactory.eINSTANCE.createAssignExp();
+		org.eclipse.qvto.examples.pivot.imperativeocl.AssignExp pivotAssignExp = ImperativeOCLFactory.eINSTANCE.createAssignExp();
+		//pivotAssignExp.setType(metamodelManager.getASOfEcore(Type.class, assignExp.getType())); // FIXME Bug 479445
+		return pivotAssignExp;
 	}
 	
 	public org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody createOperationBody()
