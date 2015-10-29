@@ -61,11 +61,11 @@ import org.eclipse.qvto.examples.pivot.qvtoperational.QVTOperationalFactory;
 import org.eclipse.swt.internal.C;
 
 public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluationVisitorImpl
-		implements TraditionalToPivotMappingVisitor {
-	
+implements TraditionalToPivotMappingVisitor {
+
 	protected Object doProcess(Visitable e) {
-            return e.accept(this);
-    }
+		return e.accept(this);
+	}
 
 	private QVToFacade qvto;
 	private org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation pivotOperationalTransformation;
@@ -138,7 +138,11 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 		}
 
 		for (OCLExpression<EClassifier> exp : callExp.getArgument()) {
-			doProcess(exp);
+			Object obj= doProcess(exp);
+			if(obj instanceof org.eclipse.ocl.pivot.OCLExpression)
+			{
+				value.getOwnedArguments().add((org.eclipse.ocl.pivot.OCLExpression)obj );
+			}
 		}
 		EOperation referredOperation = callExp.getReferredOperation(); //FIXME Now convert this operation to pivot
 		Logger.getLogger().log(Logger.INFO,"Referred operation: " + referredOperation, referredOperation);
@@ -163,13 +167,13 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 
 		Variable<EClassifier, EParameter> vd = v.getReferredVariable();
 		String varName = vd.getName();
-		
+
 		Object value = evalEnv.getValueOf(varName);
 
 		Logger.getLogger().log(Logger.INFO, "Variable value => "+value, value);
 
 		variableExp.setReferredVariable((org.eclipse.ocl.pivot.VariableDeclaration) doProcess(v.getReferredVariable()));
-		
+
 
 		if(QvtOperationalEnv.THIS.equals(varName)) {
 			EClassifier varType = v.getType();
@@ -266,7 +270,7 @@ public class TraditionalToPivotMappingVisitorImpl extends QvtOperationalEvaluati
 		// ============================
 		return pivotOperation;
 	}
-	
+
 	@Override
 	public Object visitEntryOperation(EntryOperation entryOperation) {
 		org.eclipse.qvto.examples.pivot.qvtoperational.EntryOperation pivotEntryOperation = qvto
