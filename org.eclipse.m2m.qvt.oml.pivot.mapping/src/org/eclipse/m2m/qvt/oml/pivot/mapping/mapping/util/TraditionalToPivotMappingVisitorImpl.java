@@ -320,7 +320,6 @@ implements TraditionalToPivotMappingVisitor {
 		EList<EOperation> list = module.getEOperations();
 		for (EOperation eOperation : list) {
 			Operation tempOperation =  (Operation) doProcess((ImperativeOperation) eOperation);
-			//((ImperativeOperation)eOperation).getBody().accept(this);
 			// Adding by reference into pivot OperationalTransformation
 			pivotOperations.add(tempOperation);
 		}

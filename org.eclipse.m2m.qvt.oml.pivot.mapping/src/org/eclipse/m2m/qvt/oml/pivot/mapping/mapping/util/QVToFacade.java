@@ -156,7 +156,7 @@ public class QVToFacade extends OCLInternal {
 		Logger.getLogger().log(Logger.INFO, "Variable name => "+varName, varName);
 		
 		EClassifier variableType = v.getType();
-		pivotVariableExp.setType(createPivotType(v.getType()));
+		pivotVariableExp.setType(createPivotType(v.getType()));  //FIXME: Can not convert all types like OperationaTransformationImp
 		Logger.getLogger().log(Logger.INFO, "Variable type => "+variableType, variableType);
 		
 		return pivotVariableExp;
@@ -186,7 +186,7 @@ public class QVToFacade extends OCLInternal {
 	public IteratorExp createIteratorExp(org.eclipse.ocl.expressions.IteratorExp<EClassifier, EParameter> callExp)
 	{
 		org.eclipse.ocl.pivot.IteratorExp pivotIteratorExp = PivotFactory.eINSTANCE.createIteratorExp();
-		pivotIteratorExp.setType(createPivotType(callExp.getType()));
+		pivotIteratorExp.setType(createPivotType(callExp.getType())); //FIXME: Can not convert SequenceTypeImpl,OrderedSetTypeImpl 
 		return pivotIteratorExp;
 	}
 	
@@ -221,7 +221,7 @@ public class QVToFacade extends OCLInternal {
 	org.eclipse.ocl.pivot.CollectionLiteralExp createCollectionLiteralExp(CollectionLiteralExp<EClassifier> cl)
 	{
 		org.eclipse.ocl.pivot.CollectionLiteralExp collectionLiteralExp = PivotFactory.eINSTANCE.createCollectionLiteralExp();
-		collectionLiteralExp.setType(createPivotType(cl.getType()));
+		collectionLiteralExp.setType(createPivotType(cl.getType())); // FIXME: Can not convert type
 		return collectionLiteralExp;
 	}
 	public Constructor createConstructor(@NonNull EOperation traditionalEntryOperation) 
@@ -232,11 +232,10 @@ public class QVToFacade extends OCLInternal {
 		((PivotObjectImpl)pivotConstructor).setESObject(traditionalEntryOperation);
 		return pivotConstructor;
 	}
-	//
+	
 	// public Object createVisitOperationBody(OperationBody operationBody) {
-	// // TODO Auto-generated method stub
 	// org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody
-	// pivotOperationBody=
+	// }
 	// 
 
 	/*public ExpressionInOCL createOperationCallExp(@NonNull String callExp) {
