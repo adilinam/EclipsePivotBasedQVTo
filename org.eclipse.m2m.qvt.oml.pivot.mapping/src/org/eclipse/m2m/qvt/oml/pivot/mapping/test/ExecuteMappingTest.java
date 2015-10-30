@@ -68,23 +68,6 @@ public class ExecuteMappingTest extends TestCase {
 
 	/**
 	 * 
-	 * @return
-	 * @throws IOException
-	 *             used to parse XMI meta-model instance
-	 */
-	protected XMIResource loadResources() throws IOException {
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-		EPackage.Registry.INSTANCE.put(ExpressionsPackage.eNS_URI, ExpressionsPackage.eINSTANCE);
-		EPackage.Registry.INSTANCE.put(QVTOperationalPackage.eNS_URI, QVTOperationalPackage.eINSTANCE);
-
-		XMIResource resource = new XMIResourceImpl(URI.createURI("transformation.xmi"));
-		resource.load(null);
-
-		return resource;
-	}
-
-	/**
-	 * 
 	 * programmatic execution for collecting arguments
 	 */
 	protected void collectMappingArguments() {
