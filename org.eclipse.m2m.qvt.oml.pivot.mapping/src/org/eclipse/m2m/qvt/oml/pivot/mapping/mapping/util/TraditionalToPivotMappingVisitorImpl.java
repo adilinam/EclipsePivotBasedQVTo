@@ -127,7 +127,7 @@ implements TraditionalToPivotMappingVisitor {
 
 	@Override
 	public Object visitOperationCallExp(OperationCallExp<EClassifier, EOperation> callExp) {
-		org.eclipse.ocl.pivot.OperationCallExp value = qvto.createOperationCallExp();
+		org.eclipse.ocl.pivot.OperationCallExp value = qvto.createOperationCallExp(callExp);
 		OCLExpression<EClassifier> source = callExp.getSource();
 		if (source != null) {
 
@@ -296,7 +296,7 @@ implements TraditionalToPivotMappingVisitor {
 	@Override
 	public Object visitCollectionLiteralExp(CollectionLiteralExp<EClassifier> cl) {
 
-		org.eclipse.ocl.pivot.CollectionLiteralExp pivotCollectionLiteralExp = qvto.createCollectionLiteralExp();
+		org.eclipse.ocl.pivot.CollectionLiteralExp pivotCollectionLiteralExp = qvto.createCollectionLiteralExp(cl);
 
 		for(CollectionLiteralPart<EClassifier> parts:cl.getPart())
 		{
@@ -326,6 +326,7 @@ implements TraditionalToPivotMappingVisitor {
 		}
 		// pivotOperationalTransformation.accept(new
 		// QVTOperationalToStringVisitor(new StringBuilder()));
+		System.out.println("Mapping execution completed");
 		return pivotOperationalTransformation;
 	}
 	@Override

@@ -23,6 +23,7 @@ import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationBody;
 import org.eclipse.m2m.internal.qvt.oml.expressions.impl.ConstructorImpl;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.AssignExp;
+import org.eclipse.ocl.expressions.CollectionLiteralExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.OperationCallExp;
 import org.eclipse.ocl.expressions.Variable;
@@ -161,9 +162,11 @@ public class QVToFacade extends OCLInternal {
 		return pivotVariableExp;
 	}
 
-	public org.eclipse.ocl.pivot.OperationCallExp createOperationCallExp()
+	public org.eclipse.ocl.pivot.OperationCallExp createOperationCallExp(OperationCallExp<EClassifier, EOperation> callExp)
 	{
-		return PivotFactory.eINSTANCE.createOperationCallExp();
+		org.eclipse.ocl.pivot.OperationCallExp pivotOperationalCallExp = PivotFactory.eINSTANCE.createOperationCallExp();
+		//pivotOperationalCallExp.setType(createPivotType(callExp.getType())); //FIXME Bug 479445
+		return pivotOperationalCallExp;
 	}
 	
 	public PropertyCallExp createPropertyCallExp()
@@ -215,9 +218,11 @@ public class QVToFacade extends OCLInternal {
 	{
 		return QVTOperationalFactory.eINSTANCE.createOperationBody();
 	}
-	org.eclipse.ocl.pivot.CollectionLiteralExp createCollectionLiteralExp()
+	org.eclipse.ocl.pivot.CollectionLiteralExp createCollectionLiteralExp(CollectionLiteralExp<EClassifier> cl)
 	{
-		return PivotFactory.eINSTANCE.createCollectionLiteralExp();
+		org.eclipse.ocl.pivot.CollectionLiteralExp collectionLiteralExp = PivotFactory.eINSTANCE.createCollectionLiteralExp();
+		collectionLiteralExp.setType(createPivotType(cl.getType()));
+		return collectionLiteralExp;
 	}
 	public Constructor createConstructor(@NonNull EOperation traditionalEntryOperation) 
 	{
