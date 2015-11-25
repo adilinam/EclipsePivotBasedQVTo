@@ -1,5 +1,7 @@
 package org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util;
 
+import java.util.HashMap;
+
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -36,4 +38,8 @@ public interface TraditionalToPivotMappingVisitor extends QvtOperationalEvaluati
 	public Object visitIteratorExp(IteratorExp<EClassifier, EParameter> callExp);
 	
 	public Object visitConstructor(Constructor constructor);
+	
+	//***********************************************************************************************************************
+	
+
 }
