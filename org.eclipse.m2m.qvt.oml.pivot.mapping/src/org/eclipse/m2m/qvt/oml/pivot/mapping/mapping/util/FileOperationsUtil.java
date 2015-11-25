@@ -1,7 +1,3 @@
-/**
- * @author AbdulAli
- * @since 10 October 2015
- */
 package org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util;
 
 import java.io.IOException;

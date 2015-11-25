@@ -3,6 +3,8 @@
  * @author QuestLab
  * @author AbdulAli
  * @author FitashHaq
+ * @author RazaAshfaq
+ * @author AdilInam
  * @since 10 October 2015
  */
 package org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util;
