@@ -3,6 +3,8 @@
  * @author QuestLab
  * @author AbdulAli
  * @author FitashHaq
+ * @author RazaAshfaq
+ * @author AdilInam
  * @since 10 October 2015
  */
 package org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util;
@@ -27,9 +29,11 @@ import org.eclipse.ocl.expressions.CollectionLiteralExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.OperationCallExp;
 import org.eclipse.ocl.expressions.Variable;
+import org.eclipse.ocl.pivot.Class;
 import org.eclipse.ocl.pivot.Element;
 import org.eclipse.ocl.pivot.ExpressionInOCL;
 import org.eclipse.ocl.pivot.IteratorExp;
+import org.eclipse.ocl.pivot.Operation;
 import org.eclipse.ocl.pivot.Parameter;
 import org.eclipse.ocl.pivot.PivotFactory;
 import org.eclipse.ocl.pivot.PropertyCallExp;
@@ -46,6 +50,7 @@ import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.ocl.pivot.utilities.ParserException;
 import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeOCLFactory;
 import org.eclipse.qvto.examples.pivot.qvtoperational.Constructor;
+import org.eclipse.qvto.examples.pivot.qvtoperational.ConstructorBody;
 import org.eclipse.qvto.examples.pivot.qvtoperational.EntryOperation;
 import org.eclipse.qvto.examples.pivot.qvtoperational.Helper;
 import org.eclipse.qvto.examples.pivot.qvtoperational.ImperativeOperation;
@@ -173,9 +178,12 @@ public class QVToFacade extends OCLInternal {
 		return PivotFactory.eINSTANCE.createPropertyCallExp();
 	}
 	
-	public org.eclipse.ocl.pivot.Variable createVariable()
+	public org.eclipse.ocl.pivot.Variable createVariable(Variable<EClassifier, EParameter> variable)
 	{
-		return PivotFactory.eINSTANCE.createVariable();
+		org.eclipse.ocl.pivot.Variable pivotVariable = PivotFactory.eINSTANCE.createVariable();
+		pivotVariable.setName(variable.getName());
+		
+		return pivotVariable;
 	}
 	
 	public <T extends Element> T createPivotType(EClassifier traditionalType){
@@ -231,22 +239,16 @@ public class QVToFacade extends OCLInternal {
 		((PivotObjectImpl)pivotConstructor).setESObject(traditionalEntryOperation);
 		return pivotConstructor;
 	}
-	
-	// public Object createVisitOperationBody(OperationBody operationBody) {
-	// org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody
-	// }
-	// 
 
-	/*public ExpressionInOCL createOperationCallExp(@NonNull String callExp) {
-		org.eclipse.ocl.pivot.ExpressionInOCL expression = null;
-		try {
-			//expression = ocl.createQuery(EXTLibraryPackage.Literals.LIBRARY,callExp);
-			expression = ocl.createQuery(SimpleumlPackage.Literals.PACKAGE,"package2schema(root)->union(root.getSubpackages()->collect(p | package2schemas(p))->asOrderedSet())->asOrderedSet()");
-		} catch (ParserException e) {
-			Logger.getLogger().log(Logger.SEVERE, callExp + " cannot be parsed", callExp);
-			e.printStackTrace();
-		}
-		return expression;
-	}*/
+	public ConstructorBody createConstructorBody() {
+		// TODO Auto-generated method stub
+		return QVTOperationalFactory.eINSTANCE.createConstructorBody();
+	}
+
+	public Operation createOperation() {
+		// TODO Auto-generated method stub
+		return PivotFactory.eINSTANCE.createOperation();
+		
+	}
 
 }

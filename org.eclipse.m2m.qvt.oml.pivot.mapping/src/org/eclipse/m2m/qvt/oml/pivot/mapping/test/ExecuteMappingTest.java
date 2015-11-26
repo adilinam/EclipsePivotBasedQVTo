@@ -1,7 +1,4 @@
-/**
- * @author AbdulAli
- * @since 1 September 2015
- */
+
 package org.eclipse.m2m.qvt.oml.pivot.mapping.test;
 
 import java.io.IOException;
@@ -28,6 +25,8 @@ import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.FileOperationsUtil;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.QVToFacade;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMappingVisitor;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMappingVisitorImpl;
+import org.eclipse.m2m.qvt.oml.pivot.mapping.references.util.TraditionalToPivotReferencesMappingVisitor;
+import org.eclipse.m2m.qvt.oml.pivot.mapping.references.util.TraditionalToPivotReferencesMappingVisitorImpl;
 import org.eclipse.ocl.pivot.PivotTables;
 import org.eclipse.ocl.utilities.Visitor;
 import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
@@ -43,7 +42,7 @@ import simpleuml.SimpleumlPackage;
 public class ExecuteMappingTest extends TestCase {
 
 	private static final String qvtoFileUri = System.getProperty("user.dir")+"/Example/Simpleuml_To_Rdb.qvto";
-	 private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
+	private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
 	@Test
 	public void testMapping() {
 		collectMappingArguments();
@@ -56,6 +55,16 @@ public class ExecuteMappingTest extends TestCase {
 
 			org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation pivotOperationalTransformation = (OperationalTransformation) QvtOperationalMappingArgumentsContainer
 					.getInstance().getOperationalTransformation().accept(traditionalVisitor);
+			
+			// References Second Pass starts Here
+			TraditionalToPivotReferencesMappingVisitor referenceMappingVisitor = new TraditionalToPivotReferencesMappingVisitorImpl(qvto,
+					QvtOperationalMappingArgumentsContainer.getInstance().getQvtOperationalFileEnv(),
+					QvtOperationalMappingArgumentsContainer.getInstance().getQvtOperationalEvaluationEnv());
+
+			 QvtOperationalMappingArgumentsContainer
+					.getInstance().getOperationalTransformation().accept(referenceMappingVisitor);
+
+			
 			// Convert Ecore based Transformation to XML
 			FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, QvtOperationalMappingArgumentsContainer.getInstance().getOperationalTransformation(), "traditionalBasedTransformation");
 			// Convert Pivot based Transformation to XML

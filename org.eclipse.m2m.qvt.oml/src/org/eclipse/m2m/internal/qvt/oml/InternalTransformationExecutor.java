@@ -13,6 +13,7 @@ package org.eclipse.m2m.internal.qvt.oml;
 
 import static org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin.isSuccess;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
