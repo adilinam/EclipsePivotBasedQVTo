@@ -121,7 +121,6 @@ public class QVToFacade extends OCLInternal {
 		return pivotParameter;
 	}
 
-
 	public @NonNull MappingOperation createMappingOperation(@NonNull EOperation traditionalMappingOperation) {
 		MappingOperation pivotMappingOperation = QVTOperationalFactory.eINSTANCE.createMappingOperation();
 		mapParamters(traditionalMappingOperation, pivotMappingOperation);
