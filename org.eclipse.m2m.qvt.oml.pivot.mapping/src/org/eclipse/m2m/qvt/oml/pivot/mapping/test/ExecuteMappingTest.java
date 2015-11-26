@@ -55,16 +55,14 @@ public class ExecuteMappingTest extends TestCase {
 
 			org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation pivotOperationalTransformation = (OperationalTransformation) QvtOperationalMappingArgumentsContainer
 					.getInstance().getOperationalTransformation().accept(traditionalVisitor);
-
-			
 			
 			// References Second Pass starts Here
-			TraditionalToPivotReferencesMappingVisitor secondPassVisitor = new TraditionalToPivotReferencesMappingVisitorImpl(qvto,
+			TraditionalToPivotReferencesMappingVisitor referenceMappingVisitor = new TraditionalToPivotReferencesMappingVisitorImpl(qvto,
 					QvtOperationalMappingArgumentsContainer.getInstance().getQvtOperationalFileEnv(),
 					QvtOperationalMappingArgumentsContainer.getInstance().getQvtOperationalEvaluationEnv());
 
 			 QvtOperationalMappingArgumentsContainer
-					.getInstance().getOperationalTransformation().accept(secondPassVisitor);
+					.getInstance().getOperationalTransformation().accept(referenceMappingVisitor);
 
 			
 			// Convert Ecore based Transformation to XML
