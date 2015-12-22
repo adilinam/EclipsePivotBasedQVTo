@@ -11,11 +11,8 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.m2m.internal.qvt.oml.expressions.ExpressionsPackage;
 import org.eclipse.m2m.qvt.oml.BasicModelExtent;
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
@@ -23,15 +20,7 @@ import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.eclipse.m2m.qvt.oml.mapping.pivot.test.QvtOperationalMappingArgumentsContainer;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.FileOperationsUtil;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.QVToFacade;
-import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMappingVisitor;
-import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMappingVisitorImpl;
-import org.eclipse.m2m.qvt.oml.pivot.mapping.references.util.TraditionalToPivotReferencesMappingVisitor;
-import org.eclipse.m2m.qvt.oml.pivot.mapping.references.util.TraditionalToPivotReferencesMappingVisitorImpl;
-import org.eclipse.ocl.pivot.PivotTables;
-import org.eclipse.ocl.utilities.Visitor;
-import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
-import org.eclipse.qvto.examples.pivot.qvtoperational.QVTOperationalPackage;
-import org.eclipse.qvto.examples.pivot.qvtoperational.utilities.QVTOperationalToStringVisitor;
+import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMapping;
 import org.junit.Test;
 
 import junit.framework.TestCase;
@@ -39,40 +28,33 @@ import rdb.RdbPackage;
 import simpleuml.SimpleumlPackage;
 
 
+@SuppressWarnings("restriction")
 public class ExecuteMappingTest extends TestCase {
 
 	private static final String qvtoFileUri = System.getProperty("user.dir")+"/Example/Simpleuml_To_Rdb.qvto";
 	private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
 	@Test
-	public void testMapping() {
+	public void testMapping() throws IOException {
+		TraditionalToPivotMapping.CREATION.setState(true);
 		collectMappingArguments();
-		try {
+//		try {
 			QVToFacade qvto = QVToFacade.newInstance();
 			// create Visitor for traditional object mapping
-			TraditionalToPivotMappingVisitor traditionalVisitor = new TraditionalToPivotMappingVisitorImpl(qvto, 
-					QvtOperationalMappingArgumentsContainer.getInstance().getQvtOperationalFileEnv(),
-					QvtOperationalMappingArgumentsContainer.getInstance().getQvtOperationalEvaluationEnv());
+			TraditionalToPivotMapping converter = new TraditionalToPivotMapping(qvto);
 
-			org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation pivotOperationalTransformation = (OperationalTransformation) QvtOperationalMappingArgumentsContainer
-					.getInstance().getOperationalTransformation().accept(traditionalVisitor);
-			
-			// References Second Pass starts Here
-			TraditionalToPivotReferencesMappingVisitor referenceMappingVisitor = new TraditionalToPivotReferencesMappingVisitorImpl(qvto,
-					QvtOperationalMappingArgumentsContainer.getInstance().getQvtOperationalFileEnv(),
-					QvtOperationalMappingArgumentsContainer.getInstance().getQvtOperationalEvaluationEnv());
-
-			 QvtOperationalMappingArgumentsContainer
-					.getInstance().getOperationalTransformation().accept(referenceMappingVisitor);
+			org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation operationalTransformation = QvtOperationalMappingArgumentsContainer
+					.getInstance().getOperationalTransformation();
+			org.eclipse.ocl.pivot.Model pivotOperationalTransformation = converter.convert(operationalTransformation);
 
 			
 			// Convert Ecore based Transformation to XML
-			FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, QvtOperationalMappingArgumentsContainer.getInstance().getOperationalTransformation(), "traditionalBasedTransformation");
+			FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, operationalTransformation, "traditionalAS");
 			// Convert Pivot based Transformation to XML
-			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotBasedTransformation");
+			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotAS");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	/**
