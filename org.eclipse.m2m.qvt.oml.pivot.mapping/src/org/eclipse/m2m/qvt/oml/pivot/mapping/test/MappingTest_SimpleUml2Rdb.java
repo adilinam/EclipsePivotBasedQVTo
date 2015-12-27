@@ -29,7 +29,7 @@ import simpleuml.SimpleumlPackage;
 
 
 @SuppressWarnings("restriction")
-public class ExecuteMappingTest extends TestCase {
+public class MappingTest_SimpleUml2Rdb extends TestCase {
 
 	private static final String qvtoFileUri = System.getProperty("user.dir")+"/Example/Simpleuml_To_Rdb.qvto";
 	private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
