@@ -235,6 +235,7 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 	public Object visitStringLiteralExp(StringLiteralExp<EClassifier> astNode) {
 		org.eclipse.ocl.pivot.StringLiteralExp pivotElement =
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createStringLiteralExp());
+			
 		pivotElement.setStringSymbol(astNode.getStringSymbol());
 		return pivotElement;
 	}

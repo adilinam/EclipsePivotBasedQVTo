@@ -430,7 +430,8 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 
 	@Override
 	public Object visitStringLiteralExp(StringLiteralExp<EClassifier> astNode) {
-		org.eclipse.ocl.pivot.StringLiteralExp pivotElement = (org.eclipse.ocl.pivot.StringLiteralExp)converter.getPivot(astNode);
+		org.eclipse.ocl.pivot.StringLiteralExp pivotElement = 
+				(org.eclipse.ocl.pivot.StringLiteralExp)converter.getPivot(astNode);
 		pivotElement.setType(standardLibrary.getStringType());
 		pivotElement.setIsRequired(true);
 		return pivotElement;
