@@ -65,7 +65,9 @@ EObject, CallOperationAction, SendSignalAction, Constraint> implements QVTOperat
 		}
 
 		public org.eclipse.ocl.pivot.Element defaultCase(EObject astNode) {
+			//System.out.println(astNode);
 //			throw new UnsupportedOperationException("Unsupported " + getClass().getSimpleName() + " for " + ((EObject)astNode).eClass().getName());
+			
 			System.err.println("Unsupported " + getClass().getSimpleName() + " for " + ((EObject)astNode).eClass().getName());
 			return null;
 		}	
@@ -86,12 +88,12 @@ EObject, CallOperationAction, SendSignalAction, Constraint> implements QVTOperat
 		if (astNode == null) {
 			return null;
 		}
-		EObject pivotElement;
+		EObject pivotElement = null;
 		if (astNode instanceof Visitable) {
 			pivotElement = (EObject) ((Visitable)astNode).accept(this);
 		}
 		else {
-			pivotElement = ecoreSwitch.doSwitch(astNode);
+				pivotElement = ecoreSwitch.doSwitch(astNode);
 		}
 		if (astNode.eContainer() == null) {
 			assert pivotElement != null: "No Pivot object for " + TraditionalToPivotMapping.debugId(astNode)

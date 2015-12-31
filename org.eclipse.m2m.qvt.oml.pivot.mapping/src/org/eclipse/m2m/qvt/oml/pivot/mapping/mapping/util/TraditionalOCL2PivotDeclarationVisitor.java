@@ -35,7 +35,11 @@ import org.eclipse.ocl.expressions.TypeExp;
 import org.eclipse.ocl.expressions.UnlimitedNaturalLiteralExp;
 import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.expressions.VariableExp;
+import org.eclipse.ocl.pivot.AssociationClass;
+import org.eclipse.ocl.pivot.OCLExpression;
+import org.eclipse.ocl.pivot.Operation;
 import org.eclipse.ocl.pivot.PivotFactory;
+import org.eclipse.ocl.pivot.Property;
 import org.eclipse.ocl.utilities.ExpressionInOCL;
 
 public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVToVisitorImpl
@@ -48,7 +52,10 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 	public Object visitAssociationClassCallExp(AssociationClassCallExp<EClassifier, EStructuralFeature> astNode) {
 		org.eclipse.ocl.pivot.AssociationClassCallExp pivotElement =
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createAssociationClassCallExp());
-		//...
+		
+		
+	//	pivotElement.setReferredAssociationClass(doProcess(AssociationClass.class, astNode.getReferredAssociationClass()));
+		
 		return pivotElement;
 	}
 
@@ -88,7 +95,7 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 	@Override
 	public Object visitConstraint(Constraint astNode) {
 		org.eclipse.ocl.pivot.Constraint pivotElement = null;
-//FIXME			converter.addCreated(astNode, PivotFactory.eINSTANCE.createConstraint());
+		//FIXME			converter.addCreated(astNode, PivotFactory.eINSTANCE.createConstraint());
 		//...
 		return pivotElement;
 	}
@@ -183,7 +190,13 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 	public Object visitOperationCallExp(OperationCallExp<EClassifier, EOperation> astNode) {
 		org.eclipse.ocl.pivot.OperationCallExp pivotElement =
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createOperationCallExp());
-		pivotElement.setOwnedSource(doProcess(org.eclipse.ocl.pivot.OCLExpression.class, astNode.getSource()));
+//		//FIXME returns null for referredOperation from ecoreSwitch.doSwitch(astNode);
+//	//	Operation operation= doProcess(Operation.class, astNode.getReferredOperation());
+//		if(operation!=null)
+//		{
+//			pivotElement.setReferredOperation(operation);
+//		}
+		pivotElement.setOwnedSource(doProcess(OCLExpression.class, astNode.getSource()));
 		pivotElement.getOwnedArguments().addAll(doProcessAll(org.eclipse.ocl.pivot.OCLExpression.class, astNode.getArgument()));
 		return pivotElement;
 	}
@@ -193,6 +206,12 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 		org.eclipse.ocl.pivot.PropertyCallExp pivotElement =
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createPropertyCallExp());
 		pivotElement.setOwnedSource(doProcess(org.eclipse.ocl.pivot.OCLExpression.class, astNode.getSource()));
+		//FIXME returning null Property from ecoreSwitch.doSwitch
+		Property property=doProcess(Property.class, astNode.getReferredProperty());
+		if(property!=null)
+		{
+			pivotElement.setReferredProperty(property);
+		}
 		return pivotElement;
 	}
 
@@ -256,6 +275,7 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 	public Object visitVariable(Variable<EClassifier, EParameter> astNode) {
 		org.eclipse.ocl.pivot.Variable pivotElement =
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createVariable());
+
 		pivotElement.setName(astNode.getName());		
 		return pivotElement;
 	}
@@ -264,6 +284,9 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 	public Object visitVariableExp(VariableExp<EClassifier, EParameter> astNode) {
 		org.eclipse.ocl.pivot.VariableExp pivotElement =
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createVariableExp());
+
+//		pivotElement.setReferredVariable(doProcess(org.eclipse.ocl.pivot.Variable.class, astNode.getReferredVariable()));
+
 		return pivotElement;
 	}
 }
