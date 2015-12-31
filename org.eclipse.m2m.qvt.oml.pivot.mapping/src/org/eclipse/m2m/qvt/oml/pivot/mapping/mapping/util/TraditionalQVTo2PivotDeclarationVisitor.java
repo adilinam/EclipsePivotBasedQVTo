@@ -2,10 +2,13 @@ package org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.m2m.internal.qvt.oml.cst.IntermediateClassDefCS;
 import org.eclipse.m2m.internal.qvt.oml.expressions.Constructor;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ConstructorBody;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ContextualProperty;
@@ -41,10 +44,12 @@ import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.DictLiteralPart;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.ForExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.ImperativeIterateExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.InstantiationExp;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.LogExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.OrderedTupleLiteralExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.OrderedTupleLiteralPart;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.RaiseExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.ReturnExp;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.SeverityKind;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.SwitchExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.TryExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.UnlinkExp;
@@ -52,8 +57,12 @@ import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.UnpackExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.VariableInitExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.WhileExp;
 import org.eclipse.ocl.expressions.OperationCallExp;
+import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.pivot.Element;
+import org.eclipse.ocl.pivot.OCLExpression;
+import org.eclipse.ocl.pivot.Parameter;
 import org.eclipse.ocl.pivot.PivotFactory;
+import org.eclipse.ocl.pivot.Type;
 import org.eclipse.ocl.types.CollectionType;
 import org.eclipse.ocl.types.TupleType;
 import org.eclipse.ocl.types.TypeType;
@@ -62,6 +71,8 @@ import org.eclipse.qvto.examples.pivot.qvtoperational.QVTOperationalFactory;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+
+import simpleuml.Classifier;
 
 @SuppressWarnings("restriction")
 public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2PivotDeclarationVisitor
@@ -77,7 +88,7 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 			return super.caseEPackage(object);
 		}
 	}
-	
+
 	public TraditionalQVTo2PivotDeclarationVisitor(TraditionalToPivotMapping converter) {
 		super(converter, new OCLEcoreSwitch(converter));
 	}
@@ -85,13 +96,21 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 	@Override
 	public Object visitAltExp(AltExp astNode) {
 		// TODO Auto-generated method stub
-		return super.visitAltExp(astNode);
+		org.eclipse.qvto.examples.pivot.imperativeocl.AltExp pivotElement =
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createAltExp());
+		pivotElement.setBody(doProcess(OCLExpression.class, astNode.getBody()));
+		pivotElement.setCondition(doProcess(OCLExpression.class, astNode.getCondition()));
+		return pivotElement;
 	}
 
 	@Override
 	public Object visitAssertExp(AssertExp astNode) {
-		// TODO Auto-generated method stub
-		return super.visitAssertExp(astNode);
+		org.eclipse.qvto.examples.pivot.imperativeocl.AssertExp pivotElement = 
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createAssertExp());
+		pivotElement.setAssertion(doProcess(OCLExpression.class, astNode.getAssertion()));
+		pivotElement.setLog(doProcess(org.eclipse.qvto.examples.pivot.imperativeocl.LogExp.class, astNode.getLog()));
+		//pivotElement.setSeverity(doProcess(org.eclipse.qvto.examples.pivot.imperativeocl.SeverityKind.class, astNode.getSeverity()));
+		return pivotElement;
 	}
 
 	public Object visitAssignExp(AssignExp assignExp) {
@@ -99,14 +118,17 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 		converter.addCreated(assignExp, pivotElement);
 		pivotElement.setLeft(doProcess(org.eclipse.ocl.pivot.OCLExpression.class, assignExp.getLeft()));
 		pivotElement.getValue().addAll(doProcessAll(org.eclipse.ocl.pivot.OCLExpression.class, assignExp.getValue()));
+
 		//pivotAssignExp.setType(metamodelManager.getASOfEcore(Type.class, assignExp.getType())); // FIXME Bug 479445
 		return pivotElement;
 	}
 
 	@Override
 	public Object visitBlockExp(BlockExp astNode) {
-		// TODO Auto-generated method stub
-		return super.visitBlockExp(astNode);
+		org.eclipse.qvto.examples.pivot.imperativeocl.BlockExp pivotElement = 
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createBlockExp());
+		pivotElement.getBody().addAll(doProcessAll(OCLExpression.class, astNode.getBody()));
+		return pivotElement;
 	}
 
 	@Override
@@ -120,7 +142,12 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 	@Override
 	public Object visitCatchtExp(CatchExp astNode) {
 		// TODO Auto-generated method stub
-		return super.visitCatchtExp(astNode);
+		org.eclipse.qvto.examples.pivot.imperativeocl.CatchExp pivotElement =
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createCatchExp());
+		pivotElement.getBody().addAll(doProcessAll(OCLExpression.class, astNode.getBody()));
+		
+		//pivotElement.getException().addAll(doProcessAll(Type.class, astNode.getException()));
+		return pivotElement;
 	}
 
 	@Override
@@ -150,11 +177,21 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 		// TODO Auto-generated method stub
 		return super.visitContextualProperty(astNode);
 	}
+	@Override
+	public Object visitLogExp(LogExp astNode) {
 
+		org.eclipse.qvto.examples.pivot.imperativeocl.LogExp pivotElement = 
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createLogExp());
+
+		pivotElement.getOwnedArguments().addAll(doProcessAll(OCLExpression.class, astNode.getArgument()));
+
+		return pivotElement;
+	}
 	@Override
 	public Object visitContinueExp(ContinueExp astNode) {
 		org.eclipse.qvto.examples.pivot.imperativeocl.ContinueExp pivotElement =
-			converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createContinueExp());
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createContinueExp());
+		
 		//...
 		return pivotElement;
 	}
@@ -176,21 +213,25 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 				converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createEntryOperation());
 		pivotElement.setName(astNode.getName());
 		pivotElement.getOwnedParameters().addAll(doProcessAll(org.eclipse.ocl.pivot.Parameter.class, astNode.getEParameters()));
-//		pivotOperationalTransformation.setEntry(pivotElement);
+		//		pivotOperationalTransformation.setEntry(pivotElement);
 		pivotElement.setBody(doProcess(org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody.class, astNode.getBody()));
-//		pivotEntryOperation.setType(createPivotType(traditionalEntryOperation.getEType()));
+		//		pivotEntryOperation.setType(createPivotType(traditionalEntryOperation.getEType()));
 		return pivotElement;
 	}
 
 	@Override
 	public Object visitForExp(ForExp astNode) {
-		// TODO Auto-generated method stub
-		return super.visitForExp(astNode);
+		org.eclipse.qvto.examples.pivot.imperativeocl.ForExp pivotElement =
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createForExp());
+		pivotElement.getOwnedIterators().addAll(doProcessAll(org.eclipse.ocl.pivot.Variable.class, astNode.getIterator()));
+		pivotElement.setOwnedBody(doProcess(OCLExpression.class, astNode.getBody()));
+		pivotElement.setOwnedSource(doProcess(OCLExpression.class, astNode.getSource()));
+		return pivotElement;
 	}
 
 	public Object visitHelper(Helper astNode) {
 		org.eclipse.qvto.examples.pivot.qvtoperational.Helper pivotElement =
-			converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createHelper());
+				converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createHelper());
 		pivotElement.setName(astNode.getName());
 		pivotElement.setContext(doProcess(org.eclipse.qvto.examples.pivot.qvtoperational.VarParameter.class, astNode.getContext()));
 		pivotElement.getOwnedParameters().addAll(doProcessAll(org.eclipse.ocl.pivot.Parameter.class, astNode.getEParameters()));
@@ -202,8 +243,15 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	@Override
 	public Object visitImperativeIterateExp(ImperativeIterateExp astNode) {
+
 		// TODO Auto-generated method stub
-		return super.visitImperativeIterateExp(astNode);
+		org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeIterateExp pivotElement = 
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createImperativeIterateExp());
+		pivotElement.setOwnedBody(doProcess(org.eclipse.ocl.pivot.OCLExpression.class,astNode.getBody()));
+		pivotElement.setTarget(doProcess(org.eclipse.ocl.pivot.Variable.class, astNode.getTarget()));
+		pivotElement.setOwnedSource(doProcess(OCLExpression.class, astNode.getSource()));
+		pivotElement.getOwnedIterators().addAll(doProcessAll(org.eclipse.ocl.pivot.Variable.class, astNode.getIterator()));
+		return pivotElement;
 	}
 
 	@Override
@@ -226,7 +274,7 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	public Object visitMappingBody(MappingBody mappingBody) {
 		org.eclipse.qvto.examples.pivot.qvtoperational.MappingBody pivotElement =
-			converter.addCreated(mappingBody, QVTOperationalFactory.eINSTANCE.createMappingBody());
+				converter.addCreated(mappingBody, QVTOperationalFactory.eINSTANCE.createMappingBody());
 		pivotElement.getContent().addAll(doProcessAll(org.eclipse.ocl.pivot.OCLExpression.class, mappingBody.getContent()));
 		pivotElement.getInitSection().addAll(doProcessAll(org.eclipse.ocl.pivot.OCLExpression.class, mappingBody.getInitSection()));
 		return pivotElement;
@@ -236,6 +284,7 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 	public Object visitMappingCallExp(MappingCallExp astNode) {
 		org.eclipse.qvto.examples.pivot.qvtoperational.MappingCallExp pivotElement =
 				converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createMappingCallExp());
+
 		return pivotElement;
 	}
 
@@ -334,7 +383,8 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 			}
 		});
 		pivotPackage.getOwnedClasses().addAll(doProcessAll(org.eclipse.ocl.pivot.Class.class, filteredEClassifiers));
-		pivotPackage.getOwnedPackages().addAll(doProcessAll(org.eclipse.ocl.pivot.Package.class, astNode.getESubpackages()));
+		//FIXME intermediate not handled.
+		//	pivotPackage.getOwnedPackages().addAll(doProcessAll(org.eclipse.ocl.pivot.Package.class, astNode.getESubpackages()));
 		pivotPackage.getOwnedClasses().add(0, pivotClass);
 		return pivotPackage;
 	}
@@ -377,20 +427,30 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 	public Object visitReturnExp(ReturnExp astNode) {
 		org.eclipse.qvto.examples.pivot.imperativeocl.ReturnExp pivotElement =
 				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createReturnExp());
-		//...
+		pivotElement.setValue(doProcess(OCLExpression.class, astNode.getValue()));
+		//.
 		return pivotElement;
 	}
 
 	@Override
 	public Object visitSwitchExp(SwitchExp astNode) {
 		// TODO Auto-generated method stub
-		return super.visitSwitchExp(astNode);
+		org.eclipse.qvto.examples.pivot.imperativeocl.SwitchExp pivotElement = 
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createSwitchExp());
+
+		pivotElement.setElsePart(doProcess(OCLExpression.class, astNode.getElsePart()));
+		pivotElement.getAlternativePart().addAll(doProcessAll(org.eclipse.qvto.examples.pivot.imperativeocl.AltExp.class, astNode.getAlternativePart()));
+		return pivotElement;
 	}
 
 	@Override
 	public Object visitTryExp(TryExp astNode) {
 		// TODO Auto-generated method stub
-		return super.visitTryExp(astNode);
+		org.eclipse.qvto.examples.pivot.imperativeocl.TryExp pivotElement = 
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createTryExp());
+		pivotElement.getTryBody().addAll(doProcessAll(OCLExpression.class, astNode.getTryBody()));
+		pivotElement.getExceptClause().addAll(doProcessAll(org.eclipse.qvto.examples.pivot.imperativeocl.CatchExp.class, astNode.getExceptClause()));
+		return pivotElement;
 	}
 
 	@Override
@@ -424,13 +484,21 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	@Override
 	public Object visitVariableInitExp(VariableInitExp astNode) {
-		// TODO Auto-generated method stub
-		return super.visitVariableInitExp(astNode);
+
+		org.eclipse.qvto.examples.pivot.imperativeocl.VariableInitExp pivotElement = 
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createVariableInitExp());
+		return pivotElement;
 	}
+
 
 	@Override
 	public Object visitWhileExp(WhileExp astNode) {
 		// TODO Auto-generated method stub
-		return super.visitWhileExp(astNode);
+
+		org.eclipse.qvto.examples.pivot.imperativeocl.WhileExp pivotElement = 
+				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createWhileExp());
+		pivotElement.setBody(doProcess(OCLExpression.class, astNode.getBody()));
+		pivotElement.setCondition(doProcess(OCLExpression.class, astNode.getCondition()));
+		return pivotElement;
 	}
 }

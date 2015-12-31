@@ -3,6 +3,7 @@ package org.eclipse.m2m.qvt.oml.pivot.mapping.test;
 
 import java.io.IOException;
 
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -15,6 +16,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.m2m.qvt.oml.BasicModelExtent;
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
+import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.eclipse.m2m.qvt.oml.mapping.pivot.test.QvtOperationalMappingArgumentsContainer;
@@ -39,7 +41,7 @@ public class MappingTest_Mma2Mmb extends TestCase {
 	public void testMapping() throws IOException {
 		TraditionalToPivotMapping.CREATION.setState(true);
 		collectMappingArguments();
-//		try {
+	//	try {
 			QVToFacade qvto = QVToFacade.newInstance();
 			// create Visitor for traditional object mapping
 			TraditionalToPivotMapping converter = new TraditionalToPivotMapping(qvto);
@@ -99,8 +101,12 @@ public class MappingTest_Mma2Mmb extends TestCase {
 		// run the transformation assigned to the executor with the given
 		// input and output and execution context -> ChangeTheWorld(in, out)
 		// Remark: variable arguments count is supported
-		executor.execute(context, input, output);
-		System.out.println("Transformation executed.");
+		ExecutionDiagnostic result = executor.execute(context, input, output);
+		if(result.getSeverity() == Diagnostic.OK){			
+			System.out.println("Transformation executed.");
+		}else{
+			System.out.println("Error in execution");
+		}
 	}
 
 }

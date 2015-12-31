@@ -50,7 +50,7 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 	private final /*@NonNull*/ org.eclipse.ocl.pivot.internal.manager.PivotMetamodelManager metamodelManager;
 	private final /*@NonNull*/ org.eclipse.ocl.pivot.StandardLibrary standardLibrary;
 	private final /*@NonNull*/ org.eclipse.ocl.pivot.internal.complete.CompleteModelInternal completeModel;
-	
+
 	public TraditionalOCL2PivotReferenceVisitor(TraditionalToPivotMapping converter, @NonNull AbstractEcoreSwitch ecoreSwitch) {
 		super(converter, ecoreSwitch);
 		oclStdLibPackage = new EcoreOCLStandardLibrary().getOCLStdLibPackage();
@@ -59,8 +59,8 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 		standardLibrary = converter.getStandardLibrary();
 		completeModel = (org.eclipse.ocl.pivot.internal.complete.CompleteModelInternal)converter.getCompleteModel();
 	}
-	
-/*	protected <T extends Element> @Nullable T doProcess(@NonNull Class<T> pivotClass, @Nullable EObject astNode) {
+
+	/*	protected <T extends Element> @Nullable T doProcess(@NonNull Class<T> pivotClass, @Nullable EObject astNode) {
 		if (astNode == null) {
 			return null;
 		}
@@ -99,7 +99,7 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 		if (referredClassifier instanceof Visitable) {
 			return (org.eclipse.ocl.pivot.Type)converter.getPivot((Visitable)referredClassifier);
 		}
-/*		else if (referredClassifier instanceof ListType/DictType) {
+		/*		else if (referredClassifier instanceof ListType/DictType) {
 			CollectionType collectionType = (CollectionType)referredClassifier;
 			CollectionKind kind = collectionType.getKind();
 			EClassifier elementClassifier = collectionType.getElementType();
@@ -114,13 +114,13 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 			return metamodelManager.getCollectionType(kind.getName(), elementType, false, null, null);
 		}
 		else if (referredClassifier instanceof PrimitiveType) {
-//			String name = getBaseName(eContainingClass);
+			//			String name = getBaseName(eContainingClass);
 			org.eclipse.ocl.pivot.Class pivotClass = standardLibrary.getPackage().getOwnedClass(referredClassifier.getName());
 			org.eclipse.ocl.pivot.CompleteModel completeModel = converter.getCompleteModel();
 			org.eclipse.ocl.pivot.CompleteClass completeClass = completeModel.getCompleteClass(pivotClass);
 			return completeClass.getPrimaryClass();
 		}
-/*		else if (referredClassifier instanceof TupleType) {
+		/*		else if (referredClassifier instanceof TupleType) {
 			CollectionType collectionType = (CollectionType)referredClassifier;
 			CollectionKind kind = collectionType.getKind();
 			EClassifier elementClassifier = collectionType.getElementType();
@@ -131,7 +131,7 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 			return converter.getPivotOfEcore(org.eclipse.ocl.pivot.Type.class, referredClassifier);
 		}
 	}
-	
+
 	protected org.eclipse.ocl.pivot.EnumerationLiteral resolveEEnumLiteral(EEnumLiteral referredLiteral) {
 		if (referredLiteral instanceof Visitable) {
 			return (org.eclipse.ocl.pivot.EnumerationLiteral)converter.getPivot((Visitable)referredLiteral);
@@ -140,7 +140,7 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 			return converter.getPivotOfEcore(org.eclipse.ocl.pivot.EnumerationLiteral.class, referredLiteral);
 		}
 	}
-	
+
 	protected org.eclipse.ocl.pivot.Property resolveEFeature(EStructuralFeature referredFeature) {
 		if (referredFeature instanceof Visitable) {
 			return (org.eclipse.ocl.pivot.Property)converter.getPivot((Visitable)referredFeature);
@@ -175,7 +175,7 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 		org.eclipse.ocl.pivot.Operation pivotOperation = operations.iterator().next();		// FIXME errors/overloads
 		return (org.eclipse.ocl.pivot.Iteration) pivotOperation;
 	}
-	
+
 	@Override
 	public Object visitBooleanLiteralExp(BooleanLiteralExp<EClassifier> astNode) {
 		org.eclipse.ocl.pivot.BooleanLiteralExp pivotElement = (org.eclipse.ocl.pivot.BooleanLiteralExp)converter.getPivot(astNode);
@@ -358,21 +358,29 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 		org.eclipse.ocl.pivot.OperationCallExp pivotElement = (org.eclipse.ocl.pivot.OperationCallExp)converter.getPivot(astNode);
 		org.eclipse.ocl.pivot.OCLExpression pivotSource = doProcess(org.eclipse.ocl.pivot.OCLExpression.class, astNode.getSource());
 		org.eclipse.ocl.pivot.Operation pivotOperation = resolveEOperation(astNode.getReferredOperation());
-		pivotElement.setReferredOperation(pivotOperation);
-		pivotElement.setName(pivotOperation.getName());
-		org.eclipse.ocl.pivot.Type returnType = null;
-		org.eclipse.ocl.pivot.Type formalType = pivotOperation.getType();
-		if (formalType != null) {
-			org.eclipse.ocl.pivot.Type sourceType = pivotSource.getType();
-			if (pivotOperation.isIsTypeof()) {
-				returnType = metamodelManager.specializeType(formalType, pivotElement, sourceType, null);
+
+		if(pivotOperation!=null) //FIXME referred operation returned null from ecoreSwitch.doSwitch(astNode);
+		{
+			pivotElement.setReferredOperation(pivotOperation);
+			pivotElement.setName(pivotOperation.getName());
+			org.eclipse.ocl.pivot.Type returnType = null;
+			org.eclipse.ocl.pivot.Type formalType = pivotOperation.getType();
+			if (formalType != null) {
+				org.eclipse.ocl.pivot.Type sourceType = pivotSource.getType();
+				if (pivotOperation.isIsTypeof()) {
+					returnType = metamodelManager.specializeType(formalType, pivotElement, sourceType, null);
+				}
+				else {
+					//				returnType = metamodelManager.specializeType(formalType, pivotElement, sourceType, pivotSource.getTypeValue());
+					returnType = QVToTemplateParameterSubstitutionVisitor.specializeType(formalType, pivotElement, environmentFactory, sourceType, pivotSource.getTypeValue());
+				}
+				pivotElement.setType(returnType);
+				pivotElement.setIsRequired(pivotOperation.isIsRequired());
+
 			}
 			else {
-//				returnType = metamodelManager.specializeType(formalType, pivotElement, sourceType, pivotSource.getTypeValue());
-				returnType = QVToTemplateParameterSubstitutionVisitor.specializeType(formalType, pivotElement, environmentFactory, sourceType, pivotSource.getTypeValue());
+				pivotElement.setType(standardLibrary.getOclVoidType());
 			}
-			pivotElement.setType(returnType);
-			pivotElement.setIsRequired(pivotOperation.isIsRequired());
 		}
 		else {
 			pivotElement.setType(standardLibrary.getOclVoidType());
@@ -386,22 +394,28 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 		org.eclipse.ocl.pivot.OCLExpression pivotSource = doProcess(org.eclipse.ocl.pivot.OCLExpression.class, astNode.getSource());
 		org.eclipse.ocl.pivot.Property pivotProperty = resolveEFeature(astNode.getReferredProperty());
 		pivotElement.setReferredProperty(pivotProperty);
-		pivotElement.setName(pivotProperty.getName());
-		org.eclipse.ocl.pivot.Type formalType = pivotProperty.getType();
-		if (formalType != null) {
-			org.eclipse.ocl.pivot.Type actualType;
-			org.eclipse.ocl.pivot.Type sourceType = pivotSource.getType();
-			if (sourceType != null) {
-				actualType = metamodelManager.specializeType(formalType, pivotElement, sourceType, pivotSource.getTypeValue());
+		//FIXME catering null properties which was set in declaration visitor due to ecoreSwitch.doSwitch(astNode)
+		if(pivotProperty!=null)
+		{
+
+
+			pivotElement.setName(pivotProperty.getName());
+			org.eclipse.ocl.pivot.Type formalType = pivotProperty.getType();
+			if (formalType != null) {
+				org.eclipse.ocl.pivot.Type actualType;
+				org.eclipse.ocl.pivot.Type sourceType = pivotSource.getType();
+				if (sourceType != null) {
+					actualType = metamodelManager.specializeType(formalType, pivotElement, sourceType, pivotSource.getTypeValue());
+				}
+				else {
+					actualType = formalType;
+				}
+				if (pivotProperty.isIsStatic() && (actualType.isTemplateParameter() != null)) {
+					actualType = metamodelManager.getMetaclass(actualType);
+				}
+				pivotElement.setType(actualType);
+				pivotElement.setIsRequired(pivotProperty.isIsRequired());
 			}
-			else {
-				actualType = formalType;
-			}
-			if (pivotProperty.isIsStatic() && (actualType.isTemplateParameter() != null)) {
-				actualType = metamodelManager.getMetaclass(actualType);
-			}
-			pivotElement.setType(actualType);
-			pivotElement.setIsRequired(pivotProperty.isIsRequired());
 		}
 		return pivotElement;
 	}
@@ -471,18 +485,24 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 			pivotType = metamodelManager.getCommonType(pivotType, TemplateParameterSubstitutions.EMPTY, initType, TemplateParameterSubstitutions.EMPTY);
 		}
 		pivotElement.setType(pivotType);
-//		pivotElement.setIsRequired(true);
+		//		pivotElement.setIsRequired(true);
 		return pivotElement;
 	}
-	
+
 	public Object visitVariableExp(VariableExp<EClassifier, EParameter> astNode) {
+
 		org.eclipse.ocl.pivot.VariableExp pivotElement = (org.eclipse.ocl.pivot.VariableExp)converter.getPivot(astNode);
 		org.eclipse.ocl.pivot.Variable pivotVariable = (org.eclipse.ocl.pivot.Variable)converter.getPivot(astNode.getReferredVariable());
+
 		pivotElement.setReferredVariable(pivotVariable);
-		pivotElement.setName(pivotVariable.getName());
-		pivotElement.setType(pivotVariable.getType());
-		pivotElement.setTypeValue(pivotVariable.getTypeValue());
-		pivotElement.setIsRequired(pivotVariable.isIsRequired());
+		if(pivotVariable!=null)
+		{
+			pivotElement.setName(pivotVariable.getName());
+			pivotElement.setType(pivotVariable.getType());
+			pivotElement.setTypeValue(pivotVariable.getTypeValue());
+			pivotElement.setIsRequired(pivotVariable.isIsRequired());
+		}
+
 		return pivotElement;
 	}
 }

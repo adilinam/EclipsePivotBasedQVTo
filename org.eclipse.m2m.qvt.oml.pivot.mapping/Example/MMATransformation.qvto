@@ -9,6 +9,7 @@ main() {
 
 mapping Project::ProjectToModel() : Model {
 	Name := self.Title;
+	
 	automata := self.bodies -> map toAutomaton();
 }
 
@@ -18,7 +19,25 @@ when { self.Name.startsWith("A"); }
 	Name := self.Name;
 	modes := self.locations -> map toMode();
 	transistions := self.locations.outgoingEdges -> map toTransition();
-	log("Name of the Automaton: " + Name);
+	
+	try {
+	transistions := self.locations.outgoingEdges -> map toTransition();
+	  } except (Exception )
+	   {
+	   Name := self.Name;
+	   };
+	while(true){
+	
+	if(self.locations->size()>-1)
+	{	
+		log("Name of the Automaton: " + Name);
+			break;
+	};
+	continue;
+	
+	assert fatal (self.locations <> null);
+		};
+		
 }
 
 mapping Location::toMode() : Mode
