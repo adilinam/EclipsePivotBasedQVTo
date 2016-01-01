@@ -492,7 +492,7 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 				converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createResolveInExp());
 		pivotElement.setName(astNode.getName());
 		pivotElement.setCondition(doProcess(OCLExpression.class, astNode.getCondition()));
-		pivotElement.setInMapping(doProcess(org.eclipse.qvto.examples.pivot.qvtoperational.MappingOperation.class, astNode.getInMapping()));
+	//	pivotElement.setInMapping(doProcess(org.eclipse.qvto.examples.pivot.qvtoperational.MappingOperation.class, astNode.getInMapping()));
 		pivotElement.setOwnedSource(doProcess(OCLExpression.class, astNode.getSource()));
 		//...
 		return pivotElement;
