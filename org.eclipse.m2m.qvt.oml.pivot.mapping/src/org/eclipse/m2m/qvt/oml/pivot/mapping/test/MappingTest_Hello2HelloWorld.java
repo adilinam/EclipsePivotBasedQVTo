@@ -53,9 +53,9 @@ public class MappingTest_Hello2HelloWorld extends TestCase {
 
 			
 			// Convert Ecore based Transformation to XML
-			FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, operationalTransformation, "traditionalAS_HELLOWORLD");
+			FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, operationalTransformation, "traditionalAS_Hello2HELLOWORLD");
 			// Convert Pivot based Transformation to XML
-			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotAS_HELLOWORLD");
+			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotAS_Hello2HELLOWORLD");
 
 //		} catch (Exception e) {
 //			e.printStackTrace();

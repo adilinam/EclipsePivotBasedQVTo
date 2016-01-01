@@ -48,9 +48,9 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 
 			
 			// Convert Ecore based Transformation to XML
-			FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, operationalTransformation, "traditionalAS");
+			FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, operationalTransformation, "traditionalAS_SimpleUml2Rdb");
 			// Convert Pivot based Transformation to XML
-			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotAS");
+			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotAS_SimpleUml2Rdb");
 
 //		} catch (Exception e) {
 //			e.printStackTrace();
