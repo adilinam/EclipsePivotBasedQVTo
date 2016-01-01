@@ -191,7 +191,6 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	@Override
 	public Object visitContextualProperty(ContextualProperty astNode) {
-		// TODO Auto-generated method stub
 		// Not Tested
 		 org.eclipse.qvto.examples.pivot.qvtoperational.ContextualProperty pivotElement =
 				 converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createContextualProperty());
@@ -221,8 +220,7 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	@Override
 	public Object visitDictLiteralExp(DictLiteralExp astNode) {
-		// TODO Auto-generated method stub
-		//Not Tested
+		// Not Tested
 		org.eclipse.qvto.examples.pivot.imperativeocl.DictLiteralExp pivotElement = 
 				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createDictLiteralExp());
 		pivotElement.getPart().addAll(doProcessAll(org.eclipse.qvto.examples.pivot.imperativeocl.DictLiteralPart.class, astNode.getPart()));	
@@ -232,8 +230,7 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	@Override
 	public Object visitDictLiteralPart(DictLiteralPart astNode) {
-		// TODO Auto-generated method stub
-		//Not Tested
+		// Not Tested
 		org.eclipse.qvto.examples.pivot.imperativeocl.DictLiteralPart pivotElement = 
 				ImperativeOCLFactory.eINSTANCE.createDictLiteralPart();	
 		pivotElement.setKey(doProcess(OCLExpression.class, astNode.getKey()));
@@ -291,7 +288,6 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	@Override
 	public Object visitImperativeOperation(ImperativeOperation astNode) {
-		// TODO Auto-generated method stub
 		//Not Tested
 		org.eclipse.qvto.examples.pivot.qvtoperational.ImperativeOperation pivotElement = 
 				converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createImperativeOperation());
@@ -305,7 +301,6 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	@Override
 	public Object visitInstantiationExp(InstantiationExp astNode) {
-		// TODO Auto-generated method stub
 		//Not Tested
 		org.eclipse.qvto.examples.pivot.imperativeocl.InstantiationExp pivotElement = 
 				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createInstantiationExp());
@@ -445,8 +440,7 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	@Override
 	public Object visitOrderedTupleLiteralExp(OrderedTupleLiteralExp astNode) {
-		// TODO Auto-generated method stub
-		//Not Tested
+		// Not Tested
 		org.eclipse.qvto.examples.pivot.imperativeocl.OrderedTupleLiteralExp pivotElement =
 				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createOrderedTupleLiteralExp());
 		pivotElement.setName(astNode.getName());
@@ -456,7 +450,6 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	@Override
 	public Object visitOrderedTupleLiteralPart(OrderedTupleLiteralPart astNode) {
-		// TODO Auto-generated method stub
 		// Not Tested
 		org.eclipse.qvto.examples.pivot.imperativeocl.OrderedTupleLiteralPart pivotElement =
 				ImperativeOCLFactory.eINSTANCE.createOrderedTupleLiteralPart();
@@ -466,7 +459,6 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 
 	@Override
 	public Object visitRaiseExp(RaiseExp astNode) {
-		// TODO Auto-generated method stub
 		// Not Tested
 		org.eclipse.qvto.examples.pivot.imperativeocl.RaiseExp pivotElement =
 				converter.addCreated(astNode, ImperativeOCLFactory.eINSTANCE.createRaiseExp());
