@@ -60,6 +60,7 @@ import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.WhileExp;
 import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.expressions.OperationCallExp;
 import org.eclipse.ocl.expressions.Variable;
+import org.eclipse.ocl.pivot.AssociationClass;
 import org.eclipse.ocl.pivot.Class;
 import org.eclipse.ocl.pivot.Element;
 import org.eclipse.ocl.pivot.LanguageExpression;
@@ -191,7 +192,13 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 	@Override
 	public Object visitContextualProperty(ContextualProperty astNode) {
 		// TODO Auto-generated method stub
-		return super.visitContextualProperty(astNode);
+		// Not Tested
+		 org.eclipse.qvto.examples.pivot.qvtoperational.ContextualProperty pivotElement =
+				 converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createContextualProperty());
+		pivotElement.setName(astNode.getName());
+		pivotElement.setContext(doProcess(Class.class, astNode.getContext()));
+		pivotElement.setInitExpression(doProcess(OCLExpression.class, astNode.getInitExpression()));
+		return pivotElement;
 	}
 	@Override
 	public Object visitLogExp(LogExp astNode) {
