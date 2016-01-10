@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.m2m.qvt.oml"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.qvto.examples.pivot.qvtoperational"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.qvto.examples.pivot.imperativeocl"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ABC"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
