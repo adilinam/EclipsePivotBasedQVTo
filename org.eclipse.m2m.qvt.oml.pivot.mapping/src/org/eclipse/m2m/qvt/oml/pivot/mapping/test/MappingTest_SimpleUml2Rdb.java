@@ -57,10 +57,6 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 			// Convert Pivot based Transformation to XML
 			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotAS_SimpleUml2Rdb");
 
-			System.out.println("\nWaiting For user input");
-			java.util.Scanner sc = new java.util.Scanner(System.in);
-			sc.nextLine();
-			
 			ResourceSet resourceSet = new ResourceSetImpl();
             resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("qvtoas", QVTOperationalASResourceFactory.getInstance());
             Resource asResource = resourceSet.getResource(URI.createURI("pivotAS_SimpleUml2Rdb.qvtoas"), true);

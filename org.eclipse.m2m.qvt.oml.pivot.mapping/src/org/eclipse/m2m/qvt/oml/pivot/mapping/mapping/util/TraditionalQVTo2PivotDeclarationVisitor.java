@@ -3,8 +3,10 @@ package org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
@@ -67,6 +69,7 @@ import org.eclipse.ocl.pivot.LanguageExpression;
 import org.eclipse.ocl.pivot.OCLExpression;
 import org.eclipse.ocl.pivot.Parameter;
 import org.eclipse.ocl.pivot.PivotFactory;
+import org.eclipse.ocl.pivot.Package;
 import org.eclipse.ocl.pivot.Type;
 import org.eclipse.ocl.pivot.library.LibraryFeature;
 import org.eclipse.ocl.types.CollectionType;
@@ -356,6 +359,19 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 		org.eclipse.qvto.examples.pivot.qvtoperational.ModelType pivotElement =
 				converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createModelType());
 		pivotElement.setName(astNode.getName());
+		
+		EList<EPackage> packages = astNode.getMetamodel();
+
+		for(EPackage pkg : packages)
+		{
+			Package pivotPackage = PivotFactory.eINSTANCE.createPackage();
+			pivotPackage.setNsPrefix(pkg.getNsPrefix());
+			pivotPackage.setURI(pkg.getNsURI());
+			pivotPackage.setName(pkg.getName());
+			
+			pivotElement.getMetamodel().add(pivotPackage);
+		}
+
 		return pivotElement;
 	}
 
