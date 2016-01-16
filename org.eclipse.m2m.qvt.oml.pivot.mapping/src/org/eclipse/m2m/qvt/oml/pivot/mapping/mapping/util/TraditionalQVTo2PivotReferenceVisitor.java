@@ -205,8 +205,6 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 
 		//FIXME errors due to EcoreSwitch
 		//	pivotElement.getMetamodel().addAll(doProcessAll(org.eclipse.ocl.pivot.Package.class, astNode.getMetamodel()));
-
-		EList<Package> c = pivotElement.getMetamodel();
 		for(EPackage ePackage:astNode.getMetamodel())
 		{
 			pivotElement.getMetamodel().add((Package) metamodelManager.getASOfEcore(org.eclipse.ocl.pivot.Package.class, ePackage)); 
