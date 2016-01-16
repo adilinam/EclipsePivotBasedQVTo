@@ -285,6 +285,7 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 	public Object visitVariableExp(VariableExp<EClassifier, EParameter> astNode) {
 		org.eclipse.ocl.pivot.VariableExp pivotElement =
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createVariableExp());
+		pivotElement.setName(astNode.getName());
 
 //		pivotElement.setReferredVariable(doProcess(org.eclipse.ocl.pivot.Variable.class, astNode.getReferredVariable()));
 

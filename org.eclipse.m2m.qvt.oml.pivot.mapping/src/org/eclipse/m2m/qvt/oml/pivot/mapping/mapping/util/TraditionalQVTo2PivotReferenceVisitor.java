@@ -50,6 +50,7 @@ import org.eclipse.ocl.pivot.Element;
 import org.eclipse.ocl.pivot.Iteration;
 import org.eclipse.ocl.pivot.OCLExpression;
 import org.eclipse.ocl.pivot.Operation;
+import org.eclipse.ocl.pivot.Package;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeIterateExp;
 import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeOCLFactory;
@@ -167,10 +168,10 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 	public Object visitOrderedTupleLiteralPart(OrderedTupleLiteralPart astNode) {		
 		// Not Tested
 		org.eclipse.qvto.examples.pivot.imperativeocl.OrderedTupleLiteralPart pivotElement =
-				 (org.eclipse.qvto.examples.pivot.imperativeocl.OrderedTupleLiteralPart) converter.getPivot(astNode);
+				(org.eclipse.qvto.examples.pivot.imperativeocl.OrderedTupleLiteralPart) converter.getPivot(astNode);
 		//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
 		return pivotElement;
-		
+
 	}
 	public Object visitRaiseExp(RaiseExp astNode) {
 		// Not Tested
@@ -181,9 +182,9 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 	}
 	public Object visitUnpackExp(UnpackExp astNode) {
 		// Not Tested
-		 org.eclipse.qvto.examples.pivot.imperativeocl.UnpackExp pivotElement =
-				 (org.eclipse.qvto.examples.pivot.imperativeocl.UnpackExp) converter.getPivot(astNode);
-		 return pivotElement;
+		org.eclipse.qvto.examples.pivot.imperativeocl.UnpackExp pivotElement =
+				(org.eclipse.qvto.examples.pivot.imperativeocl.UnpackExp) converter.getPivot(astNode);
+		return pivotElement;
 	}
 
 	public Object visitUnlinkExp(UnlinkExp astNode) {
@@ -203,7 +204,13 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 		org.eclipse.qvto.examples.pivot.qvtoperational.ModelType pivotElement = (org.eclipse.qvto.examples.pivot.qvtoperational.ModelType) converter.getPivot(astNode);
 
 		//FIXME errors due to EcoreSwitch
-		//		pivotElement.getMetamodel().addAll(doProcessAll(org.eclipse.ocl.pivot.Package.class, astNode.getMetamodel()));
+		//	pivotElement.getMetamodel().addAll(doProcessAll(org.eclipse.ocl.pivot.Package.class, astNode.getMetamodel()));
+
+		EList<Package> c = pivotElement.getMetamodel();
+		for(EPackage ePackage:astNode.getMetamodel())
+		{
+			pivotElement.getMetamodel().add((Package) metamodelManager.getASOfEcore(org.eclipse.ocl.pivot.Package.class, ePackage)); 
+		}
 		return pivotElement;
 	}
 
