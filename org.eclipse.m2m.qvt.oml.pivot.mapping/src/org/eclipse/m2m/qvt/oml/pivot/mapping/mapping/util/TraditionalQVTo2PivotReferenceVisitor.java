@@ -204,11 +204,8 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 		org.eclipse.qvto.examples.pivot.qvtoperational.ModelType pivotElement = (org.eclipse.qvto.examples.pivot.qvtoperational.ModelType) converter.getPivot(astNode);
 
 		//FIXME errors due to EcoreSwitch
-		//	pivotElement.getMetamodel().addAll(doProcessAll(org.eclipse.ocl.pivot.Package.class, astNode.getMetamodel()));
-		for(EPackage ePackage:astNode.getMetamodel())
-		{
-			pivotElement.getMetamodel().add((Package) metamodelManager.getASOfEcore(org.eclipse.ocl.pivot.Package.class, ePackage)); 
-		}
+			pivotElement.getMetamodel().addAll(doProcessAll(org.eclipse.ocl.pivot.Package.class, astNode.getMetamodel()));
+		
 		return pivotElement;
 	}
 

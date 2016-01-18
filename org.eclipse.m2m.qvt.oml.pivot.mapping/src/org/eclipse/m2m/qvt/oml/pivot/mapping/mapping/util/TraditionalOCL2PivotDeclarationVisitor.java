@@ -207,11 +207,11 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createPropertyCallExp());
 		pivotElement.setOwnedSource(doProcess(org.eclipse.ocl.pivot.OCLExpression.class, astNode.getSource()));
 		//FIXME returning null Property from ecoreSwitch.doSwitch
-		Property property=doProcess(Property.class, astNode.getReferredProperty());
-		if(property!=null)
-		{
-			pivotElement.setReferredProperty(property);
-		}
+//		Property property=doProcess(Property.class, astNode.getReferredProperty());
+//		if(property!=null)
+//		{
+//			pivotElement.setReferredProperty(property);
+//		}
 		return pivotElement;
 	}
 
