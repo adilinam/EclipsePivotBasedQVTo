@@ -9,8 +9,10 @@ import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.m2m.internal.qvt.oml.expressions.Constructor;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ConstructorBody;
+import org.eclipse.m2m.internal.qvt.oml.expressions.ContextualProperty;
 import org.eclipse.m2m.internal.qvt.oml.expressions.EntryOperation;
 import org.eclipse.m2m.internal.qvt.oml.expressions.Helper;
+import org.eclipse.m2m.internal.qvt.oml.expressions.ImperativeOperation;
 import org.eclipse.m2m.internal.qvt.oml.expressions.MappingBody;
 import org.eclipse.m2m.internal.qvt.oml.expressions.MappingCallExp;
 import org.eclipse.m2m.internal.qvt.oml.expressions.MappingOperation;
@@ -29,18 +31,29 @@ import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.BlockExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.BreakExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.CatchExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.ContinueExp;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.DictLiteralExp;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.DictLiteralPart;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.ForExp;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.InstantiationExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.LogExp;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.OrderedTupleLiteralExp;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.OrderedTupleLiteralPart;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.RaiseExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.ReturnExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.SwitchExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.TryExp;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.UnlinkExp;
+import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.UnpackExp;
 import org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.VariableInitExp;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.pivot.Element;
 import org.eclipse.ocl.pivot.Iteration;
 import org.eclipse.ocl.pivot.OCLExpression;
+import org.eclipse.ocl.pivot.Operation;
+import org.eclipse.ocl.pivot.Package;
 import org.eclipse.ocl.pivot.Variable;
 import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeIterateExp;
+import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeOCLFactory;
 import org.eclipse.qvto.examples.pivot.imperativeocl.WhileExp;
 
 @SuppressWarnings("restriction")
@@ -89,6 +102,38 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 		pivotElement.setIsRequired(true);
 		return pivotElement;
 	}
+	public Object visitContextualProperty(ContextualProperty astNode) {
+		//Not Tested
+		org.eclipse.qvto.examples.pivot.qvtoperational.ContextualProperty pivotElement = 
+				(org.eclipse.qvto.examples.pivot.qvtoperational.ContextualProperty)converter.getPivot(astNode);
+		//	pivotElement.setType(resolveEClassifier(astNode.getEType()));
+		return pivotElement;
+	}
+
+	public Object visitDictLiteralExp(DictLiteralExp astNode) {
+		// Not Tested
+		org.eclipse.qvto.examples.pivot.imperativeocl.DictLiteralExp pivotElement = 
+				(org.eclipse.qvto.examples.pivot.imperativeocl.DictLiteralExp)converter.getPivot(astNode);
+		//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
+		return pivotElement;	
+	}
+	public Object visitDictLiteralPart(DictLiteralPart astNode) {
+		//Not Tested
+		org.eclipse.qvto.examples.pivot.imperativeocl.DictLiteralPart pivotElement = 
+				(org.eclipse.qvto.examples.pivot.imperativeocl.DictLiteralPart)converter.getPivot(astNode);
+		//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
+
+		return pivotElement;
+	}
+
+	public Object visitImperativeOperation(ImperativeOperation astNode) {
+		//Not Tested
+		org.eclipse.qvto.examples.pivot.qvtoperational.ImperativeOperation pivotElement =
+				(org.eclipse.qvto.examples.pivot.qvtoperational.ImperativeOperation) converter.getPivot(astNode);
+		//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
+		return pivotElement;
+
+	}
 
 	public Object visitMappingBody(MappingBody astNode) {
 		org.eclipse.qvto.examples.pivot.qvtoperational.MappingBody pivotElement = (org.eclipse.qvto.examples.pivot.qvtoperational.MappingBody) converter.getPivot(astNode);
@@ -98,10 +143,56 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 	@Override
 	public Object visitMappingCallExp(MappingCallExp astNode) {
 		org.eclipse.qvto.examples.pivot.qvtoperational.MappingCallExp pivotElement = (org.eclipse.qvto.examples.pivot.qvtoperational.MappingCallExp) converter.getPivot(astNode);
+
+		pivotElement.setReferredOperation(doProcess(Operation.class, astNode.getReferredOperation()));
+		pivotElement.setType(resolveEClassifier(astNode.getEType()));
+
 		//..
 		return pivotElement;
 	}
+	public Object visitInstantiationExp(InstantiationExp astNode) {
+		//Not Tested
+		org.eclipse.qvto.examples.pivot.imperativeocl.InstantiationExp pivotElement =
+				(org.eclipse.qvto.examples.pivot.imperativeocl.InstantiationExp ) converter.getPivot(astNode);
+		//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
+		return pivotElement;
 
+	}
+	public Object visitOrderedTupleLiteralExp(OrderedTupleLiteralExp astNode) {
+		//Not Tested
+		org.eclipse.qvto.examples.pivot.imperativeocl.OrderedTupleLiteralExp pivotElement =
+				(org.eclipse.qvto.examples.pivot.imperativeocl.OrderedTupleLiteralExp ) converter.getPivot(astNode);
+		//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
+		return pivotElement;
+	}
+	public Object visitOrderedTupleLiteralPart(OrderedTupleLiteralPart astNode) {		
+		// Not Tested
+		org.eclipse.qvto.examples.pivot.imperativeocl.OrderedTupleLiteralPart pivotElement =
+				(org.eclipse.qvto.examples.pivot.imperativeocl.OrderedTupleLiteralPart) converter.getPivot(astNode);
+		//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
+		return pivotElement;
+
+	}
+	public Object visitRaiseExp(RaiseExp astNode) {
+		// Not Tested
+		org.eclipse.qvto.examples.pivot.imperativeocl.RaiseExp pivotElement =
+				(org.eclipse.qvto.examples.pivot.imperativeocl.RaiseExp) converter.getPivot(astNode);
+		//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
+		return pivotElement;
+	}
+	public Object visitUnpackExp(UnpackExp astNode) {
+		// Not Tested
+		org.eclipse.qvto.examples.pivot.imperativeocl.UnpackExp pivotElement =
+				(org.eclipse.qvto.examples.pivot.imperativeocl.UnpackExp) converter.getPivot(astNode);
+		return pivotElement;
+	}
+
+	public Object visitUnlinkExp(UnlinkExp astNode) {
+		// Not Tested
+		org.eclipse.qvto.examples.pivot.imperativeocl.UnlinkExp pivotElement =
+				(org.eclipse.qvto.examples.pivot.imperativeocl.UnlinkExp) converter.getPivot(astNode);
+		return pivotElement;
+	}
 	public Object visitMappingOperation(MappingOperation astNode) {
 		org.eclipse.qvto.examples.pivot.qvtoperational.MappingOperation pivotElement = (org.eclipse.qvto.examples.pivot.qvtoperational.MappingOperation) converter.getPivot(astNode);
 		pivotElement.setType(resolveEClassifier(astNode.getEType()));
@@ -113,7 +204,8 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 		org.eclipse.qvto.examples.pivot.qvtoperational.ModelType pivotElement = (org.eclipse.qvto.examples.pivot.qvtoperational.ModelType) converter.getPivot(astNode);
 
 		//FIXME errors due to EcoreSwitch
-		//		pivotElement.getMetamodel().addAll(doProcessAll(org.eclipse.ocl.pivot.Package.class, astNode.getMetamodel()));
+			pivotElement.getMetamodel().addAll(doProcessAll(org.eclipse.ocl.pivot.Package.class, astNode.getMetamodel()));
+		
 		return pivotElement;
 	}
 
@@ -142,14 +234,14 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 	{
 		org.eclipse.qvto.examples.pivot.imperativeocl.SwitchExp pivotElement = 
 				(org.eclipse.qvto.examples.pivot.imperativeocl.SwitchExp) converter.getPivot(astNode);
-	//	pivotElement.setType(resolveEClassifier(astNode.getEType()));
+		//	pivotElement.setType(resolveEClassifier(astNode.getEType()));
 		return pivotElement;
 	}
 	public Object visitWhileExp(org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.WhileExp astNode)
 	{
 		org.eclipse.qvto.examples.pivot.imperativeocl.WhileExp pivotElement = 
 				(org.eclipse.qvto.examples.pivot.imperativeocl.WhileExp) converter.getPivot(astNode);
-//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
+		//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
 		return pivotElement;
 	}
 	public Object visitAltExp(AltExp astNode)
@@ -170,7 +262,7 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 	public Object visitAssertExp(AssertExp astNode) {
 		org.eclipse.qvto.examples.pivot.imperativeocl.AssertExp pivotElement = 
 				(org.eclipse.qvto.examples.pivot.imperativeocl.AssertExp) converter.getPivot(astNode);
-//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
+		//		pivotElement.setType(resolveEClassifier(astNode.getEType()));
 		return pivotElement;
 
 	}
@@ -197,10 +289,10 @@ public class TraditionalQVTo2PivotReferenceVisitor extends TraditionalOCL2PivotR
 				(org.eclipse.qvto.examples.pivot.imperativeocl.CatchExp) converter.getPivot(astNode);
 		pivotElement.setType(resolveEClassifier(astNode.getEType()));
 		//FIXME exceptions not handled
-//		for(EClassifier classifers: astNode.getExceptsion())
-//		{
-//			pivotElement.getException().add(resolveEClassifier(classifers));
-//		}
+		//		for(EClassifier classifers: astNode.getExceptsion())
+		//		{
+		//			pivotElement.getException().add(resolveEClassifier(classifers));
+		//		}
 		return pivotElement;
 	}
 	public Object visitContinueExp(ContinueExp astNode) {

@@ -8,5 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.qvto.examples.pivot.imperativeocl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/MMA"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/MMB"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ABC"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

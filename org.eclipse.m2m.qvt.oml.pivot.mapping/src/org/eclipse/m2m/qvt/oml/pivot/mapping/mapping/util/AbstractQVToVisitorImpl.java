@@ -49,6 +49,7 @@ import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.SendSignalAction;
 import org.eclipse.ocl.pivot.Element;
+import org.eclipse.ocl.pivot.utilities.MetamodelManager;
 import org.eclipse.ocl.utilities.AbstractVisitor;
 import org.eclipse.ocl.utilities.Visitable;
 
@@ -93,6 +94,7 @@ EObject, CallOperationAction, SendSignalAction, Constraint> implements QVTOperat
 			pivotElement = (EObject) ((Visitable)astNode).accept(this);
 		}
 		else {
+			
 				pivotElement = ecoreSwitch.doSwitch(astNode);
 		}
 		if (astNode.eContainer() == null) {

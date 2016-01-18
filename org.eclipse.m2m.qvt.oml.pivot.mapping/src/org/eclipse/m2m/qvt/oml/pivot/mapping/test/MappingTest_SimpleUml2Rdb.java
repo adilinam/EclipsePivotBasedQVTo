@@ -1,8 +1,9 @@
-
 package org.eclipse.m2m.qvt.oml.pivot.mapping.test;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -11,6 +12,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.m2m.qvt.oml.BasicModelExtent;
@@ -21,6 +23,8 @@ import org.eclipse.m2m.qvt.oml.mapping.pivot.test.QvtOperationalMappingArguments
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.FileOperationsUtil;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.QVToFacade;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMapping;
+import org.eclipse.ocl.pivot.resource.ASResource;
+import org.eclipse.qvto.examples.pivot.qvtoperational.utilities.QVTOperationalASResourceFactory;
 import org.junit.Test;
 
 import junit.framework.TestCase;
@@ -35,27 +39,55 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 	private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
 	@Test
 	public void testMapping() throws IOException {
+	
 		TraditionalToPivotMapping.CREATION.setState(true);
 		collectMappingArguments();
-//		try {
-			QVToFacade qvto = QVToFacade.newInstance();
-			// create Visitor for traditional object mapping
-			TraditionalToPivotMapping converter = new TraditionalToPivotMapping(qvto);
+		//		try {
+		QVToFacade qvto = QVToFacade.newInstance();
+		// create Visitor for traditional object mapping
+		TraditionalToPivotMapping converter = new TraditionalToPivotMapping(qvto);
 
-			org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation operationalTransformation = QvtOperationalMappingArgumentsContainer
-					.getInstance().getOperationalTransformation();
-			org.eclipse.ocl.pivot.Model pivotOperationalTransformation = converter.convert(operationalTransformation);
+		org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation operationalTransformation = QvtOperationalMappingArgumentsContainer
+				.getInstance().getOperationalTransformation();
+		org.eclipse.ocl.pivot.Model pivotOperationalTransformation = converter.convert(operationalTransformation);
 
-			
-			// Convert Ecore based Transformation to XML
-			FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, operationalTransformation, "traditionalAS");
-			// Convert Pivot based Transformation to XML
-			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotAS");
 
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		// Convert Ecore based Transformation to XML
+		FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, operationalTransformation, "traditionalAS_SimpleUml2Rdb");
+		// Convert Pivot based Transformation to XML
+		FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotAS_SimpleUml2Rdb");
+
+
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("qvtoas", QVTOperationalASResourceFactory.getInstance());
+		Resource asResource = resourceSet.getResource(URI.createURI("pivotAS_SimpleUml2Rdb.qvtoas"), true);
+		assert asResource instanceof ASResource;
+		for (Resource resource : resourceSet.getResources()) {
+			for (EObject eObject : resource.getContents()) {
+				assertNoValidationErrors(eObject);
+			}
+		}
+
+		//		} catch (Exception e) {
+			//			e.printStackTrace();
+		//		}
 	}
+
+	public static void assertNoValidationErrors(EObject eObject) {
+		Diagnostic diagnostic = Diagnostician.INSTANCE.validate(eObject);
+		List<Diagnostic> children = diagnostic.getChildren();
+		if (children.size() <= 0) {
+			return;
+		}
+		StringBuilder s = new StringBuilder();
+		s.append(children.size() + " validation errors");
+		for (Diagnostic child : children){
+			s.append("\n\t");
+			s.append(child.getMessage());
+		}
+		fail(s.toString());
+	}
+
 
 	/**
 	 * 
