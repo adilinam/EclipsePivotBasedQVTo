@@ -1,4 +1,3 @@
-
 package org.eclipse.m2m.qvt.oml.pivot.mapping.test;
 
 import java.io.IOException;
@@ -40,8 +39,10 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 	private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
 	@Test
 	public void testMapping() throws IOException {
+	
 		TraditionalToPivotMapping.CREATION.setState(true);
 		collectMappingArguments();
+
 //		try {
 			QVToFacade qvto = QVToFacade.newInstance();
 			// create Visitor for traditional object mapping
@@ -86,6 +87,7 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
         }
         fail(s.toString());
     }
+
 
 
 	/**

@@ -47,7 +47,7 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 {
 	private final @NonNull EPackage oclStdLibPackage;
 	private final @NonNull EnvironmentFactoryInternal environmentFactory;
-	private final /*@NonNull*/ org.eclipse.ocl.pivot.internal.manager.PivotMetamodelManager metamodelManager;
+	protected final /*@NonNull*/ org.eclipse.ocl.pivot.internal.manager.PivotMetamodelManager metamodelManager;
 	private final /*@NonNull*/ org.eclipse.ocl.pivot.StandardLibrary standardLibrary;
 	private final /*@NonNull*/ org.eclipse.ocl.pivot.internal.complete.CompleteModelInternal completeModel;
 
@@ -223,8 +223,10 @@ public abstract class TraditionalOCL2PivotReferenceVisitor extends AbstractQVToV
 			commonType = standardLibrary.getOclVoidType();
 		}
 		String collectionTypeName = astNode.getKind().getName();
+		
 		org.eclipse.ocl.pivot.Type collectionType = metamodelManager.getCollectionType(collectionTypeName, commonType, isNullFree, null, null);
 		pivotElement.setKind(pivotElement.getKind());
+		
 		pivotElement.setType(collectionType);
 		pivotElement.setIsRequired(isNullFree);
 		return pivotElement;

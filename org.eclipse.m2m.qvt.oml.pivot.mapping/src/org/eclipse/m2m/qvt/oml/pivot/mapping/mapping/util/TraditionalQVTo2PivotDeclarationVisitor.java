@@ -67,6 +67,7 @@ import org.eclipse.ocl.pivot.Class;
 import org.eclipse.ocl.pivot.Element;
 import org.eclipse.ocl.pivot.LanguageExpression;
 import org.eclipse.ocl.pivot.OCLExpression;
+import org.eclipse.ocl.pivot.Package;
 import org.eclipse.ocl.pivot.Parameter;
 import org.eclipse.ocl.pivot.PivotFactory;
 import org.eclipse.ocl.pivot.Package;
@@ -333,6 +334,8 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 	public Object visitMappingCallExp(MappingCallExp astNode) {
 		org.eclipse.qvto.examples.pivot.qvtoperational.MappingCallExp pivotElement =
 				converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createMappingCallExp());
+	
+		pivotElement.getOwnedArguments().addAll(doProcessAll(OCLExpression.class, astNode.getArgument()));
 		pivotElement.setName(astNode.getName());
 		return pivotElement;
 	}
@@ -358,6 +361,10 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 	public Object visitModelType(ModelType astNode) {
 		org.eclipse.qvto.examples.pivot.qvtoperational.ModelType pivotElement =
 				converter.addCreated(astNode, QVTOperationalFactory.eINSTANCE.createModelType());
+		
+
+//		pivotElement.getMetamodel().addAll(doProcessAll(Package.class, astNode.getMetamodel()));
+
 		pivotElement.setName(astNode.getName());
 		
 		EList<EPackage> packages = astNode.getMetamodel();
@@ -415,6 +422,7 @@ public class TraditionalQVTo2PivotDeclarationVisitor extends TraditionalOCL2Pivo
 			pivotElement.setName(astNode.getName());
 			pivotElement.setOwnedSource(doProcess(org.eclipse.ocl.pivot.OCLExpression.class, astNode.getSource()));
 			pivotElement.getOwnedArguments().addAll(doProcessAll(org.eclipse.ocl.pivot.OCLExpression.class, astNode.getArgument()));
+			
 			pivotElement.setIsVirtual(((ImperativeCallExp) astNode).isIsVirtual());
 			return pivotElement;
 		}
