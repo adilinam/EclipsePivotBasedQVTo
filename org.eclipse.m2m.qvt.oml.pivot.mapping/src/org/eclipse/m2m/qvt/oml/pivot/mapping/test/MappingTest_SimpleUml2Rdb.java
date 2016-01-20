@@ -43,34 +43,35 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 		TraditionalToPivotMapping.CREATION.setState(true);
 		collectMappingArguments();
 
-//		try {
-			QVToFacade qvto = QVToFacade.newInstance();
-			// create Visitor for traditional object mapping
-			TraditionalToPivotMapping converter = new TraditionalToPivotMapping(qvto);
+		//		try {
+		QVToFacade qvto = QVToFacade.newInstance();
+		// create Visitor for traditional object mapping
+		TraditionalToPivotMapping converter = new TraditionalToPivotMapping(qvto);
 
-			org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation operationalTransformation = QvtOperationalMappingArgumentsContainer
-					.getInstance().getOperationalTransformation();
-			org.eclipse.ocl.pivot.Model pivotOperationalTransformation = converter.convert(operationalTransformation);
+		org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation operationalTransformation = QvtOperationalMappingArgumentsContainer
+				.getInstance().getOperationalTransformation();
+		org.eclipse.ocl.pivot.Model pivotOperationalTransformation = converter.convert(operationalTransformation);
 
-			
-			// Convert Ecore based Transformation to XML
-			FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, operationalTransformation, "traditionalAS_SimpleUml2Rdb");
-			// Convert Pivot based Transformation to XML
-			FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotAS_SimpleUml2Rdb");
 
-			ResourceSet resourceSet = new ResourceSetImpl();
-            resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("qvtoas", QVTOperationalASResourceFactory.getInstance());
-            Resource asResource = resourceSet.getResource(URI.createURI("pivotAS_SimpleUml2Rdb.qvtoas"), true);
-            assert asResource instanceof ASResource;
-            for (Resource resource : resourceSet.getResources()) {
-                for (EObject eObject : resource.getContents()) {
-                    assertNoValidationErrors(eObject);
-                }
-            }
-			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		// Convert Ecore based Transformation to XML
+		FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, operationalTransformation, "traditionalAS_SimpleUml2Rdb");
+		// Convert Pivot based Transformation to XML
+		FileOperationsUtil.writePivotQVTOperationToXML(qvto, pivotOperationalTransformation, "pivotAS_SimpleUml2Rdb");
+
+
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("qvtoas", QVTOperationalASResourceFactory.getInstance());
+		Resource asResource = resourceSet.getResource(URI.createURI("pivotAS_SimpleUml2Rdb.qvtoas"), true);
+		assert asResource instanceof ASResource;
+		for (Resource resource : resourceSet.getResources()) {
+			for (EObject eObject : resource.getContents()) {
+				assertNoValidationErrors(eObject);
+			}
+		}
+
+		//		} catch (Exception e) {
+			//			e.printStackTrace();
+		//		}
 	}
 	
 	public static void assertNoValidationErrors(EObject eObject) {
