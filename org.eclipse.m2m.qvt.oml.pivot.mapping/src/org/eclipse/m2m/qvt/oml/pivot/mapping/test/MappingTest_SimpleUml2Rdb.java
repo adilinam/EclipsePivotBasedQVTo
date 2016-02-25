@@ -54,8 +54,7 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 		
 		TraditionalToPivotMapping.CREATION.setState(true);
 		collectMappingArguments();
-	
-		
+
 		//		try {
 		QVToFacade qvto = QVToFacade.newInstance();
 		// create Visitor for traditional object mapping
@@ -64,7 +63,12 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 		org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation operationalTransformation = QvtOperationalMappingArgumentsContainer
 				.getInstance().getOperationalTransformation();
 		org.eclipse.ocl.pivot.Model pivotOperationalTransformation = converter.convert(operationalTransformation);
-
+		
+		
+		//TODO need evaluationEnvironment for this to pass it to the base class OclEvaluationVisitor 
+		
+		EvaluationEnvironment environment=null; 
+		QVToPivotEvaluationVisitor qvtoPivotEvaluationVisitor= new QVToPivotEvaluationVisitor(environment);
 		
 		
 	//	operationalTransformation.accept(evaluationVisitor);
@@ -80,29 +84,26 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 		assert asResource instanceof ASResource;
 		for (Resource resource : resourceSet.getResources()) {
 			for (EObject eObject : resource.getContents()) {
-		//		assertNoValidationErrors(eObject);
+				assertNoValidationErrors(eObject);
 			}
 		}
 
-		//		} catch (Exception e) {
-			//			e.printStackTrace();
-		//		}
 	}
-
+	
 	public static void assertNoValidationErrors(EObject eObject) {
-		Diagnostic diagnostic = Diagnostician.INSTANCE.validate(eObject);
-		List<Diagnostic> children = diagnostic.getChildren();
-		if (children.size() <= 0) {
-			return;
-		}
-		StringBuilder s = new StringBuilder();
-		s.append(children.size() + " validation errors");
-		for (Diagnostic child : children){
-			s.append("\n\t");
-			s.append(child.getMessage());
-		}
-		fail(s.toString());
-	}
+        Diagnostic diagnostic = Diagnostician.INSTANCE.validate(eObject);
+        List<Diagnostic> children = diagnostic.getChildren();
+        if (children.size() <= 0) {
+            return;
+        }
+        StringBuilder s = new StringBuilder();
+        s.append(children.size() + " validation errors");
+        for (Diagnostic child : children){
+            s.append("\n\t");
+            s.append(child.getMessage());
+        }
+        fail(s.toString());
+    }
 
 
 	/**

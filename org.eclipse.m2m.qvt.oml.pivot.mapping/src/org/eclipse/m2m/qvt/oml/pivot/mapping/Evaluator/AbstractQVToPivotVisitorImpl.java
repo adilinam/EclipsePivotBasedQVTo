@@ -81,8 +81,8 @@ implements org.eclipse.qvto.examples.pivot.qvtoperational.util.QVTOperationalVis
 	}
 	
 	
-	protected AbstractQVToPivotVisitorImpl( TraditionalToPivotMapping converter,  EvaluationEnvironment evaluationEnvironment) {
-		super(evaluationEnvironment);		
+	protected AbstractQVToPivotVisitorImpl(EvaluationEnvironment environment) {
+		super(environment);		
 	}
 	
 	public Object visiting(Object astNode) {

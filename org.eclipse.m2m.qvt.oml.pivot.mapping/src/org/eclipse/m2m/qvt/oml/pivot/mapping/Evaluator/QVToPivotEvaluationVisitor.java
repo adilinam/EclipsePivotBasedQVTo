@@ -6,15 +6,14 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.Evaluator.AbstractQVToPivotVisitorImpl.AbstractEcoreSwitch;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMapping;
 import org.eclipse.ocl.pivot.Element;
+import org.eclipse.ocl.pivot.evaluation.EvaluationEnvironment;
 import org.eclipse.ocl.pivot.internal.evaluation.OCLEvaluationVisitor;
 import org.eclipse.qvto.examples.pivot.qvtoperational.util.QVTOperationalAdapterFactory;
 
 @SuppressWarnings("restriction")
 public  class QVToPivotEvaluationVisitor  extends OCLPivotEvaluationVisitor
 {
-	protected QVToPivotEvaluationVisitor(TraditionalToPivotMapping converter, AbstractEcoreSwitch ecoreSwitch) {
-		super(converter, ecoreSwitch);
-	}
+	
 
 	protected static class OCLEcoreSwitch extends AbstractEcoreSwitch
 	{
@@ -28,8 +27,8 @@ public  class QVToPivotEvaluationVisitor  extends OCLPivotEvaluationVisitor
 		}
 	}
 
-	public QVToPivotEvaluationVisitor(TraditionalToPivotMapping converter) {
-		super(converter, new OCLEcoreSwitch(converter));
+	public QVToPivotEvaluationVisitor(EvaluationEnvironment environment) {
+		super(environment);
 	}
 
 	public Object visiting(Object astNode) {

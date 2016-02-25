@@ -38,8 +38,8 @@ import org.eclipse.qvto.examples.pivot.imperativeocl.WhileExp;
 
 public class OCLPivotEvaluationVisitor extends AbstractQVToPivotVisitorImpl {
 
-	protected OCLPivotEvaluationVisitor(TraditionalToPivotMapping converter, AbstractEcoreSwitch ecoreSwitch) {
-		super(converter, null);
+	protected OCLPivotEvaluationVisitor(EvaluationEnvironment environment) {
+		super(environment);
 		
 		// TODO Auto-generated constructor stub
 	}
