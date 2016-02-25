@@ -1,5 +1,6 @@
 package org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
@@ -206,6 +207,9 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 		org.eclipse.ocl.pivot.PropertyCallExp pivotElement =
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createPropertyCallExp());
 		pivotElement.setOwnedSource(doProcess(org.eclipse.ocl.pivot.OCLExpression.class, astNode.getSource()));
+		EClass a = pivotElement.eClass();
+		OCLExpression b = pivotElement.getOwnedSource();
+		EObject e = b.eContainer();
 		//FIXME returning null Property from ecoreSwitch.doSwitch
 //		Property property=doProcess(Property.class, astNode.getReferredProperty());
 //		if(property!=null)

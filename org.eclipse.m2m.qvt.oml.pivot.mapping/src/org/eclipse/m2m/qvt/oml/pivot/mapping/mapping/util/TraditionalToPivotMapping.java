@@ -6,6 +6,7 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.m2m.qvt.oml.pivot.mapping.Evaluator.QVToPivotEvaluationVisitor;
 import org.eclipse.ocl.pivot.CompleteModel;
 import org.eclipse.ocl.pivot.Element;
 import org.eclipse.ocl.pivot.PivotFactory;
@@ -35,7 +36,6 @@ public class TraditionalToPivotMapping
 	protected final QVToFacade qvto;
 	protected final @NonNull TraditionalQVTo2PivotDeclarationVisitor declarationVisitor;
 	protected final @NonNull TraditionalQVTo2PivotReferenceVisitor referenceVisitor;
-	
 	
 	private final @NonNull Map<org.eclipse.ocl.utilities.Visitable, org.eclipse.ocl.pivot.Element> traditional2pivot
 		= new HashMap<org.eclipse.ocl.utilities.Visitable, org.eclipse.ocl.pivot.Element>();
