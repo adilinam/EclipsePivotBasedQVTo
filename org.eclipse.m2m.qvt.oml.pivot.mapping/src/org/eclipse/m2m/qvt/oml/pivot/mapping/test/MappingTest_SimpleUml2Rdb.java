@@ -1,5 +1,6 @@
 package org.eclipse.m2m.qvt.oml.pivot.mapping.test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,10 +21,19 @@ import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.eclipse.m2m.qvt.oml.mapping.pivot.test.QvtOperationalMappingArgumentsContainer;
+import org.eclipse.m2m.qvt.oml.pivot.mapping.Evaluator.QVToPivotEvaluationVisitor;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.FileOperationsUtil;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.QVToFacade;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMapping;
+import org.eclipse.ocl.pivot.ExpressionInOCL;
+import org.eclipse.ocl.pivot.Package;
+import org.eclipse.ocl.pivot.evaluation.EvaluationEnvironment;
+import org.eclipse.ocl.pivot.evaluation.EvaluationVisitor;
+import org.eclipse.ocl.pivot.internal.evaluation.OCLEvaluationVisitor;
+import org.eclipse.ocl.pivot.internal.resource.ASResourceFactoryRegistry;
+import org.eclipse.ocl.pivot.internal.utilities.EnvironmentFactoryInternal;
 import org.eclipse.ocl.pivot.resource.ASResource;
+import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.qvto.examples.pivot.qvtoperational.utilities.QVTOperationalASResourceFactory;
 import org.junit.Test;
 
@@ -37,11 +47,14 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 
 	private static final String qvtoFileUri = System.getProperty("user.dir")+"/Example/Simpleuml_To_Rdb.qvto";
 	private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
+	
 	@Test
 	public void testMapping() throws IOException {
 	
+		
 		TraditionalToPivotMapping.CREATION.setState(true);
 		collectMappingArguments();
+
 		//		try {
 		QVToFacade qvto = QVToFacade.newInstance();
 		// create Visitor for traditional object mapping
@@ -50,8 +63,15 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 		org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation operationalTransformation = QvtOperationalMappingArgumentsContainer
 				.getInstance().getOperationalTransformation();
 		org.eclipse.ocl.pivot.Model pivotOperationalTransformation = converter.convert(operationalTransformation);
-
-
+		
+		
+		//TODO need evaluationEnvironment for this to pass it to the base class OclEvaluationVisitor 
+		
+		EvaluationEnvironment environment=null; 
+		QVToPivotEvaluationVisitor qvtoPivotEvaluationVisitor= new QVToPivotEvaluationVisitor(environment);
+		
+		
+	//	operationalTransformation.accept(evaluationVisitor);
 		// Convert Ecore based Transformation to XML
 		FileOperationsUtil.writeTraditionalQVTOperationToXML(qvto, operationalTransformation, "traditionalAS_SimpleUml2Rdb");
 		// Convert Pivot based Transformation to XML
@@ -68,25 +88,22 @@ public class MappingTest_SimpleUml2Rdb extends TestCase {
 			}
 		}
 
-		//		} catch (Exception e) {
-			//			e.printStackTrace();
-		//		}
 	}
-
+	
 	public static void assertNoValidationErrors(EObject eObject) {
-		Diagnostic diagnostic = Diagnostician.INSTANCE.validate(eObject);
-		List<Diagnostic> children = diagnostic.getChildren();
-		if (children.size() <= 0) {
-			return;
-		}
-		StringBuilder s = new StringBuilder();
-		s.append(children.size() + " validation errors");
-		for (Diagnostic child : children){
-			s.append("\n\t");
-			s.append(child.getMessage());
-		}
-		fail(s.toString());
-	}
+        Diagnostic diagnostic = Diagnostician.INSTANCE.validate(eObject);
+        List<Diagnostic> children = diagnostic.getChildren();
+        if (children.size() <= 0) {
+            return;
+        }
+        StringBuilder s = new StringBuilder();
+        s.append(children.size() + " validation errors");
+        for (Diagnostic child : children){
+            s.append("\n\t");
+            s.append(child.getMessage());
+        }
+        fail(s.toString());
+    }
 
 
 	/**
