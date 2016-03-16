@@ -41,6 +41,7 @@ import org.eclipse.ocl.pivot.values.CollectionValue.Accumulator;
 import org.eclipse.ocl.pivot.values.InvalidValueException;
 import org.eclipse.ocl.pivot.values.NullValue;
 import org.eclipse.qvtd.pivot.qvtbase.BaseModel;
+import org.eclipse.qvtd.pivot.qvtbase.DebugTraceBack;
 import org.eclipse.qvtd.pivot.qvtbase.Domain;
 import org.eclipse.qvtd.pivot.qvtbase.Function;
 import org.eclipse.qvtd.pivot.qvtbase.FunctionParameter;
@@ -463,5 +464,11 @@ public class QVTiEvaluationVisitor extends BasicEvaluationVisitor implements IQV
 			return false;
 		}
         return true;
+	}
+
+	@Override
+	public Object visitDebugTraceBack(@NonNull DebugTraceBack object) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
