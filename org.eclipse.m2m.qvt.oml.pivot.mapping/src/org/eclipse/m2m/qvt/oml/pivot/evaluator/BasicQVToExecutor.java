@@ -27,7 +27,7 @@ import org.eclipse.ocl.pivot.utilities.ClassUtil;
 import org.eclipse.ocl.pivot.utilities.EnvironmentFactory;
 import org.eclipse.ocl.pivot.utilities.PivotUtil;
 import org.eclipse.ocl.xtext.completeocl.CompleteOCLStandaloneSetup;
-import org.eclipse.qvtd.pivot.qvtbase.Transformation;
+import org.eclipse.qvt.declarative.ecore.QVTBase.Transformation;
 import org.eclipse.qvtd.pivot.qvtcorebase.PropertyAssignment;
 import org.eclipse.qvtd.pivot.qvtcorebase.RealizedVariable;
 import org.eclipse.qvtd.pivot.qvtimperative.Mapping;
@@ -144,13 +144,8 @@ public class BasicQVToExecutor extends AbstractExecutor implements QVTiExecutor
 		return null;
 	}
 
-	@Override
-	public @Nullable Object internalExecuteTransformation(@NonNull Transformation transformation,
-			@NonNull EvaluationVisitor undecoratedVisitor) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public void execute() {
+	
+	public Boolean execute() {
 		initializeEvaluationEnvironment(transformation);
 		getRootEvaluationEnvironment();
 //		Variable ownedContext = QVTbaseUtil.getContextVariable(standardLibrary, transformation);
@@ -162,9 +157,30 @@ public class BasicQVToExecutor extends AbstractExecutor implements QVTiExecutor
        
 		// TODO Auto-generated method stub
 		transformation.accept(createQVToPivotEvaluationVisitor());
+		return null;
 		
 	}
-
+	public void createModel(@NonNull String outName, @NonNull URI outURI, @Nullable String contentType) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public @Nullable Object internalExecuteTransformation(
+			org.eclipse.qvtd.pivot.qvtbase.@NonNull Transformation transformation,
+			@NonNull EvaluationVisitor undecoratedVisitor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void loadModel(@NonNull String inName, @NonNull URI inURI, @Nullable String contentType) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void saveModels() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 
 

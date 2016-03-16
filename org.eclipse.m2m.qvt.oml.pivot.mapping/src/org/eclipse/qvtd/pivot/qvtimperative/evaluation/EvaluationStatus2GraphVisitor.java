@@ -30,7 +30,7 @@ import org.eclipse.qvtd.pivot.qvtimperative.evaluationstatus.TransformationStatu
 import org.eclipse.qvtd.pivot.qvtimperative.evaluationstatus.util.AbstractExtendingEvaluationStatusVisitor;
 import org.eclipse.qvtd.pivot.qvtimperative.utilities.GraphBuilder;
 
-public class EvaluationStatus2GraphVisitor extends AbstractExtendingEvaluationStatusVisitor<String, GraphBuilder>
+class EvaluationStatus2GraphVisitor extends AbstractExtendingEvaluationStatusVisitor<String, GraphBuilder>
 {
 	protected static @NonNull String NULL_PLACEHOLDER = "\"<null>\""; //$NON-NLS-1$
 
