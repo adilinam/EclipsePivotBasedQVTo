@@ -1,9 +1,13 @@
 package org.eclipse.m2m.qvt.oml.pivot.evaluator;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMapping;
-import org.eclipse.ocl.pivot.evaluation.EvaluationEnvironment;
-import org.eclipse.ocl.pivot.internal.evaluation.BasicEvaluationEnvironment;
+import org.eclipse.ocl.EvaluationHaltedException;
+import org.eclipse.ocl.pivot.OCLExpression;
+import org.eclipse.ocl.pivot.internal.manager.PivotMetamodelManager;
+import org.eclipse.ocl.pivot.utilities.ClassUtil;
 import org.eclipse.qvto.examples.pivot.imperativeocl.AltExp;
 import org.eclipse.qvto.examples.pivot.imperativeocl.AssertExp;
 import org.eclipse.qvto.examples.pivot.imperativeocl.AssignExp;
@@ -17,8 +21,7 @@ import org.eclipse.qvto.examples.pivot.imperativeocl.DictLiteralPart;
 import org.eclipse.qvto.examples.pivot.imperativeocl.DictionaryType;
 import org.eclipse.qvto.examples.pivot.imperativeocl.ForExp;
 import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeExpression;
-import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeIterateExp;
-import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeLoopExp;
+import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeIterateExp;import org.eclipse.qvto.examples.pivot.imperativeocl.ImperativeLoopExp;
 import org.eclipse.qvto.examples.pivot.imperativeocl.InstantiationExp;
 import org.eclipse.qvto.examples.pivot.imperativeocl.ListLiteralExp;
 import org.eclipse.qvto.examples.pivot.imperativeocl.ListType;
@@ -35,199 +38,222 @@ import org.eclipse.qvto.examples.pivot.imperativeocl.UnlinkExp;
 import org.eclipse.qvto.examples.pivot.imperativeocl.UnpackExp;
 import org.eclipse.qvto.examples.pivot.imperativeocl.VariableInitExp;
 import org.eclipse.qvto.examples.pivot.imperativeocl.WhileExp;
+import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
 
-public class OCLPivotEvaluationVisitor extends AbstractQVToPivotVisitorImpl {
+public class OCLPivotEvaluationVisitor extends AbstractQVToPivotVisitorImpl  {
 
-	protected OCLPivotEvaluationVisitor(EvaluationEnvironment environment) {
-		super(environment);
-		
-		// TODO Auto-generated constructor stub
-	}
 
-	@Override
-	public @Nullable Object visitAltExp(AltExp object) {
+	
+
+	protected OCLPivotEvaluationVisitor(BasicQVToExecutor basicQVToExecutor) 
+	{
+		super(basicQVToExecutor);
+
+		}
+
+	private @Nullable OperationalTransformation loadTransformation(@NonNull PivotMetamodelManager metamodelManager) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitAssertExp(AssertExp object) {
+	public @Nullable Object visitAltExp(AltExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitAssignExp(AssignExp object) {
+	public @Nullable Object visitAssertExp(AssertExp astNode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public Object visitExpression(OCLExpression expression) {
+        try {
+            return expression.accept(this);
+        } catch (EvaluationHaltedException e) {
+        	// evaluation stopped on demand, propagate further
+        	throw e;
+        }
+	}
+
+	@Override
+	public @Nullable Object visitAssignExp(AssignExp astNode) {
+		// TODO Auto-generated method stub
+		Object exprValue = null;
+		for (OCLExpression exp : astNode.getValue()) {
+			
+			exprValue = visitExpression(exp);
+		}
+		return null;
+	}
+
+	@Override
+	public @Nullable Object visitBlockExp(BlockExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitBlockExp(BlockExp object) {
+	public @Nullable Object visitBreakExp(BreakExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitBreakExp(BreakExp object) {
+	public @Nullable Object visitCatchExp(CatchExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitCatchExp(CatchExp object) {
+	public @Nullable Object visitComputeExp(ComputeExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitComputeExp(ComputeExp object) {
+	public @Nullable Object visitContinueExp(ContinueExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitContinueExp(ContinueExp object) {
+	public @Nullable Object visitDictLiteralExp(DictLiteralExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitDictLiteralExp(DictLiteralExp object) {
+	public @Nullable Object visitDictLiteralPart(DictLiteralPart astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitDictLiteralPart(DictLiteralPart object) {
+	public @Nullable Object visitDictionaryType(DictionaryType astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitDictionaryType(DictionaryType object) {
+	public @Nullable Object visitForExp(ForExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitForExp(ForExp object) {
+	public @Nullable Object visitImperativeExpression(ImperativeExpression astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitImperativeExpression(ImperativeExpression object) {
+	public @Nullable Object visitImperativeIterateExp(ImperativeIterateExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitImperativeIterateExp(ImperativeIterateExp object) {
+	public @Nullable Object visitImperativeLoopExp(ImperativeLoopExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitImperativeLoopExp(ImperativeLoopExp object) {
+	public @Nullable Object visitInstantiationExp(InstantiationExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitInstantiationExp(InstantiationExp object) {
+	public @Nullable Object visitListLiteralExp(ListLiteralExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitListLiteralExp(ListLiteralExp object) {
+	public @Nullable Object visitListType(ListType astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitListType(ListType object) {
+	public @Nullable Object visitLogExp(LogExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitLogExp(LogExp object) {
+	public @Nullable Object visitOrderedTupleLiteralExp(OrderedTupleLiteralExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitOrderedTupleLiteralExp(OrderedTupleLiteralExp object) {
+	public @Nullable Object visitOrderedTupleLiteralPart(OrderedTupleLiteralPart astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitOrderedTupleLiteralPart(OrderedTupleLiteralPart object) {
+	public @Nullable Object visitOrderedTupleType(OrderedTupleType astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitOrderedTupleType(OrderedTupleType object) {
+	public @Nullable Object visitRaiseExp(RaiseExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitRaiseExp(RaiseExp object) {
+	public @Nullable Object visitReturnExp(ReturnExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitReturnExp(ReturnExp object) {
+	public @Nullable Object visitSwitchExp(SwitchExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitSwitchExp(SwitchExp object) {
+	public @Nullable Object visitTryExp(TryExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitTryExp(TryExp object) {
+	public @Nullable Object visitTypedef(Typedef astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitTypedef(Typedef object) {
+	public @Nullable Object visitUnlinkExp(UnlinkExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitUnlinkExp(UnlinkExp object) {
+	public @Nullable Object visitUnpackExp(UnpackExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitUnpackExp(UnpackExp object) {
+	public @Nullable Object visitVariableInitExp(VariableInitExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public @Nullable Object visitVariableInitExp(VariableInitExp object) {
+	public @Nullable Object visitWhileExp(WhileExp astNode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public @Nullable Object visitWhileExp(WhileExp object) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

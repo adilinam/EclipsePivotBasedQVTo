@@ -3,7 +3,6 @@ package org.eclipse.m2m.qvt.oml.pivot.evaluator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.m2m.qvt.oml.pivot.evaluator.AbstractQVToPivotVisitorImpl.AbstractEcoreSwitch;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMapping;
 import org.eclipse.ocl.pivot.Element;
 import org.eclipse.ocl.pivot.evaluation.EvaluationEnvironment;
@@ -15,20 +14,10 @@ public  class QVToPivotEvaluationVisitor  extends OCLPivotEvaluationVisitor
 {
 	
 
-	protected static class OCLEcoreSwitch extends AbstractEcoreSwitch
-	{
-		public OCLEcoreSwitch(@NonNull TraditionalToPivotMapping converter) {
-			super(converter);
-		}
 
-		@Override
-		public Element caseEPackage(EPackage object) {
-			return super.caseEPackage(object);
-		}
-	}
-
-	public QVToPivotEvaluationVisitor(EvaluationEnvironment environment) {
-		super(environment);
+	public QVToPivotEvaluationVisitor(BasicQVToExecutor basicQVToExecutor) {
+		super(basicQVToExecutor);
+		
 	}
 
 	public Object visiting(Object astNode) {
@@ -41,7 +30,10 @@ public  class QVToPivotEvaluationVisitor  extends OCLPivotEvaluationVisitor
 		return visiting(astNode);
 	}
 	public Object  visitConstructorBody( org.eclipse.qvto.examples.pivot.qvtoperational.ConstructorBody astNode) {
-		return visiting(astNode);
+		
+		doProcessAll(astNode.getContent());
+		
+		return null;// visiting(astNode);
 	}
 	public Object  visitContextualProperty( org.eclipse.qvto.examples.pivot.qvtoperational.ContextualProperty astNode) {
 		return visiting(astNode);
@@ -71,13 +63,15 @@ public  class QVToPivotEvaluationVisitor  extends OCLPivotEvaluationVisitor
 		return visiting(astNode);
 	}
 	public Object visitMappingBody( org.eclipse.qvto.examples.pivot.qvtoperational.MappingBody astNode) {
-		return visiting(astNode);
+		doProcessAll(astNode.getContent());
+		return null;
 	}
 	public Object  visitMappingCallExp( org.eclipse.qvto.examples.pivot.qvtoperational.MappingCallExp astNode) {
 		return visiting(astNode);
 	}
 	public Object  visitMappingOperation( org.eclipse.qvto.examples.pivot.qvtoperational.MappingOperation astNode) {
-		return visiting(astNode);
+		doProcess(astNode.getBody());
+		return null;
 	}
 	public Object  visitMappingParameter( org.eclipse.qvto.examples.pivot.qvtoperational.MappingParameter astNode) {
 		return visiting(astNode);
@@ -96,13 +90,16 @@ public  class QVToPivotEvaluationVisitor  extends OCLPivotEvaluationVisitor
 		return visiting(astNode);
 	}
 	public Object  visitObjectExp( org.eclipse.qvto.examples.pivot.qvtoperational.ObjectExp astNode) {
-		return visiting(astNode);
+		doProcess(astNode.getBody());
+		return null;
 	}
 	public Object  visitOperationBody(  org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody astNode) {
 		return visiting(astNode);
 	}
 	public Object  visitOperationalTransformation( org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation astNode) {
-		return visiting(astNode);
+	doProcessAll(astNode.getOwnedOperations());
+		
+		return null;
 	}
 	public Object  visitResolveExp( org.eclipse.qvto.examples.pivot.qvtoperational.ResolveExp astNode) {
 		return visiting(astNode);
