@@ -8,21 +8,22 @@
  * Contributors:
  *     E.D.Willink - initial API and implementation
  *******************************************************************************/
-package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.ocl.pivot.Element;
 import org.eclipse.ocl.pivot.internal.evaluation.BasicEvaluationEnvironment;
-import org.eclipse.qvtd.pivot.qvtbase.Transformation;
 import org.eclipse.qvtd.pivot.qvtcorebase.analysis.DomainUsage;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiExecutor;
 import org.eclipse.qvtd.pivot.qvtimperative.utilities.QVTimperativeDomainUsageAnalysis;
+import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
 
-public class QVTiRootEvaluationEnvironment extends BasicEvaluationEnvironment implements QVTiEvaluationEnvironment
+public class QVTiRootEvaluationEnvironment extends BasicEvaluationEnvironment implements org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiEvaluationEnvironment
 {
 //	private @Nullable QVTimperativeDomainUsageAnalysis usageAnalysis;
 
-	public QVTiRootEvaluationEnvironment(@NonNull QVTiExecutor executor, @NonNull Transformation executableObject) {
+	public QVTiRootEvaluationEnvironment(@NonNull QVTiExecutor executor, @NonNull OperationalTransformation executableObject) {
 		super(executor, executableObject);
 	}
 
@@ -32,15 +33,15 @@ public class QVTiRootEvaluationEnvironment extends BasicEvaluationEnvironment im
 	}
 
 	@Override
-	public @NonNull QVTiRootEvaluationEnvironment getRootEvaluationEnvironment() {
+	public  QVTiRootEvaluationEnvironment getRootEvaluationEnvironment() {
 		return this;
 	}
 
 	@Override
-	public @NonNull Transformation getTransformation() {
+	public @NonNull OperationalTransformation getTransformation() {
 		Object executableObject2 = executableObject;
 		assert executableObject2 != null;
-		return (Transformation) executableObject2;
+		return (OperationalTransformation) executableObject2;
 	}
 	
 	@Override

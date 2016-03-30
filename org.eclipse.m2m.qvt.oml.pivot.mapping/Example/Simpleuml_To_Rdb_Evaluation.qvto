@@ -4,5 +4,28 @@ modeltype A uses 'http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleum
 modeltype B uses 'http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb';
 
 mapping main(in model: simpleuml::Model) : rdb::Model {
-	name := model.name; 
+	name := "A"+model.name; 
+	if(model.name.=("amodel"))
+	{
+		name := "A"+model.name; 
+	}
+	else
+	{
+		name := "B"+model.name; 
+	
+	};
+	name:=model.toString();
+	try{
+		while(model.name.=("Amodel"))
+		{
+			if(name="BModel")
+			{
+				break;
+			};	
+		}
+	}
+	except(Exception)
+	{
+		
+	}
 } 

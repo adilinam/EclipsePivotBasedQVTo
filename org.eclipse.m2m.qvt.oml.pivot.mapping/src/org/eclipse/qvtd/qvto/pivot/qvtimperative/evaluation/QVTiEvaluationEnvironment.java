@@ -8,7 +8,7 @@
  * Contributors:
  *     E.D.Willink - initial API and implementation
  *******************************************************************************/
-package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -16,12 +16,15 @@ import org.eclipse.ocl.pivot.Element;
 import org.eclipse.ocl.pivot.evaluation.EvaluationEnvironment;
 import org.eclipse.qvtd.pivot.qvtbase.Transformation;
 import org.eclipse.qvtd.pivot.qvtcorebase.analysis.DomainUsage;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiExecutor;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiRootEvaluationEnvironment;
+import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
 
 public interface QVTiEvaluationEnvironment extends EvaluationEnvironment.EvaluationEnvironmentExtension
 {
 	@Override
 	@NonNull QVTiExecutor getExecutor();
-	@NonNull QVTiRootEvaluationEnvironment getRootEvaluationEnvironment();
-	@NonNull Transformation getTransformation();
+	 org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiRootEvaluationEnvironment getRootEvaluationEnvironment();
+	@NonNull  OperationalTransformation getTransformation();
 	@Nullable DomainUsage getUsageFor(@NonNull Element element);
 }

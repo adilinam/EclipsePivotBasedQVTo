@@ -8,7 +8,7 @@
  * Contributors:
  *     Horacio Hoyos - initial API and implementation
  ******************************************************************************/
-package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +43,8 @@ import org.eclipse.ocl.pivot.utilities.XMIUtil;
 import org.eclipse.qvtd.pivot.qvtbase.Transformation;
 import org.eclipse.qvtd.pivot.qvtbase.TypedModel;
 import org.eclipse.qvtd.pivot.qvtcorebase.analysis.DomainUsage;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis;
+import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
 
 /**
  * QVTc Domain Manager is the class responsible for managing the QVTc virtual
@@ -52,7 +54,7 @@ import org.eclipse.qvtd.pivot.qvtcorebase.analysis.DomainUsage;
  */
 public class QVTiModelManager implements ModelManager.ModelManagerExtension
 {
-	protected final @NonNull QVTiTransformationAnalysis transformationAnalysis;
+	protected final  org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis transformationAnalysis;
 	protected final @NonNull MetamodelManager metamodelManager;
 	// TODO how to manage aliases?
 	/** Map a typed model to its resource (model). */
@@ -89,11 +91,11 @@ public class QVTiModelManager implements ModelManager.ModelManagerExtension
 	 * Instantiates a new QVTi Domain Manager. Responsible for creating new
 	 * instances of the middle model and the middle model EFactory.
 	 */
-	public QVTiModelManager(@NonNull QVTiTransformationAnalysis transformationAnalysis) {
-	    this.transformationAnalysis = transformationAnalysis;
-	    this.metamodelManager = transformationAnalysis.getMetamodelManager();
-	    this.allInstancesClasses = transformationAnalysis.getAllInstancesClasses();
-	    int cacheIndexes = transformationAnalysis.getCacheIndexes();
+	public QVTiModelManager(  org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis qvTiTransformationAnalysis) {
+	    this.transformationAnalysis = qvTiTransformationAnalysis;
+	    this.metamodelManager = qvTiTransformationAnalysis.getMetamodelManager();
+	    this.allInstancesClasses = qvTiTransformationAnalysis.getAllInstancesClasses();
+	    int cacheIndexes = qvTiTransformationAnalysis.getCacheIndexes();
 		this.unnavigableOpposites = new @NonNull Map<?, ?>[cacheIndexes];
 		for (int i = 0; i < cacheIndexes; i++) {
 			this.unnavigableOpposites[i] = new HashMap<Object, Object>();
@@ -234,7 +236,7 @@ public class QVTiModelManager implements ModelManager.ModelManagerExtension
         return elements;
     }
 
-	public @NonNull QVTiTransformationAnalysis getTransformationAnalysis() {
+	public  org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis getTransformationAnalysis() {
 		return transformationAnalysis;
 	}
 	
@@ -362,9 +364,9 @@ public class QVTiModelManager implements ModelManager.ModelManagerExtension
 	public static class QVTiTransformationInstance extends AbstractTransformationInstance
 	{
 		protected final @NonNull QVTiModelManager modelManager;
-		protected final @NonNull Transformation transformation;
+		protected final @NonNull OperationalTransformation transformation;
 		
-		public QVTiTransformationInstance(@NonNull QVTiModelManager modelManager, @NonNull Transformation transformation) {
+		public QVTiTransformationInstance(@NonNull QVTiModelManager modelManager, @NonNull OperationalTransformation transformation) {
 			this.modelManager = modelManager;
 			this.transformation = transformation;
 		}
@@ -378,7 +380,7 @@ public class QVTiModelManager implements ModelManager.ModelManagerExtension
 			return transformation.getName();
 		}
 		
-		public @NonNull Transformation getTransformation() {
+		public @NonNull OperationalTransformation getTransformation() {
 			return transformation;
 		}
 	}
@@ -461,7 +463,7 @@ public class QVTiModelManager implements ModelManager.ModelManagerExtension
 		}
 	}
 
-	public @NonNull TransformationInstance getTransformationInstance(@NonNull Transformation transformation) {
+	public @NonNull TransformationInstance getTransformationInstance(@NonNull OperationalTransformation transformation) {
 		TransformationInstance transformationInstance2 = transformationInstance;
 		if (transformationInstance2 == null) {
 			transformationInstance = transformationInstance2 = new QVTiTransformationInstance(this, transformation);
