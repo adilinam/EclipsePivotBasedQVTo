@@ -1,22 +1,33 @@
 package org.eclipse.m2m.qvt.oml.pivot.evaluator;
 
+import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.m2m.internal.qvt.oml.evaluator.QvtOperationalEvaluationVisitorImpl.BreakingResult;
+import org.eclipse.m2m.internal.qvt.oml.evaluator.QvtOperationalEvaluationVisitorImpl.OperationCallResult;
+import org.eclipse.m2m.qvt.oml.pivot.evaluator.OCLPivotEvaluationVisitor.BreakResult;
 import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMapping;
 import org.eclipse.ocl.pivot.Element;
+import org.eclipse.ocl.pivot.Parameter;
+import org.eclipse.ocl.pivot.TypedElement;
 import org.eclipse.ocl.pivot.evaluation.EvaluationEnvironment;
 import org.eclipse.ocl.pivot.internal.evaluation.OCLEvaluationVisitor;
 import org.eclipse.qvto.examples.pivot.qvtoperational.util.QVTOperationalAdapterFactory;
 
 @SuppressWarnings("restriction")
+
+
 public  class QVToPivotEvaluationVisitor  extends OCLPivotEvaluationVisitor
 {
 	
 
 
+	BasicQVToExecutor basicQVToExecutor;
 	public QVToPivotEvaluationVisitor(BasicQVToExecutor basicQVToExecutor) {
 		super(basicQVToExecutor);
+		this.basicQVToExecutor=basicQVToExecutor;
 		
 	}
 
@@ -51,25 +62,44 @@ public  class QVToPivotEvaluationVisitor  extends OCLPivotEvaluationVisitor
 		return visiting(astNode);
 	}
 	public Object  visitHelper( org.eclipse.qvto.examples.pivot.qvtoperational.Helper astNode) {
-		return visiting(astNode);
+		
+		doProcess(astNode.getBody());
+			doProcessAll(astNode.getOwnedParameters());
+		return null;
 	}
 	public Object visitImperativeCallExp( org.eclipse.qvto.examples.pivot.qvtoperational.ImperativeCallExp astNode) {
-		return visiting(astNode);
+		doProcess(astNode.getOwnedSource());
+		return null;//visiting(astNode);
 	}
 	public Object  visitImperativeOperation( org.eclipse.qvto.examples.pivot.qvtoperational.ImperativeOperation astNode) {
-		return visiting(astNode);
+		@NonNull
+		List<Parameter> parameters = astNode.getOwnedParameters();
+		for(TypedElement parameter:parameters)
+		{
+			basicQVToExecutor.add(parameter,parameter);
+		//	System.out.println();
+		}
+		
+		return null;//visiting(astNode);
 	}
 	public Object  visitLibrary( org.eclipse.qvto.examples.pivot.qvtoperational.Library astNode) {
 		return visiting(astNode);
 	}
 	public Object visitMappingBody( org.eclipse.qvto.examples.pivot.qvtoperational.MappingBody astNode) {
+		
 		doProcessAll(astNode.getContent());
 		return null;
 	}
 	public Object  visitMappingCallExp( org.eclipse.qvto.examples.pivot.qvtoperational.MappingCallExp astNode) {
-		return visiting(astNode);
+		if(astNode.getOwnedSource()!=null)
+		{
+			doProcess(astNode.getOwnedSource());
+		}
+
+		return null;
 	}
 	public Object  visitMappingOperation( org.eclipse.qvto.examples.pivot.qvtoperational.MappingOperation astNode) {
+		visitImperativeOperation(astNode);
 		doProcess(astNode.getBody());
 		return null;
 	}
@@ -93,8 +123,32 @@ public  class QVToPivotEvaluationVisitor  extends OCLPivotEvaluationVisitor
 		doProcess(astNode.getBody());
 		return null;
 	}
-	public Object  visitOperationBody(  org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody astNode) {
-		return visiting(astNode);
+	public Object  visitOperationBody(  org.eclipse.qvto.examples.pivot.qvtoperational.OperationBody operationBody) {
+		
+			Object result = null;
+			for (org.eclipse.ocl.pivot.OCLExpression exp : operationBody.getContent()) {
+				result = visitExpression(exp);
+
+				// If control flow was broken (by means of a return statement,
+				// stop executing the next lines and return this result.
+				if(result instanceof BreakingResult) {
+					if(result instanceof OperationCallResult) {
+						result = ((OperationCallResult)result).myResult;
+					}
+					else {
+						result = null;
+					}
+					break;
+				}
+			}
+			org.eclipse.qvto.examples.pivot.qvtoperational.ImperativeOperation operation = operationBody.getOperation();
+
+			if(operation.getType() == getStandardLibrary().getOclVoidType()) {
+				result = null;
+			}
+
+
+			return result;
 	}
 	public Object  visitOperationalTransformation( org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation astNode) {
 	doProcessAll(astNode.getOwnedOperations());

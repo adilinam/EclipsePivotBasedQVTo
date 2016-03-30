@@ -8,7 +8,7 @@
  * Contributors:
  *     Horacio Hoyos - initial API and implementation
  ******************************************************************************/
-package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +42,8 @@ import org.eclipse.qvtd.pivot.qvtimperative.MappingLoop;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingSequence;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingStatement;
 import org.eclipse.qvtd.pivot.qvtimperative.VariablePredicate;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.IQVTiEvaluationVisitor;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiEvaluationVisitorDecorator;
 
 /**
  * The Class QVTiTracingEvaluationVisitor is a decorator visitor that prints

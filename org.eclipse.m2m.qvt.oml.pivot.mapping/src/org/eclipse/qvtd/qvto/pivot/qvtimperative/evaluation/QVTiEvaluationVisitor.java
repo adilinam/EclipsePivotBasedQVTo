@@ -8,7 +8,7 @@
  * Contributors:
  *     Horacio Hoyos - initial API and implementation
  ******************************************************************************/
-package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +69,8 @@ import org.eclipse.qvtd.pivot.qvtimperative.MappingLoop;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingSequence;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingStatement;
 import org.eclipse.qvtd.pivot.qvtimperative.VariablePredicate;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.IQVTiEvaluationVisitor;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiExecutor;
 
 /**
  * QVTimperativeEvaluationVisitor is the class for ...
@@ -118,6 +120,8 @@ public class QVTiEvaluationVisitor extends BasicEvaluationVisitor implements IQV
 				executor.popEvaluationEnvironment();
 			}
 		}
+
+		
 	}//	private static final Logger logger = Logger.getLogger(QVTiAbstractEvaluationVisitor.class);
 	protected final @NonNull QVTiExecutor executor;			// FIXME fold into templated context
         
