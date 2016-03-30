@@ -18,6 +18,7 @@ import org.eclipse.ocl.pivot.Operation;
 import org.eclipse.ocl.pivot.OperationCallExp;
 import org.eclipse.ocl.pivot.utilities.ToStringVisitor;
 import org.eclipse.qvtd.pivot.qvtbase.BaseModel;
+import org.eclipse.qvtd.pivot.qvtbase.DebugTraceBack;
 import org.eclipse.qvtd.pivot.qvtbase.Domain;
 import org.eclipse.qvtd.pivot.qvtbase.Function;
 import org.eclipse.qvtd.pivot.qvtbase.FunctionParameter;
@@ -136,6 +137,12 @@ public class QVTbaseToStringVisitor extends ToStringVisitor implements QVTbaseVi
 	public String visitImport(@NonNull Import object) {
 		append("import ");
 		appendName(object);
+		return null;
+	}
+
+	@Override
+	public String visitDebugTraceBack(@NonNull DebugTraceBack object) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
