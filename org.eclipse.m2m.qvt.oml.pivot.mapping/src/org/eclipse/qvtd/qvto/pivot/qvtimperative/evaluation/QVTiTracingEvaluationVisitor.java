@@ -8,7 +8,7 @@
  * Contributors:
  *     E.D.Willink - initial API and implementation
  ******************************************************************************/
-package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
 
 import java.util.regex.Pattern;
 
@@ -31,6 +31,7 @@ import org.eclipse.ocl.pivot.util.Visitable;
 import org.eclipse.ocl.pivot.utilities.EnvironmentFactory;
 import org.eclipse.ocl.pivot.utilities.MetamodelManager;
 import org.eclipse.ocl.pivot.utilities.NameUtil;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.IQVTiEvaluationVisitor;
 import org.eclipse.qvtd.pivot.qvtimperative.util.AbstractMergedQVTimperativeVisitor;
 
 public class QVTiTracingEvaluationVisitor extends AbstractMergedQVTimperativeVisitor<Object, IQVTiEvaluationVisitor> implements IQVTiEvaluationVisitor

@@ -8,7 +8,7 @@
  * Contributors:
  *     Horacio Hoyos - initial API and implementation
  ******************************************************************************/
-package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
 
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.jdt.annotation.NonNull;
@@ -41,6 +41,7 @@ import org.eclipse.qvtd.pivot.qvtimperative.ImperativeModel;
 import org.eclipse.qvtd.pivot.qvtimperative.Mapping;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingCall;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingCallBinding;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.IQVTiEvaluationVisitor;
 
 /**
  * QVTcoreEvaluationVisitorImpl is the class for ...

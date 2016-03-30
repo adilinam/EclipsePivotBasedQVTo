@@ -9,7 +9,7 @@
  *   E.D.Willink - Initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,14 +39,18 @@ import org.eclipse.ocl.pivot.utilities.ClassUtil;
 import org.eclipse.ocl.pivot.utilities.ValueUtil;
 import org.eclipse.ocl.pivot.values.InvalidValueException;
 import org.eclipse.qvtd.pivot.qvtbase.Transformation;
-import org.eclipse.qvtd.pivot.qvtbase.utilities.QVTbaseUtil;
 import org.eclipse.qvtd.pivot.qvtcorebase.PropertyAssignment;
 import org.eclipse.qvtd.pivot.qvtcorebase.RealizedVariable;
 import org.eclipse.qvtd.pivot.qvtimperative.ImperativeModel;
 import org.eclipse.qvtd.pivot.qvtimperative.Mapping;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingCall;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingCallBinding;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.BasicQVTiExecutor;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiEnvironmentFactory;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiModelManager;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis;
 import org.eclipse.qvtd.pivot.qvtimperative.utilities.QVTimperativeUtil;
+import org.eclipse.qvtd.qvto.pivot.qvtbase.utilities.QVTbaseUtil;
 
 /**
  * An evaluator implementation for OCL expressions.

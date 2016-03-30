@@ -39,9 +39,9 @@ import simpleuml.SimpleumlPackage;
 
 
 @SuppressWarnings("restriction")
-public class EvaluatorTest_SimpleUml2Rdb extends TestCase {
+public class EvaluatorTest2_SimpleUml2Rdb extends TestCase {
 
-	private static final String qvtoFileUri = System.getProperty("user.dir")+"/Example/Simpleuml_To_Rdb_Evaluation.qvto";
+	private static final String qvtoFileUri = System.getProperty("user.dir")+"/Example/Simpleuml_To_Rdb.qvto";
 	private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
 	
 	@Test

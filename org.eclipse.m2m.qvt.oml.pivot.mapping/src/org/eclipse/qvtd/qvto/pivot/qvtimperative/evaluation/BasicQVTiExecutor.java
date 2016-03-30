@@ -8,7 +8,7 @@
  * Contributors:
  *     E.D.Willink - initial API and implementation
  ******************************************************************************/
-package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
 
 import java.io.IOException;
 import java.util.Map;
@@ -39,7 +39,6 @@ import org.eclipse.qvtd.pivot.qvtbase.Predicate;
 import org.eclipse.qvtd.pivot.qvtbase.Rule;
 import org.eclipse.qvtd.pivot.qvtbase.Transformation;
 import org.eclipse.qvtd.pivot.qvtbase.TypedModel;
-import org.eclipse.qvtd.pivot.qvtbase.utilities.QVTbaseUtil;
 import org.eclipse.qvtd.pivot.qvtcorebase.Area;
 import org.eclipse.qvtd.pivot.qvtcorebase.Assignment;
 import org.eclipse.qvtd.pivot.qvtcorebase.BottomPattern;
@@ -54,7 +53,18 @@ import org.eclipse.qvtd.pivot.qvtimperative.ImperativeModel;
 import org.eclipse.qvtd.pivot.qvtimperative.Mapping;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingCall;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingStatement;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.IQVTiEvaluationVisitor;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiEnvironmentFactory;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiEvaluationEnvironment;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiEvaluationVisitor;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiExecutor;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiModelManager;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiNestedEvaluationEnvironment;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiRootEvaluationEnvironment;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiTracingEvaluationVisitor;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis;
 import org.eclipse.qvtd.pivot.qvtimperative.utilities.QVTimperativeUtil;
+import org.eclipse.qvtd.qvto.pivot.qvtbase.utilities.QVTbaseUtil;
 
 public class BasicQVTiExecutor extends AbstractExecutor implements QVTiExecutor
 {
