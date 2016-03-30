@@ -37,13 +37,10 @@ import org.eclipse.qvtd.pivot.qvtcorebase.PropertyAssignment;
 import org.eclipse.qvtd.pivot.qvtcorebase.RealizedVariable;
 import org.eclipse.qvtd.pivot.qvtimperative.Mapping;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingCall;
-import org.eclipse.qvtd.qvto.pivot.qvtbase.utilities.QVTbaseUtil;
 import org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiEnvironmentFactory;
 import org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiEvaluationEnvironment;
 import org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiExecutor;
 import org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiModelManager;
-import org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis;
-import org.eclipse.qvto.examples.pivot.qvtoperational.ModelParameter;
 import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
 
 public class BasicQVToExecutor extends AbstractExecutor implements QVTiExecutor {
