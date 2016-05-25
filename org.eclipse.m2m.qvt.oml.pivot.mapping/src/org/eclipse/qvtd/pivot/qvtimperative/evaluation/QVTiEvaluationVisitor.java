@@ -8,7 +8,7 @@
  * Contributors:
  *     Horacio Hoyos - initial API and implementation
  ******************************************************************************/
-package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +41,6 @@ import org.eclipse.ocl.pivot.values.CollectionValue.Accumulator;
 import org.eclipse.ocl.pivot.values.InvalidValueException;
 import org.eclipse.ocl.pivot.values.NullValue;
 import org.eclipse.qvtd.pivot.qvtbase.BaseModel;
-import org.eclipse.qvtd.pivot.qvtbase.DebugTraceBack;
 import org.eclipse.qvtd.pivot.qvtbase.Domain;
 import org.eclipse.qvtd.pivot.qvtbase.Function;
 import org.eclipse.qvtd.pivot.qvtbase.FunctionParameter;
@@ -70,13 +69,11 @@ import org.eclipse.qvtd.pivot.qvtimperative.MappingLoop;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingSequence;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingStatement;
 import org.eclipse.qvtd.pivot.qvtimperative.VariablePredicate;
-import org.eclipse.qvtd.pivot.qvtimperative.evaluation.IQVTiEvaluationVisitor;
-import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiExecutor;
 
 /**
  * QVTimperativeEvaluationVisitor is the class for ...
  */
-public  class QVTiEvaluationVisitor extends BasicEvaluationVisitor implements IQVTiEvaluationVisitor
+public class QVTiEvaluationVisitor extends BasicEvaluationVisitor implements IQVTiEvaluationVisitor
 {
 	public class FunctionOperation extends AbstractOperation
 	{
@@ -87,7 +84,7 @@ public  class QVTiEvaluationVisitor extends BasicEvaluationVisitor implements IQ
 		}
 		
 		/**
-		 * @since 1.1
+		 * @since 1.11
 		 */
 		@Override
 		public @Nullable Object dispatch(@NonNull Executor executor, @NonNull OperationCallExp callExp, @Nullable Object sourceValue) {
@@ -122,7 +119,12 @@ public  class QVTiEvaluationVisitor extends BasicEvaluationVisitor implements IQ
 			}
 		}
 
-		
+		@Override
+		public Object dispatchtoEvaluate(@NonNull Executor context, @NonNull OperationCallExp operationCallExp,
+				Object sourceValue, BasicEvaluationVisitor basicEvaluationVisitor) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}//	private static final Logger logger = Logger.getLogger(QVTiAbstractEvaluationVisitor.class);
 	protected final @NonNull QVTiExecutor executor;			// FIXME fold into templated context
         
@@ -470,9 +472,9 @@ public  class QVTiEvaluationVisitor extends BasicEvaluationVisitor implements IQ
         return true;
 	}
 
-	@Override
-	public Object visitDebugTraceBack(@NonNull DebugTraceBack object) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Object visitDebugTraceBack(@NonNull DebugTraceBack object) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 }

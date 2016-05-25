@@ -84,6 +84,7 @@ public abstract class AbstractQVToPivotVisitorImpl extends BasicEvaluationVisito
 	}
 	@Override
 	public Object visitImperativeCallExp( org.eclipse.qvto.examples.pivot.qvtoperational.ImperativeCallExp astNode) {
+		
 		return visiting(astNode);
 	}
 	@Override

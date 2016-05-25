@@ -8,7 +8,7 @@
  * Contributors:
  *     E.D.Willink - initial API and implementation
  *******************************************************************************/
-package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
 
 import java.util.Map;
 
@@ -22,15 +22,13 @@ import org.eclipse.qvtd.pivot.qvtcorebase.PropertyAssignment;
 import org.eclipse.qvtd.pivot.qvtcorebase.RealizedVariable;
 import org.eclipse.qvtd.pivot.qvtimperative.Mapping;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingCall;
-import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiEvaluationEnvironment;
-import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiModelManager;
 
 public interface QVTiExecutor extends ExecutorInternal
 {
 	@Override
-	 org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiEvaluationEnvironment getEvaluationEnvironment();
+	@NonNull QVTiEvaluationEnvironment getEvaluationEnvironment();
 	@Override
-	 org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiModelManager getModelManager();
+	@NonNull QVTiModelManager getModelManager();
 	@Nullable Object internalExecuteMapping(@NonNull Mapping mapping, @NonNull EvaluationVisitor undecoratedVisitor);
 	@Nullable Object internalExecuteMappingCall(@NonNull MappingCall mappingCall, @NonNull Map<Variable, Object> variable2value, @NonNull EvaluationVisitor undecoratedVisitor);
 	void internalExecutePropertyAssignment(@NonNull PropertyAssignment propertyAssignment, @NonNull Object slotObject, @Nullable Object ecoreValue);

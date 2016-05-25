@@ -2,6 +2,7 @@ package org.eclipse.m2m.qvt.oml.pivot.evaluator.test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.common.util.Diagnostic;
@@ -29,7 +30,7 @@ import org.eclipse.m2m.qvt.oml.pivot.mapping.mapping.util.TraditionalToPivotMapp
 import org.eclipse.ocl.pivot.Package;
 import org.eclipse.ocl.pivot.resource.ASResource;
 import org.eclipse.ocl.pivot.utilities.OCL;
-import org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiEnvironmentFactory;
+import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiEnvironmentFactory;
 import org.eclipse.qvto.examples.pivot.qvtoperational.utilities.QVTOperationalASResourceFactory;
 import org.junit.Test;
 
@@ -43,7 +44,8 @@ public class EvaluatorTest_SimpleUml2Rdb extends TestCase {
 
 	private static final String qvtoFileUri = System.getProperty("user.dir")+"/Example/Simpleuml_To_Rdb_Evaluation.qvto";
 	private static final String inUri = System.getProperty("user.dir")+"/Example/pim.simpleuml";
-	
+	private static final String outUri = System.getProperty("user.dir") + "/Example/pim.rdb";
+	ModelExtent output = new BasicModelExtent();
 	@Test
 	public void testMapping() throws IOException {
 	
@@ -76,6 +78,13 @@ public class EvaluatorTest_SimpleUml2Rdb extends TestCase {
 		QVTiEnvironmentFactory qvTiEnvironmentFactory = new QVTiEnvironmentFactory(OCL.NO_PROJECTS, null);
 		BasicQVToExecutor basicQVToExecutor= new BasicQVToExecutor(qvTiEnvironmentFactory , converter.getTransformation());
 		basicQVToExecutor.execute();
+		
+		List<EObject> outObjects = output.getContents();
+		// let's persist them using a resource 
+	        ResourceSet resourceSet2 = new ResourceSetImpl();
+		Resource outResource = resourceSet2.getResource(URI.createFileURI(outUri), true);
+		outResource.getContents().addAll(outObjects);
+		outResource.save(Collections.emptyMap());
 		//
 //		assert asResource instanceof ASResource;
 //		for (Resource resource : resourceSet.getResources()) {
@@ -132,7 +141,7 @@ public class EvaluatorTest_SimpleUml2Rdb extends TestCase {
 		// create the input extent with its initial contents
 		ModelExtent input = new BasicModelExtent(inObjects);
 		// create an empty extent to catch the output
-		ModelExtent output = new BasicModelExtent();
+		
 
 		// setup the execution environment details ->
 		// configuration properties, logger, monitor object etc.

@@ -1,15 +1,12 @@
-package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.ocl.pivot.Type;
-import org.eclipse.ocl.pivot.internal.StandardLibraryImpl;
 import org.eclipse.ocl.pivot.internal.manager.TemplateParameterSubstitutionVisitor;
 import org.eclipse.ocl.pivot.resource.ProjectManager;
 import org.eclipse.qvtd.pivot.qvtbase.utilities.QVTbaseEnvironmentFactory;
-import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiModelManager;
-import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis;
 import org.eclipse.qvtd.pivot.qvtimperative.model.QVTimperativeLibrary;
 import org.eclipse.qvtd.pivot.qvtimperative.utilities.QVTimperativeTemplateParameterSubstitutionVisitor;
 
@@ -29,7 +26,7 @@ public class QVTiEnvironmentFactory extends QVTbaseEnvironmentFactory
 {
 	public QVTiEnvironmentFactory(@NonNull ProjectManager projectMap, @Nullable ResourceSet externalResourceSet) {
 		super(projectMap, externalResourceSet);
-		getStandardLibrary().setDefaultStandardLibraryURI(StandardLibraryImpl.DEFAULT_OCL_STDLIB_URI);
+		getStandardLibrary().setDefaultStandardLibraryURI(QVTimperativeLibrary.STDLIB_URI);
 	}
 
 //	@Override
@@ -48,8 +45,8 @@ public class QVTiEnvironmentFactory extends QVTbaseEnvironmentFactory
 		return new QVTimperativeTemplateParameterSubstitutionVisitor(this, selfType, selfTypeValue);
 	}
 
-	public  org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis createTransformationAnalysis() {
-		return new org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis(this);
+	public @NonNull QVTiTransformationAnalysis createTransformationAnalysis() {
+		return new QVTiTransformationAnalysis(this);
 	}
 
 	public boolean keepDebug() {

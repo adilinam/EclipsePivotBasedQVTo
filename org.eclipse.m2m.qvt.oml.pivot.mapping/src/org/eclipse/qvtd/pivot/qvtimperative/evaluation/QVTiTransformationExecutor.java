@@ -8,12 +8,11 @@
  * Contributors:
  *     E.D.Willink - initial API and implementation
  *******************************************************************************/
-package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.ocl.pivot.evaluation.tx.AbstractTransformationExecutor;
 import org.eclipse.ocl.pivot.evaluation.tx.Transformer;
-import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiEnvironmentFactory;
 
 public class QVTiTransformationExecutor extends AbstractTransformationExecutor
 {

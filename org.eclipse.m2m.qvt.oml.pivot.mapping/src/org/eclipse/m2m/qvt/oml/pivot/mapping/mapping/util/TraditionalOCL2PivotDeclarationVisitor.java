@@ -276,8 +276,11 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 	public Object visitVariable(Variable<EClassifier, EParameter> astNode) {
 		org.eclipse.ocl.pivot.Variable pivotElement =
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createVariable());
-
-		pivotElement.setName(astNode.getName());		
+		
+		pivotElement.setName(astNode.getName());	
+		org.eclipse.ocl.expressions.OCLExpression<EClassifier> ast = astNode.getInitExpression();
+		pivotElement.setOwnedInit(doProcess(OCLExpression.class, astNode.getInitExpression()));
+		
 		return pivotElement;
 	}
 
@@ -286,8 +289,8 @@ public abstract class TraditionalOCL2PivotDeclarationVisitor extends AbstractQVT
 		org.eclipse.ocl.pivot.VariableExp pivotElement =
 				converter.addCreated(astNode, PivotFactory.eINSTANCE.createVariableExp());
 		pivotElement.setName(astNode.getName());
-
-//		pivotElement.setReferredVariable(doProcess(org.eclipse.ocl.pivot.Variable.class, astNode.getReferredVariable()));
+		
+		pivotElement.setReferredVariable(doProcess(org.eclipse.ocl.pivot.Variable.class, astNode.getReferredVariable()));
 
 		return pivotElement;
 	}

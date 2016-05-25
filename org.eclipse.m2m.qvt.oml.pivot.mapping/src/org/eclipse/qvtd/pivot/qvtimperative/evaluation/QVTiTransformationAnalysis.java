@@ -8,7 +8,7 @@
  * Contributors:
  *     E.D.Willink - initial API and implementation
  ******************************************************************************/
-package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +54,6 @@ import org.eclipse.qvtd.pivot.qvtimperative.ImperativeDomain;
 import org.eclipse.qvtd.pivot.qvtimperative.Mapping;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingCall;
 import org.eclipse.qvtd.pivot.qvtimperative.MappingCallBinding;
-import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiTuneUpVisitor;
 import org.eclipse.qvtd.pivot.qvtimperative.utilities.QVTimperativeDomainUsageAnalysis;
 
 /**

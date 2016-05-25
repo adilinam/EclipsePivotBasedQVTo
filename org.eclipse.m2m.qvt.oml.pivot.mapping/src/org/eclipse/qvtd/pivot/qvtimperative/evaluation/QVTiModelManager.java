@@ -8,7 +8,7 @@
  * Contributors:
  *     Horacio Hoyos - initial API and implementation
  ******************************************************************************/
-package org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation;
+package org.eclipse.qvtd.pivot.qvtimperative.evaluation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,7 +43,6 @@ import org.eclipse.ocl.pivot.utilities.XMIUtil;
 import org.eclipse.qvtd.pivot.qvtbase.Transformation;
 import org.eclipse.qvtd.pivot.qvtbase.TypedModel;
 import org.eclipse.qvtd.pivot.qvtcorebase.analysis.DomainUsage;
-import org.eclipse.qvtd.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis;
 import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
 
 /**
@@ -54,7 +53,7 @@ import org.eclipse.qvto.examples.pivot.qvtoperational.OperationalTransformation;
  */
 public class QVTiModelManager implements ModelManager.ModelManagerExtension
 {
-	protected final  org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis transformationAnalysis;
+	protected final @NonNull QVTiTransformationAnalysis transformationAnalysis;
 	protected final @NonNull MetamodelManager metamodelManager;
 	// TODO how to manage aliases?
 	/** Map a typed model to its resource (model). */
@@ -91,11 +90,11 @@ public class QVTiModelManager implements ModelManager.ModelManagerExtension
 	 * Instantiates a new QVTi Domain Manager. Responsible for creating new
 	 * instances of the middle model and the middle model EFactory.
 	 */
-	public QVTiModelManager(  org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis qvTiTransformationAnalysis) {
-	    this.transformationAnalysis = qvTiTransformationAnalysis;
-	    this.metamodelManager = qvTiTransformationAnalysis.getMetamodelManager();
-	    this.allInstancesClasses = qvTiTransformationAnalysis.getAllInstancesClasses();
-	    int cacheIndexes = qvTiTransformationAnalysis.getCacheIndexes();
+	public QVTiModelManager(@NonNull QVTiTransformationAnalysis transformationAnalysis) {
+	    this.transformationAnalysis = transformationAnalysis;
+	    this.metamodelManager = transformationAnalysis.getMetamodelManager();
+	    this.allInstancesClasses = transformationAnalysis.getAllInstancesClasses();
+	    int cacheIndexes = transformationAnalysis.getCacheIndexes();
 		this.unnavigableOpposites = new @NonNull Map<?, ?>[cacheIndexes];
 		for (int i = 0; i < cacheIndexes; i++) {
 			this.unnavigableOpposites[i] = new HashMap<Object, Object>();
@@ -236,7 +235,7 @@ public class QVTiModelManager implements ModelManager.ModelManagerExtension
         return elements;
     }
 
-	public  org.eclipse.qvtd.qvto.pivot.qvtimperative.evaluation.QVTiTransformationAnalysis getTransformationAnalysis() {
+	public @NonNull QVTiTransformationAnalysis getTransformationAnalysis() {
 		return transformationAnalysis;
 	}
 	
@@ -463,7 +462,7 @@ public class QVTiModelManager implements ModelManager.ModelManagerExtension
 		}
 	}
 
-	public @NonNull TransformationInstance getTransformationInstance(@NonNull OperationalTransformation transformation) {
+	public @NonNull TransformationInstance getTransformationInstance(@NonNull  OperationalTransformation transformation) {
 		TransformationInstance transformationInstance2 = transformationInstance;
 		if (transformationInstance2 == null) {
 			transformationInstance = transformationInstance2 = new QVTiTransformationInstance(this, transformation);
