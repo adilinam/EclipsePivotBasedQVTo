@@ -19,11 +19,121 @@
               <source xsi:type="ocl.ecore:VariableExp" name="result" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb#//Model"
                   referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/result"/>
             </left>
-            <value xsi:type="ocl.ecore:PropertyCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
-                referredProperty="ecore:EAttribute http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//ModelElement/name">
+            <value xsi:type="ocl.ecore:OperationCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                referredOperation="ecore:EOperation http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/+">
+              <source xsi:type="ocl.ecore:StringLiteralExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                  stringSymbol="A"/>
+              <argument xsi:type="ocl.ecore:PropertyCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                  referredProperty="ecore:EAttribute http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//ModelElement/name">
+                <source xsi:type="ocl.ecore:VariableExp" name="model" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//Model"
+                    referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/model"/>
+              </argument>
+            </value>
+          </content>
+          <content xsi:type="eimpocl:SwitchExp" eType="ocl.ecore:VoidType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclVoid">
+            <alternativePart>
+              <body xsi:type="eimpocl:BlockExp" eType="ocl.ecore:VoidType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclVoid">
+                <body xsi:type="eimpocl:AssignExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                    isReset="true">
+                  <left xsi:type="ocl.ecore:PropertyCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                      referredProperty="ecore:EAttribute http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb#//NamedElement/name">
+                    <source xsi:type="ocl.ecore:VariableExp" name="result" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb#//Model"
+                        referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/result"/>
+                  </left>
+                  <value xsi:type="ocl.ecore:OperationCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                      referredOperation="ecore:EOperation http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/+">
+                    <source xsi:type="ocl.ecore:StringLiteralExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                        stringSymbol="A"/>
+                    <argument xsi:type="ocl.ecore:PropertyCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                        referredProperty="ecore:EAttribute http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//ModelElement/name">
+                      <source xsi:type="ocl.ecore:VariableExp" name="model" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//Model"
+                          referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/model"/>
+                    </argument>
+                  </value>
+                </body>
+              </body>
+              <condition xsi:type="ocl.ecore:OperationCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"
+                  referredOperation="ecore:EOperation http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/=">
+                <source xsi:type="ocl.ecore:PropertyCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                    referredProperty="ecore:EAttribute http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//ModelElement/name">
+                  <source xsi:type="ocl.ecore:VariableExp" name="model" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//Model"
+                      referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/model"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                    stringSymbol="amodel"/>
+              </condition>
+            </alternativePart>
+            <elsePart xsi:type="eimpocl:BlockExp" eType="ocl.ecore:VoidType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclVoid">
+              <body xsi:type="eimpocl:AssignExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                  isReset="true">
+                <left xsi:type="ocl.ecore:PropertyCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                    referredProperty="ecore:EAttribute http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb#//NamedElement/name">
+                  <source xsi:type="ocl.ecore:VariableExp" name="result" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb#//Model"
+                      referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/result"/>
+                </left>
+                <value xsi:type="ocl.ecore:OperationCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                    referredOperation="ecore:EOperation http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/+">
+                  <source xsi:type="ocl.ecore:StringLiteralExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                      stringSymbol="B"/>
+                  <argument xsi:type="ocl.ecore:PropertyCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                      referredProperty="ecore:EAttribute http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//ModelElement/name">
+                    <source xsi:type="ocl.ecore:VariableExp" name="model" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//Model"
+                        referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/model"/>
+                  </argument>
+                </value>
+              </body>
+            </elsePart>
+          </content>
+          <content xsi:type="eimpocl:AssignExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+              isReset="true">
+            <left xsi:type="ocl.ecore:PropertyCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                referredProperty="ecore:EAttribute http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb#//NamedElement/name">
+              <source xsi:type="ocl.ecore:VariableExp" name="result" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb#//Model"
+                  referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/result"/>
+            </left>
+            <value xsi:type="ocl.ecore:OperationCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                referredOperation="ecore:EOperation http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny_Class/toString">
               <source xsi:type="ocl.ecore:VariableExp" name="model" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//Model"
                   referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/model"/>
             </value>
+          </content>
+          <content xsi:type="eimpocl:TryExp">
+            <exceptClause exception="ecore:EClass http://www.eclipse.org/m2m/qvt/oml/1.0.0/Stdlib#//Exception">
+              <body xsi:type="eimpocl:BlockExp" eType="ocl.ecore:VoidType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclVoid"/>
+            </exceptClause>
+            <tryBody xsi:type="eimpocl:BlockExp" eType="ocl.ecore:VoidType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclVoid">
+              <body xsi:type="eimpocl:WhileExp" eType="ocl.ecore:VoidType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclVoid">
+                <body xsi:type="eimpocl:BlockExp" eType="ocl.ecore:VoidType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclVoid">
+                  <body xsi:type="eimpocl:SwitchExp" eType="ocl.ecore:VoidType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclVoid">
+                    <alternativePart>
+                      <body xsi:type="eimpocl:BlockExp" eType="ocl.ecore:VoidType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclVoid">
+                        <body xsi:type="eimpocl:BreakExp"/>
+                      </body>
+                      <condition xsi:type="ocl.ecore:OperationCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"
+                          referredOperation="ecore:EOperation http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/=">
+                        <source xsi:type="ocl.ecore:PropertyCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                            referredProperty="ecore:EAttribute http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb#//NamedElement/name">
+                          <source xsi:type="ocl.ecore:VariableExp" name="result" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb#//Model"
+                              referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/result"/>
+                        </source>
+                        <argument xsi:type="ocl.ecore:StringLiteralExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                            stringSymbol="BModel"/>
+                      </condition>
+                    </alternativePart>
+                  </body>
+                </body>
+                <condition xsi:type="ocl.ecore:OperationCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"
+                    referredOperation="ecore:EOperation http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/=">
+                  <source xsi:type="ocl.ecore:PropertyCallExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                      referredProperty="ecore:EAttribute http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//ModelElement/name">
+                    <source xsi:type="ocl.ecore:VariableExp" name="model" eType="ecore:EClass http://www.eclipse.org/qvt/1.0.0/Operational/examples/simpleuml#//Model"
+                        referredVariable="traditionalAS_SimpleUml2Rdb.qvtoas#//main/model"/>
+                  </source>
+                  <argument xsi:type="ocl.ecore:StringLiteralExp" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"
+                      stringSymbol="Amodel"/>
+                </condition>
+              </body>
+            </tryBody>
           </content>
         </body>
       </content>

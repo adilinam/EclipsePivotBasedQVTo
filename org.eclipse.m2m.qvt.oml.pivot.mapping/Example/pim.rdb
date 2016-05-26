@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:rdb="http://www.eclipse.org/qvt/1.0.0/Operational/examples/rdb">
+  <rdb:Model/>
+  <rdb:Model name="simpleuml.impl.ModelImpl@74a10858 (name: model, stereotype: null)"/>
+  <rdb:Model name="simpleuml.impl.ModelImpl@7a36aefa (name: model, stereotype: null)"/>
+</xmi:XMI>
